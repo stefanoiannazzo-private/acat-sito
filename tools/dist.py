@@ -6,7 +6,8 @@ import os, re, shutil
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(ROOT)
 PAGES = ["index.html", "chi-siamo.html", "servizi.html", "contatti.html", "credits.html"]
-EXTRA = ["favicon.svg", "share.jpg", "robots.txt", ".htaccess",
+EXTRA_ROOT = ["preventivo.php"]
+EXTRA = ["favicon.svg", "share.jpg", "robots.txt", ".htaccess", "preventivo.php",
          "assets/moments/lib.js", "assets/moments/moments.js"]
 EXTRA += [f"assets/moments/{m}/moment.{e}" for m in ("photo-chapters", "picture-develops", "pinned-chapters", "word-highlight") for e in ("css", "js")]
 

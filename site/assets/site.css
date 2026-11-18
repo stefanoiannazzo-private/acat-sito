@@ -255,3 +255,6 @@ html.fx-still .fx-w__in, html.fx-still .fx-mega__row { transform: none !importan
 .fx-logos__track img.fx-logo--axa { height: 48px; }
 .fx-logos__track li:hover img { opacity: 1; transform: translateY(-2px); }
 @media (max-width: 639px) { .fx-logos__track img { height: 28px; } .fx-logos__track img.fx-logo--generali { height: 22px; } .fx-logos__track img.fx-logo--axa { height: 34px; } }
+
+/* modulo: campo trappola anti-spam, invisibile alle persone */
+.hp { position: absolute !important; left: -9999px !important; width: 1px; height: 1px; overflow: hidden; }

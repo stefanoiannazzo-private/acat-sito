@@ -569,7 +569,8 @@ cont_body = hero(
         <div class="visit__line">{li_ic("clock")}<dl class="hours" data-tz="Europe/Rome"><dt data-days="mon">Lunedì</dt><dd>15:30–19</dd><dt data-days="tue-fri">Martedì–venerdì</dt><dd>9–12 e 15:30–19</dd><dt data-days="sat,sun">Sabato e domenica</dt><dd>Chiuso</dd></dl></div>
       </div>
       <div class="span-6 start-7 form-card">
-        <form class="form" action="mailto:preventivo@acatservizi.example" method="post" enctype="text/plain" data-endpoint="" data-sent="La tua richiesta di preventivo è arrivata. Ti rispondiamo negli orari d'agenzia." novalidate>
+        <form class="form" action="preventivo.php" method="post" data-endpoint="/preventivo.php" data-sent="La tua richiesta di preventivo è arrivata. Ti rispondiamo negli orari d'agenzia." data-sending="Invio in corso…" data-failed="Invio non riuscito: i dati sono ancora qui. Riprova oppure chiamaci al 329 754 2063." data-fix="Controlla {{n}} campi evidenziati." novalidate>
+          <div class="hp" aria-hidden="true"><label for="f-web">Lascia vuoto questo campo</label><input id="f-web" name="sito_web" type="text" tabindex="-1" autocomplete="off"></div>
           <div class="field"><label for="f-name">Nome e cognome</label>
             <input id="f-name" name="nome" type="text" autocomplete="name" required aria-describedby="f-name-err">
             <p class="field__error" id="f-name-err" hidden>Scrivi il tuo nome e cognome.</p></div>

@@ -26,7 +26,8 @@ In GitHub: **Settings > Secrets and variables > Actions**
 Poi **Actions > Pubblica sul server > Run workflow** per la prima pubblicazione.
 
 ## Da completare prima della messa online
-- Email da pubblicare e indirizzo che riceve i preventivi (il modulo ora punta a un indirizzo di prova).
+- Email da pubblicare; in `preventivo.php` impostare `DESTINATARIO` con la casella che riceve i preventivi (poi `python3 tools/dist.py`).
+- Nel pannello Aruba lasciare **disattivato** "Limita accesso FTP" (o consentire gli IP di GitHub), altrimenti la pubblicazione automatica non si collega.
 - Ragione sociale, partita IVA, numero di iscrizione RUI; pagine Privacy e Cookie.
 - Dopo l'attivazione dell'SSL: togliere i `#` dal redirect https in `.htaccess`.
 - Foto: ora sono stand-in da Unsplash e Wikimedia (crediti in `credits.html`).
