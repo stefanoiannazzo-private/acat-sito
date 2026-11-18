@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Copia in site/ solo i file che il sito pubblicato usa davvero (pagine, css, js, immagini).
 site/ è la cartella che va sul server: la carica il workflow GitHub Actions via FTP."""
-import os, re, shutil
+import hashlib, os, re, shutil
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(ROOT)
@@ -38,6 +38,14 @@ for p in PAGES:
     t = open(d, encoding="utf-8").read()
     t = FONT_LINKS.sub('<link rel="preload" href="vendor/fonts/instrument-sans-latin.woff2" as="font" type="font/woff2" crossorigin>\n<link rel="stylesheet" href="vendor/fonts/fonts.css">', t)
     t = t.replace("https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/", "vendor/gsap/")
+    # numero di versione su css e js: a ogni pubblicazione il browser scarica i file cambiati
+    def _ver(m):
+        f = os.path.join("site", m.group(2))
+        if not os.path.exists(f):
+            return m.group(0)
+        h = hashlib.md5(open(f, "rb").read()).hexdigest()[:8]
+        return f'{m.group(1)}="{m.group(2)}?v={h}"'
+    t = re.sub(r'(href|src)="((?:assets|vendor)/[^"?]+\.(?:css|js))"', _ver, t)
     if "googleapis" in t or "cdnjs" in t:
         raise SystemExit(f"{p}: risorse esterne rimaste")
     open(d, "w", encoding="utf-8").write(t)
