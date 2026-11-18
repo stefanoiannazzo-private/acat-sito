@@ -338,3 +338,4 @@ footer.closing .closing__cta > .close__media { flex: 1 0 auto; height: auto; min
 /* l'hero cresce se lo schermo è basso, così l'ultima riga (i tre punti di forza) non viene tagliata */
 main > section.hero--cover { height: auto; }
 @media (max-width: 1023px) { .grid > .frame--fill.svc-photo { aspect-ratio: 16 / 9 !important; } }
+@media (max-width: 1023px) { .nav.is-open .nav__link--menu[data-current="page"]::after { left: 0; right: auto; width: 24px; bottom: 10px; } }
