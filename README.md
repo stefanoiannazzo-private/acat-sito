@@ -23,7 +23,7 @@ git add -A && git commit -m "..." && git push   # il push pubblica site/
 ## Pubblicazione (una tantum)
 In GitHub: **Settings > Secrets and variables > Actions**
 - Secrets: `FTP_SERVER`, `FTP_USERNAME`, `FTP_PASSWORD` (dati FTP del pannello hosting)
-- Variables (facoltative): `FTP_DIR` (cartella del sito sul server, predefinita `/`), `FTP_PROTOCOL` (`ftps` predefinito, oppure `ftp`)
+- Variables (facoltative): `FTP_DIR` (cartella del sito sul server: su Aruba `/www.clientetest.it/`), `FTP_PROTOCOL` (`ftps` predefinito, oppure `ftp`)
 
 Poi **Actions > Pubblica sul server > Run workflow** per la prima pubblicazione.
 
