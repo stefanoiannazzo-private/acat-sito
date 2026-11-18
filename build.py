@@ -171,25 +171,25 @@ def nav(current):
     <nav class="nav__links" aria-label="Principale">
       <div class="nav__item"><a class="nav__link" href="index.html"{cur('home')}>Home</a></div>
       <div class="nav__item">
-        <a class="nav__link" href="servizi.html"{cur('servizi')}>Servizi <svg class="chev" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <button class="nav__link nav__link--menu" type="button" aria-haspopup="true"{' data-current="page"' if current == 'servizi' else ''}>Servizi <svg class="chev" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
         <div class="nav__menu">
           <div class="wrap grid">
             <div class="menu-col span-3">
               <p class="t-label">Assicurazioni</p>
-              <a href="servizi.html#insurance">{li_ic("car-front")}<b>Auto e moto</b><span>RC, furto, incendio, cristalli</span></a>
-              <a href="servizi.html#insurance">{li_ic("house")}<b>Casa e famiglia</b><span>Abitazione e responsabilità civile</span></a>
-              <a href="servizi.html#insurance">{li_ic("heart-handshake")}<b>Vita e impresa</b><span>Risparmio, infortuni, attività</span></a>
+              <a href="assicurazione-auto-moto.html">{li_ic("car-front")}<b>Auto e moto</b><span>RC, furto, incendio, cristalli</span></a>
+              <a href="assicurazione-casa-famiglia.html">{li_ic("house")}<b>Casa e famiglia</b><span>Abitazione e responsabilità civile</span></a>
+              <a href="assicurazione-vita-impresa.html">{li_ic("heart-handshake")}<b>Vita e impresa</b><span>Risparmio, infortuni, attività</span></a>
             </div>
             <div class="menu-col span-3">
               <p class="t-label">Pratiche auto</p>
-              <a href="servizi.html#registry">{li_ic("key-round")}<b>Passaggio di proprietà</b><span>Allo sportello STA in agenzia</span></a>
-              <a href="servizi.html#registry">{li_ic("file-plus-2")}<b>Immatricolazioni</b><span>Targhe e documento unico</span></a>
-              <a href="servizi.html#registry">{li_ic("id-card")}<b>Patenti</b><span>Convalida e rinnovo</span></a>
+              <a href="passaggio-di-proprieta.html">{li_ic("key-round")}<b>Passaggio di proprietà</b><span>Allo sportello STA in agenzia</span></a>
+              <a href="immatricolazioni.html">{li_ic("file-plus-2")}<b>Immatricolazioni</b><span>Targhe e documento unico</span></a>
+              <a href="patenti.html">{li_ic("id-card")}<b>Patenti</b><span>Convalida e rinnovo</span></a>
             </div>
-            <a class="menu-card span-3 start-10" href="servizi.html#registry">
+            <a class="menu-card span-3 start-10" href="servizi.html">
               <div class="panel">{u("1761014586555", "Due mani si passano le chiavi di un'auto", sizes="300px", lazy=False, cls="frame__img").replace(' fetchpriority="high"', '')}</div>
-              <span class="t-card">Sportello STA</span>
-              <span class="t-small muted">Pratiche auto nello stesso ufficio</span>
+              <span class="t-card">Tutti i servizi</span>
+              <span class="t-small muted">Assicurazioni e sportello STA in un solo ufficio</span>
             </a>
           </div>
         </div>
@@ -722,3 +722,208 @@ legal_page("cookie.html", "Cookie policy: ACAT Servizi, Giaveno", "Cookie policy
            COOKIE, "Cookie policy del sito di ACAT SERVIZI SRLS: solo strumenti tecnici, nessun cookie di profilazione o di terze parti.")
 
 print("ok")
+
+
+# ---------------------------------------------------------------- PAGINE DEI SINGOLI SERVIZI
+SVC = [
+  dict(slug="assicurazione-auto-moto", group="Assicurazioni", icon="car-front", name="Auto e moto", sub="RC, furto, incendio, cristalli",
+       title="Assicurazione auto e moto a Giaveno | ACAT Servizi",
+       desc="RC auto e moto e garanzie accessorie a Giaveno: confrontiamo più compagnie per auto, moto, ciclomotori e veicoli commerciali.",
+       h1="Assicurazione auto e moto",
+       lead="RC obbligatoria e garanzie accessorie per auto, moto, ciclomotori e veicoli commerciali. Confrontiamo più compagnie e ti spieghiamo cosa copre ogni proposta.",
+       hero=("1686170017528", "Un motociclista percorre una strada di montagna tra le rocce", "50% 60%"),
+       side=("1687856265836", "Un'auto su una strada di campagna con le colline sullo sfondo", "50% 50%"),
+       h2="Le coperture per il tuo veicolo",
+       intro="Partiamo dall'RC, obbligatoria per circolare, e aggiungiamo solo le garanzie che ti servono davvero.",
+       items=[("shield-check", "Responsabilità civile (RC)", "Obbligatoria: copre i danni causati a persone, animali e cose"),
+              ("lock-keyhole", "Furto e rapina", "Il veicolo rubato, in tutto o in parte"),
+              ("flame", "Incendio", "Danni da incendio, esplosione e fulmine"),
+              ("glass-water", "Cristalli", "Parabrezza, lunotto e vetri laterali"),
+              ("cloud-lightning", "Eventi naturali e atti vandalici", "Grandine, alluvioni, danni da terzi non identificati"),
+              ("car", "Kasko e collisione", "I danni al tuo veicolo anche quando la colpa è tua"),
+              ("life-buoy", "Assistenza stradale e tutela legale", "Soccorso, auto sostitutiva, spese legali")],
+       note="Garanzie, franchigie e massimali dipendono dalla compagnia e dal contratto scelto: te li mostriamo prima della firma.",
+       steps_h="Come funziona",
+       steps=[("message-circle", "Ci racconti veicolo e conducente", "Marca, modello, uso, chi guida e la tua classe di merito."),
+              ("search", "Confrontiamo le compagnie", "Mettiamo a confronto le proposte di più compagnie partner."),
+              ("pen-line", "Scegli e firmi in agenzia", "Ti spieghiamo ogni voce e firmi solo quando è tutto chiaro."),
+              ("refresh-cw", "Ti seguiamo dopo", "Rinnovi, variazioni, cambio veicolo e denuncia dei sinistri.")],
+       docs_h="Cosa portare",
+       docs=["Documento unico o carta di circolazione", "Patente e codice fiscale di chi guida", "Il contratto o l'ultima quietanza della polizza attuale"]),
+  dict(slug="assicurazione-casa-famiglia", group="Assicurazioni", icon="house", name="Casa e famiglia", sub="Abitazione e responsabilità civile",
+       title="Assicurazione casa e famiglia a Giaveno | ACAT Servizi",
+       desc="Polizze per la casa e la famiglia a Giaveno: incendio, furto, responsabilità civile, infortuni e salute con più compagnie.",
+       h1="Assicurazione casa e famiglia",
+       lead="La casa in cui vivi, le cose che contiene e le persone a cui tieni. Costruiamo la polizza intorno alla tua famiglia, confrontando più compagnie.",
+       hero=("1570129477492", "Una casa bianca con portico e prato all'inglese", "50% 60%"),
+       side=("1543342384", "Due genitori tengono in braccio il loro neonato vicino alla finestra", "50% 40%"),
+       h2="Cosa possiamo proteggere",
+       intro="Le garanzie si combinano: scegli quelle che servono alla tua casa e alla tua famiglia.",
+       items=[("flame", "Incendio e danni all'abitazione", "Il fabbricato e il contenuto, anche in affitto"),
+              ("lock-keyhole", "Furto in casa", "Beni rubati e danni causati dai ladri"),
+              ("droplets", "Acqua condotta ed eventi atmosferici", "Perdite d'acqua, grandine e vento, secondo la polizza"),
+              ("users", "Responsabilità civile della famiglia", "I danni che tu o i tuoi familiari causate ad altri"),
+              ("paw-print", "Animali domestici", "I danni causati a terzi dal tuo cane o gatto"),
+              ("hand-heart", "Infortuni e salute", "Coperture per te e per i tuoi familiari")],
+       note="Ogni compagnia definisce garanzie ed esclusioni a modo suo: le confrontiamo insieme prima di scegliere.",
+       steps_h="Come funziona",
+       steps=[("message-circle", "Ci parli della casa", "Proprietà o affitto, metratura, anno di costruzione, chi ci vive."),
+              ("search", "Confrontiamo le compagnie", "Scegliamo le garanzie e mettiamo a confronto più proposte."),
+              ("pen-line", "Firmi in agenzia", "Ti spieghiamo massimali, franchigie ed esclusioni."),
+              ("refresh-cw", "Ti seguiamo dopo", "Variazioni, rinnovi e assistenza in caso di sinistro.")],
+       docs_h="Utile avere con te",
+       docs=["Indirizzo e dati dell'abitazione (metratura, piano, anno)", "Eventuale polizza in corso", "Documento d'identità e codice fiscale"]),
+  dict(slug="assicurazione-vita-impresa", group="Assicurazioni", icon="heart-handshake", name="Vita e impresa", sub="Risparmio, infortuni, attività",
+       title="Assicurazioni vita, risparmio e impresa a Giaveno | ACAT Servizi",
+       desc="Polizze vita, risparmio, infortuni e coperture per negozi, artigiani, aziende e professionisti a Giaveno, con più compagnie.",
+       h1="Vita, risparmio e impresa",
+       lead="Proteggere chi dipende da te, mettere da parte qualcosa per il futuro, assicurare il tuo lavoro. Ne parliamo con calma, in agenzia.",
+       hero=("1758520144437", "Una consulente ascolta un cliente seduta alla scrivania", "50% 40%"),
+       side=("1758518731462", "Due clienti firmano documenti con una consulente", "50% 50%"),
+       h2="Per te e per la tua attività",
+       intro="Coperture per la persona e per chi lavora in proprio, scelte tra più compagnie.",
+       items=[("heart-pulse", "Vita e caso morte", "Un capitale per la famiglia se ti succede qualcosa"),
+              ("piggy-bank", "Risparmio e previdenza", "Piani di accumulo e integrazione della pensione"),
+              ("hand-heart", "Infortuni", "Coperture per infortuni sul lavoro e nel tempo libero"),
+              ("store", "Negozi e artigiani", "Locali, merci, attrezzature e responsabilità verso i clienti"),
+              ("briefcase-business", "Professionisti", "Responsabilità civile professionale"),
+              ("truck", "Aziende e veicoli aziendali", "Sede, dipendenti e mezzi di lavoro")],
+       note="Per le polizze vita e di risparmio ricevi prima della firma la documentazione precontrattuale prevista dalla legge.",
+       steps_h="Come funziona",
+       steps=[("calendar-clock", "Fissiamo un appuntamento", "In agenzia o al telefono, quando ti è comodo."),
+              ("message-circle", "Analizziamo le tue esigenze", "Famiglia, lavoro, obiettivi e cosa hai già."),
+              ("search", "Ti proponiamo le soluzioni", "Confrontiamo più compagnie e te le spieghiamo."),
+              ("refresh-cw", "Le rivediamo nel tempo", "Quando cambia la tua vita o la tua attività.")],
+       docs_h="Utile avere con te",
+       docs=["Documento d'identità e codice fiscale", "Le polizze che hai già", "Per l'impresa: visura camerale e dati dell'attività"]),
+  dict(slug="passaggio-di-proprieta", group="Pratiche auto", icon="key-round", name="Passaggio di proprietà", sub="Allo sportello STA in agenzia",
+       title="Passaggio di proprietà auto e moto a Giaveno | ACAT Servizi",
+       desc="Passaggio di proprietà di auto e moto usate a Giaveno allo sportello STA: autentica della firma e documento unico in tempo reale.",
+       h1="Passaggio di proprietà auto e moto",
+       lead="Compri o vendi un'auto o una moto usata? Allo sportello STA in agenzia autentichiamo la firma e registriamo il passaggio, con il nuovo documento unico in tempo reale.",
+       hero=("1653565217811", "Una mano tiene la chiave di un'auto davanti alla carrozzeria", "50% 50%"),
+       side=("1450101499163", "Una mano firma un contratto su una scrivania", "50% 50%"),
+       h2="Cosa facciamo per te",
+       intro="Seguiamo tutta la pratica, tra privati o da un rivenditore, nello stesso ufficio.",
+       items=[("pen-line", "Autentica della firma del venditore", "Sull'atto di vendita, direttamente in agenzia"),
+              ("receipt", "Calcolo di imposte e diritti", "IPT e diritti dipendono dal veicolo e dalla provincia"),
+              ("file-text", "Registrazione tramite STA", "Aggiornamento di PRA e Motorizzazione"),
+              ("badge-check", "Nuovo documento unico", "Intestato al nuovo proprietario, rilasciato in tempo reale"),
+              ("shield-check", "Assicurazione del veicolo", "Se vuoi, prepariamo anche la nuova polizza")],
+       note="La legge prevede che il passaggio sia registrato entro 60 giorni dall'autentica della firma.",
+       steps_h="Come funziona",
+       steps=[("calendar-clock", "Fissi un appuntamento", "Venditore e acquirente, oppure chi ha l'atto già firmato."),
+              ("pen-line", "Firma e autentica", "Il venditore firma l'atto di vendita davanti a noi."),
+              ("receipt", "Paghi imposte e diritti", "Ti diciamo prima l'importo esatto per il tuo veicolo."),
+              ("badge-check", "Esci con il documento", "Il nuovo documento unico è pronto in agenzia.")],
+       docs_h="Cosa portare",
+       docs=["Documento unico, oppure carta di circolazione e certificato di proprietà", "Documento d'identità e codice fiscale di venditore e acquirente", "Per società e ditte: i dati dell'azienda e del legale rappresentante"]),
+  dict(slug="immatricolazioni", group="Pratiche auto", icon="file-plus-2", name="Immatricolazioni", sub="Targhe e documento unico",
+       title="Immatricolazioni, targhe e duplicati a Giaveno | ACAT Servizi",
+       desc="Immatricolazioni di veicoli nuovi ed esteri, targhe, duplicati e radiazioni allo sportello STA di ACAT Servizi a Giaveno.",
+       h1="Immatricolazioni, targhe e duplicati",
+       lead="Prime iscrizioni, veicoli provenienti dall'estero, targhe da sostituire e documenti persi: le pratiche del tuo veicolo allo sportello STA, nello stesso ufficio.",
+       hero=("1603881359318", "Un'auto percorre una strada di montagna tra gli abeti", "50% 55%"),
+       side=("1761738217531", "Un'auto bianca nuova in un salone espositivo", "50% 55%"),
+       h2="Le pratiche che seguiamo",
+       intro="Ogni pratica ha i suoi documenti: ti diciamo prima cosa serve per il tuo caso.",
+       items=[("file-plus-2", "Prima immatricolazione", "Targhe e documento unico per un veicolo nuovo"),
+              ("globe", "Veicoli dall'estero", "Reimmatricolazione in Italia di auto e moto importate"),
+              ("refresh-cw", "Targhe", "Sostituzione di targhe deteriorate, smarrite o rubate"),
+              ("copy", "Duplicati e aggiornamenti", "Documento unico perso o rubato, cambio di residenza"),
+              ("recycle", "Radiazioni", "Cancellazione dal PRA per demolizione o esportazione")],
+       note="Tempi e importi dipendono dal tipo di pratica e dal veicolo: te li comunichiamo prima di iniziare.",
+       steps_h="Come funziona",
+       steps=[("message-circle", "Ci dici di cosa hai bisogno", "Di persona o al telefono, anche per un primo consiglio."),
+              ("clipboard-list", "Ti diamo l'elenco dei documenti", "Solo quelli che servono davvero per la tua pratica."),
+              ("file-text", "Avviamo la pratica", "Tramite lo Sportello Telematico dell'Automobilista."),
+              ("badge-check", "Ritiri targhe e documento", "In agenzia, appena la pratica è completata.")],
+       docs_h="Di solito servono",
+       docs=["Documento d'identità e codice fiscale dell'intestatario", "Documenti del veicolo (certificato di conformità o documenti esteri)", "In caso di furto o smarrimento: la denuncia"]),
+  dict(slug="patenti", group="Pratiche auto", icon="id-card", name="Patenti", sub="Convalida e rinnovo",
+       title="Rinnovo e duplicato della patente a Giaveno | ACAT Servizi",
+       desc="Rinnovo (convalida) e duplicato della patente di guida a Giaveno: ti seguiamo nella pratica, dalla visita medica alla nuova patente.",
+       h1="Rinnovo e duplicato della patente",
+       lead="La patente sta per scadere o l'hai persa? Seguiamo la pratica dall'inizio alla fine, nello stesso ufficio in cui fai le polizze.",
+       hero=("1595969578325", "Una mano sul volante di un'auto in viaggio", "50% 45%"),
+       side=("1454165804606", "Mani su un portatile e su fogli di documenti", "50% 50%"),
+       h2="Cosa facciamo per te",
+       intro="Ti diciamo cosa serve, prepariamo i documenti e ti seguiamo fino alla nuova patente.",
+       items=[("refresh-cw", "Rinnovo (convalida)", "Con la visita medica presso un medico abilitato"),
+              ("copy", "Duplicato", "Per smarrimento, furto o deterioramento"),
+              ("hourglass", "Patente scaduta", "Ti spieghiamo cosa fare per tornare a guidare"),
+              ("stethoscope", "Visita medica", "Ti indichiamo come prenotarla e cosa portare")],
+       note="Dopo la convalida la Motorizzazione stampa la nuova patente e la spedisce all'indirizzo di residenza.",
+       steps_h="Ogni quanto si rinnova la patente B",
+       table=[("Fino a 50 anni", "ogni 10 anni"), ("Da 50 a 70 anni", "ogni 5 anni"), ("Da 70 a 80 anni", "ogni 3 anni"), ("Oltre 80 anni", "ogni 2 anni")],
+       steps=[],
+       docs_h="Cosa portare",
+       docs=["La patente (anche se scaduta) e un documento d'identità", "Codice fiscale", "Fototessere recenti", "Gli occhiali o le lenti, se li usi alla guida"]),
+]
+
+
+def svc_page(c):
+    hp, ha, hpos = c["hero"]
+    sp, sa, spos = c["side"]
+    items = "\n".join(f'          <li>{li_ic(i)}<span class="rows__name">{n}<small>{d}</small></span></li>' for i, n, d in c["items"])
+    if c.get("table"):
+        rows = "".join(f"<tr><th scope=\"row\">{a}</th><td>{b}</td></tr>" for a, b in c["table"])
+        main = f'''<table class="svc-table"><caption class="sr-only">{c["steps_h"]}</caption><tbody>{rows}</tbody></table>
+        <p class="svc-note">Per le altre categorie e per chi ha patologie particolari la durata può essere diversa: te lo diciamo noi.</p>'''
+    else:
+        main = '<ol class="svc-steps">' + "".join(
+            f'<li><span class="svc-steps__n">{k:02d}</span>{li_ic(i)}<h3>{t}</h3><p>{d}</p></li>' for k, (i, t, d) in enumerate(c["steps"], 1)) + "</ol>"
+    docs = "".join(f"<li>{li_ic('clipboard-check')}<span>{d}</span></li>" for d in c["docs"])
+    more = "".join(
+        f'<a href="{o["slug"]}.html">{li_ic(o["icon"])}<b>{o["name"]}</b><span>{o["sub"]}</span></a>'
+        for o in SVC if o["slug"] != c["slug"])
+    body = hero(c["h1"], c["lead"],
+                u(hp, ha, sizes="100vw", lazy=False, pos=hpos),
+                f'<a class="btn btn--secondary" href="{TEL}">Chiama il {PHONE}</a>', float_card=False, kicker=c["group"])
+    body += f'''
+  <section class="section svc-sec" id="what" aria-labelledby="what-h">
+    <div class="wrap grid grid--top">
+      <div class="span-5">
+        <div class="section-head">
+          <h2 id="what-h">{c["h2"]}</h2>
+          <p>{c["intro"]}</p>
+        </div>
+        <ul class="rows rows--ic">
+{items}
+        </ul>
+        <p class="svc-note">{c["note"]}</p>
+      </div>
+      <div class="frame frame--photo frame--fill span-6 start-7 svc-photo">
+        {u(sp, sa, sizes="(max-width: 1023px) 100vw, 640px", pos=spos)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section svc-sec svc-sec--tint" id="how" aria-labelledby="how-h">
+    <div class="wrap grid grid--top">
+      <div class="span-7">
+        <div class="section-head"><h2 id="how-h">{c["steps_h"]}</h2></div>
+        {main}
+      </div>
+      <aside class="svc-docs span-4 start-9" aria-labelledby="docs-h">
+        <h3 id="docs-h">{c["docs_h"]}</h3>
+        <ul>{docs}</ul>
+        <a class="btn btn--primary" href="{CTA_HREF}">{CTA}{ARROW}</a>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section svc-sec" id="more" aria-labelledby="more-h">
+    <div class="wrap">
+      <div class="section-head section-head--split"><h2 id="more-h">Gli altri servizi</h2><a class="link" href="servizi.html">Tutti i servizi</a></div>
+      <nav class="svc-more" aria-label="Altri servizi">{more}</nav>
+    </div>
+  </section>
+'''
+    page(c["slug"] + ".html", head(c["title"], c["desc"], "word-highlight"), "servizi", DEAL, body,
+         footer("Un preventivo senza impegno", HOURS + ", in Via Coazze.",
+                u("1733522688659", "Una strada a tornanti in una valle alpina in autunno", sizes="(max-width: 639px) 160vw, 100vw", cls="")))
+
+
+for _c in SVC:
+    svc_page(_c)

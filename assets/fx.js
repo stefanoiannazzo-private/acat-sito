@@ -190,3 +190,14 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start, { once: true });
   else start();
 })();
+
+/* Voce "Servizi" del menu: nel menu a tendina del telefono apre e chiude l'elenco dei servizi */
+document.addEventListener('click', (e) => {
+  const b = e.target.closest && e.target.closest('.nav__link--menu');
+  if (!b) return;
+  const nav = b.closest('.nav');
+  if (nav && nav.classList.contains('is-open')) {
+    const exp = b.parentElement.querySelector('.nav__expand');
+    if (exp) exp.click();
+  }
+});

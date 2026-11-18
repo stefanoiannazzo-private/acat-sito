@@ -2,7 +2,10 @@
 /* sitemap.xml generata al volo con il dominio su cui gira il sito (vedi .htaccess) */
 $pagine = [
   ['index.html', '1.0'], ['servizi.html', '0.9'], ['chi-siamo.html', '0.8'],
-  ['contatti.html', '0.8'], ['privacy.html', '0.2'], ['cookie.html', '0.2'],
+  ['contatti.html', '0.8'],
+  ['assicurazione-auto-moto.html', '0.8'], ['assicurazione-casa-famiglia.html', '0.8'], ['assicurazione-vita-impresa.html', '0.8'],
+  ['passaggio-di-proprieta.html', '0.8'], ['immatricolazioni.html', '0.8'], ['patenti.html', '0.8'],
+  ['privacy.html', '0.2'], ['cookie.html', '0.2'],
 ];
 $host = preg_replace('/[^a-z0-9.:-]/i', '', $_SERVER['HTTP_HOST'] ?? 'localhost');
 $schema = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || ($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '') === 'https' ? 'https' : 'http';

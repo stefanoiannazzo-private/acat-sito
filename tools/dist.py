@@ -5,7 +5,7 @@ import os, re, shutil
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(ROOT)
-PAGES = ["index.html", "chi-siamo.html", "servizi.html", "contatti.html", "privacy.html", "cookie.html", "credits.html"]
+PAGES = ["index.html", "chi-siamo.html", "servizi.html", "contatti.html", "privacy.html", "cookie.html", "credits.html", "assicurazione-auto-moto.html", "assicurazione-casa-famiglia.html", "assicurazione-vita-impresa.html", "passaggio-di-proprieta.html", "immatricolazioni.html", "patenti.html"]
 EXTRA_ROOT = ["preventivo.php"]
 EXTRA = ["favicon.svg", "share.jpg", "robots.txt", ".htaccess", "preventivo.php", "sitemap.php",
          "vendor/fonts/fonts.css", "vendor/fonts/instrument-sans-latin.woff2", "vendor/fonts/instrument-serif-latin.woff2",
