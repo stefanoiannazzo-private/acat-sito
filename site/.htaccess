@@ -3,6 +3,11 @@
 # 0) Pagina iniziale: la nostra index.html prima dell'index.php di benvenuto di Aruba
 DirectoryIndex index.html index.php
 
+# 0b) Nasconde i file nascosti (es. .ftp-deploy-sync-state.json), tranne .well-known
+<FilesMatch "^\.">
+  Require all denied
+</FilesMatch>
+
 # 1) Forza https (certificato SSL DV di Aruba attivo)
 <IfModule mod_rewrite.c>
   RewriteEngine On
