@@ -1,10 +1,12 @@
 # ACAT Servizi - impostazioni per hosting Linux (Apache)
 
-# 1) Forza https. Toglie il "#" dalle 3 righe sotto SOLO quando il certificato SSL è attivo
-#    sul dominio, altrimenti il sito non si apre.
-# RewriteEngine On
-# RewriteCond %{HTTPS} off
-# RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+# 1) Forza https (certificato SSL DV di Aruba attivo)
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{HTTPS} off
+  RewriteCond %{HTTP:X-Forwarded-Proto} !https
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</IfModule>
 
 # 1b) sitemap.xml e indirizzo /sitemap.xml generati da sitemap.php con il dominio giusto
 <IfModule mod_rewrite.c>

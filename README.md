@@ -32,5 +32,5 @@ Poi **Actions > Pubblica sul server > Run workflow** per la prima pubblicazione.
 - Nel pannello Aruba lasciare **disattivato** "Limita accesso FTP" (o consentire gli IP di GitHub), altrimenti la pubblicazione automatica non si collega.
 - Numero di iscrizione al RUI da aggiungere nel footer (obbligatorio per gli intermediari assicurativi).
 - Privacy e Cookie (`privacy.html`, `cookie.html`) sono un modello standard: da far verificare a un consulente privacy.
-- Dopo l'attivazione dell'SSL: togliere i `#` dal redirect https in `.htaccess`.
+- SSL attivo: il redirect a https è già acceso in `.htaccess`.
 - Foto: ora sono stand-in da Unsplash e Wikimedia (crediti in `credits.html`).
