@@ -43,3 +43,15 @@ Poi **Actions > Pubblica sul server > Run workflow** per la prima pubblicazione.
 - Configurazione: `site/app/config.php` viene creato dal workflow con i secrets `DB_*`. Non va mai nel repository.
 - Test: `composer install && vendor/bin/phpunit`.
 - Dati iniziali: comuni dall'elenco ISTAT (via github.com/matteocontrini/comuni-json); marche e modelli auto ricavati da github.com/ilyasozkurt/automobile-models-and-specs (solo nomi e anni) più alcune marche recenti; moto: elenco di partenza delle marche e dei modelli più diffusi. Da completare dal pannello. Tariffe, coefficienti e fasce d'età sono valori di esempio.
+
+## Clienti e invio dei preventivi
+- Ogni richiesta dal sito crea (o aggiorna, se l'email esiste già) una scheda in **Clienti**, con stato "Nuovo contatto".
+- Gli stati si gestiscono in **Stati dei clienti**. Tre sono automatici: Nuovo contatto (richiesta dal sito), Preventivo inviato (invio dal pannello), Preventivo accettato (il cliente accetta dalla pagina personale).
+- Dalla scheda del cliente: **Nuovo preventivo** (calcolo in agenzia), poi nella pagina del preventivo si correggono gli importi, si indicano compagnia, decorrenza e validità e si usa **Salva e invia al cliente**.
+- L'email (modello fisso, `app/lib/EmailPreventivo.php`) contiene il link a `il-tuo-preventivo.php?t=...`, una pagina personale da cui il cliente accetta il preventivo; l'agenzia riceve un avviso.
+
+### Collegare la casella di posta (consigliato)
+1. Pannello Aruba > Servizi di posta > Caselle di posta: crea una casella, per esempio `preventivi@<dominio>`.
+2. GitHub > Settings > Secrets and variables > Actions: aggiungi `SMTP_USER` (l'indirizzo completo della casella) e `SMTP_PASS` (la sua password).
+3. Rilancia la pubblicazione (Actions > Pubblica sul server > Run workflow). In Impostazioni del pannello compare "Casella collegata" e si può inviare un'email di prova.
+Senza questi secrets le email partono con la funzione `mail()` dell'hosting, meno affidabile.

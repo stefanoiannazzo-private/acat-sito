@@ -47,6 +47,7 @@ function valore_lista(array $c, $v): string
         'bool' => $v ? '<span class="tag tag--ok">Sì</span>' : '<span class="tag">No</span>',
         'decimale' => e(rtrim(rtrim(number_format((float)$v, 3, ',', '.'), '0'), ',')),
         'scelta' => e($c['opzioni'][$v] ?? (string)$v),
+        'testo' => isset($c['pattern']) && str_starts_with((string)$v, '#') && strlen((string)$v) === 7 ? '<span class="tag tag--stato" style="--c:' . e((string)$v) . '">' . e((string)$v) . '</span>' : e((string)$v),
         default => e((string)$v),
     };
 }
@@ -64,6 +65,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($id === $rcId) { $v['attivo'] = 1; $v['tipo_calcolo'] = 'fisso'; $v['applica_coefficienti'] = 1; }
             elseif ($id === 0) { $v['principale'] = 0; $v['dipende_da'] = $rcId; }
             if ($id !== $rcId && in_array($v['tipo_calcolo'], ['perc_rc', 'perc_valore'], true) && ($v['valore'] ?? 0) > 1000) $err['valore'] = 'Valore: una percentuale oltre 1000 non è plausibile.';
+        }
+        if ($t === 'stati_cliente' && $id) {
+            $sys = db()->prepare('SELECT sistema FROM stati_cliente WHERE id = ?'); $sys->execute([$id]);
+            if ((int)$sys->fetchColumn() === 1) $v['attivo'] = 1;
         }
         if ($t === 'fasce_eta' && !$err) {
             if ($v['eta_min'] > $v['eta_max']) $err['eta_max'] = 'L\'età finale deve essere uguale o maggiore di quella iniziale.';
@@ -97,7 +102,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if ($az === 'elimina' && $id > 0) {
+        $sys = $t === 'stati_cliente' ? db()->prepare('SELECT sistema FROM stati_cliente WHERE id = ?') : null;
+        if ($sys) $sys->execute([$id]);
         if ($t === 'garanzie' && $id === $rcId) flash('errore', 'L\'RC è la garanzia principale e non si può eliminare.');
+        elseif ($sys && (int)$sys->fetchColumn() === 1) flash('errore', 'È uno stato automatico: puoi rinominarlo ma non eliminarlo.');
         else {
             try {
                 db()->prepare("DELETE FROM $t WHERE id = ?")->execute([$id]);
@@ -244,6 +252,7 @@ elseif ($id !== null || $nuovo || isset($errori)):
     <?php foreach ($filtri as $k => $v) if ($k !== 't') echo '<input type="hidden" name="' . e($k) . '" value="' . e($v) . '">'; ?>
     <?php foreach ($campi as $k => $c):
         if ($isRc && in_array($k, ['tipo_calcolo', 'applica_coefficienti', 'attivo'], true)) continue;
+        if (!empty($c['sola_lettura'])) continue;
         $v = $valori[$k] ?? null; $er = $errori[$k] ?? null;
         $aid = 'f_' . $k; ?>
       <div class="field<?= $c['tipo'] === 'bool' ? ' field--check' : '' ?><?= $er ? ' field--err' : '' ?>">

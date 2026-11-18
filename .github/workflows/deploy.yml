@@ -2,6 +2,7 @@
 # Secrets (GitHub > Settings > Secrets and variables > Actions):
 #   FTP_SERVER, FTP_USERNAME, FTP_PASSWORD   accesso FTP all'hosting
 #   DB_HOST, DB_NAME, DB_USER, DB_PASS       database MySQL del preventivatore (scritti in site/app/config.php, mai nel repository)
+#   SMTP_USER, SMTP_PASS                     facoltativi: casella del dominio che invia le email (smtps.aruba.it, porta 465)
 # Variabili facoltative: FTP_DIR (cartella del sito sul server), FTP_PROTOCOL ("ftps" o "ftp")
 name: Pubblica sul server
 
@@ -48,11 +49,15 @@ jobs:
           DB_NAME: ${{ secrets.DB_NAME }}
           DB_USER: ${{ secrets.DB_USER }}
           DB_PASS: ${{ secrets.DB_PASS }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
+          SMTP_HOST: ${{ vars.SMTP_HOST || 'smtps.aruba.it' }}
         run: |
           php -r '
             foreach (["DB_HOST","DB_NAME","DB_USER","DB_PASS"] as $k) if (getenv($k) === false || getenv($k) === "") { fwrite(STDERR, "Manca il secret $k\n"); exit(1); }
             $c = ["db" => ["host" => getenv("DB_HOST"), "name" => getenv("DB_NAME"), "user" => getenv("DB_USER"), "pass" => getenv("DB_PASS")],
                   "salt" => hash("sha256", "acat|" . getenv("DB_PASS")), "env" => "produzione"];
+            if (getenv("SMTP_USER") && getenv("SMTP_PASS")) $c["smtp"] = ["host" => getenv("SMTP_HOST"), "port" => 465, "secure" => "ssl", "user" => getenv("SMTP_USER"), "pass" => getenv("SMTP_PASS"), "from" => getenv("SMTP_USER")];
             file_put_contents("site/app/config.php", "<?php\n// Creato dalla pubblicazione automatica: non modificare.\nreturn " . var_export($c, true) . ";\n");
           '
           php -l site/app/config.php > /dev/null

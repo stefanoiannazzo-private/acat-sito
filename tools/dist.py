@@ -20,7 +20,7 @@ for _d in ("app", "admin", "api"):
             _p = os.path.join(_root, _f)
             if _p != os.path.join("app", "config.php") and not _f.endswith((".pyc", ".DS_Store")):
                 EXTRA.append(_p)
-EXTRA.append("assets/preventivo.js")
+EXTRA += ["assets/preventivo.js", "il-tuo-preventivo.php", "assets/email/logo-acat.png"]
 
 refs = set()
 for p in PAGES:

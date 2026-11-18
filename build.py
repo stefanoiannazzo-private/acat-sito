@@ -662,7 +662,7 @@ PRIVACY = f'''
       <h2>2. Quali dati raccogliamo</h2>
       <p><strong>Dati di navigazione.</strong> Il server che ospita il sito registra in automatico alcune informazioni tecniche (indirizzo IP, data e ora della visita, pagina richiesta, tipo di browser). Servono a far funzionare il sito e a proteggerlo da abusi e non vengono usate per identificarti.</p>
       <p><strong>Dati che ci invii.</strong> Se compili il modulo "Richiedi un preventivo" raccogliamo nome e cognome, indirizzo email, la polizza o la pratica che ti interessa e, se lo indichi, il comune di residenza. Ti chiediamo di non inserire nel modulo dati sanitari o altri dati particolari.</p>
-      <p><strong>Preventivatore RC auto e moto.</strong> Per calcolare la stima usiamo il comune di residenza, la data di nascita del contraente, il veicolo e le garanzie scelte. Finché premi solo "Calcola la stima" questi dati servono al calcolo e non vengono conservati. Se chiedi il preventivo definitivo registriamo anche nome, email, telefono (facoltativo) e le eventuali note, insieme alla stima calcolata, per ricontattarti.</p>
+      <p><strong>Preventivatore RC auto e moto.</strong> Per calcolare la stima usiamo il comune di residenza, la data di nascita del contraente, il veicolo e le garanzie scelte. Finché premi solo "Calcola la stima" questi dati servono al calcolo e non vengono conservati. Se chiedi il preventivo definitivo registriamo anche nome, email, telefono (facoltativo) e le eventuali note, insieme alla stima calcolata, e creiamo una scheda cliente per ricontattarti e inviarti via email il preventivo definitivo. Il link nell'email apre una pagina personale da cui puoi accettarlo.</p>
 
       <h2>3. Perché li usiamo e su quale base</h2>
       <ul>
@@ -673,7 +673,7 @@ PRIVACY = f'''
       <p>Non usiamo i dati del sito per pubblicità, profilazione o decisioni automatizzate e non li vendiamo a nessuno. Se dalla richiesta nasce un contratto assicurativo o una pratica, riceverai in agenzia l'informativa specifica prevista per quel servizio.</p>
 
       <h2>4. Per quanto tempo li conserviamo</h2>
-      <p>Conserviamo le richieste inviate dal modulo e dal preventivatore per il tempo necessario a gestirle e comunque non oltre 12 mesi dall'ultimo contatto, salvo che nasca un rapporto contrattuale o che la legge imponga tempi diversi. I dati di navigazione sono conservati dal fornitore di hosting per i tempi tecnici previsti dal servizio.</p>
+      <p>Conserviamo le richieste inviate dal modulo e dal preventivatore per il tempo necessario a gestirle e comunque non oltre 12 mesi dall'ultimo contatto; se diventi nostro cliente, i dati della scheda sono conservati per la durata del rapporto e per i tempi previsti dagli obblighi di legge, salvo che nasca un rapporto contrattuale o che la legge imponga tempi diversi. I dati di navigazione sono conservati dal fornitore di hosting per i tempi tecnici previsti dal servizio.</p>
 
       <h2>5. Chi può vederli</h2>
       <p>I dati sono trattati dal personale dell'agenzia autorizzato e dai fornitori che ci aiutano a far funzionare il sito e la posta elettronica, come il fornitore di hosting, nominati responsabili del trattamento. Le compagnie assicurative ricevono i tuoi dati solo se serve per prepararti un preventivo o un contratto che hai chiesto. I dati restano nell'Unione Europea.</p>

@@ -2,5 +2,6 @@ User-agent: *
 Allow: /
 Disallow: /admin/
 Disallow: /api/
+Disallow: /il-tuo-preventivo.php
 
 # La sitemap è su https://<dominio>/sitemap.xml (generata da sitemap.php)

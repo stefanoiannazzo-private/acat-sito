@@ -5,13 +5,23 @@ require __DIR__ . '/../app/bootstrap.php';
 header('X-Frame-Options: DENY');
 header('X-Content-Type-Options: nosniff');
 header('Referrer-Policy: same-origin');
-header("Content-Security-Policy: default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; form-action 'self'; frame-ancestors 'none'; base-uri 'self'");
+header("Content-Security-Policy: default-src 'self'; img-src 'self' data:; style-src 'self'; style-src-attr 'unsafe-inline'; script-src 'self'; form-action 'self'; frame-ancestors 'none'; base-uri 'self'");
 header('Cache-Control: no-store');
 header('X-Robots-Tag: noindex, nofollow');
 
 Migrazioni::esegui(db());
 Auth::avvia();
 Auth::verificaCsrf();
+
+const STATI_PREVENTIVO = [
+    'nuovo' => 'Da lavorare', 'in_lavorazione' => 'In lavorazione', 'inviato' => 'Inviato al cliente',
+    'accettato' => 'Accettato', 'rifiutato' => 'Rifiutato', 'chiuso' => 'Chiuso',
+];
+
+function stato_preventivo(string $s): string
+{
+    return '<span class="tag tag--' . e($s) . '">' . e(STATI_PREVENTIVO[$s] ?? $s) . '</span>';
+}
 
 function flash(string $tipo, string $msg): void { $_SESSION['flash'][] = [$tipo, $msg]; }
 
@@ -22,13 +32,15 @@ function pagina_inizio(string $titolo, string $sezione = ''): void
     $u = Auth::utente();
     $menu = [
         'index' => ['index.php', 'Riepilogo'],
-        'preventivi' => ['preventivi.php', 'Preventivi ricevuti'],
+        'clienti' => ['clienti.php', 'Clienti'],
+        'preventivi' => ['preventivi.php', 'Preventivi'],
         'prova' => ['prova.php', 'Prova calcolo'],
         'garanzie' => ['tabella.php?t=garanzie', 'Garanzie'],
         'fasce_eta' => ['tabella.php?t=fasce_eta', 'Fasce d\'età'],
         'comuni' => ['tabella.php?t=comuni', 'Comuni'],
         'marche' => ['tabella.php?t=marche', 'Marche'],
         'modelli' => ['tabella.php?t=modelli', 'Modelli'],
+        'stati_cliente' => ['tabella.php?t=stati_cliente', 'Stati dei clienti'],
         'impostazioni' => ['impostazioni.php', 'Impostazioni'],
     ];
     if (($u['ruolo'] ?? '') === 'admin') $menu['utenti'] = ['utenti.php', 'Utenti'];

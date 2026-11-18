@@ -31,3 +31,13 @@ document.addEventListener('DOMContentLoaded', () => {
     for (const x of r.r || []) { const o = document.createElement('option'); o.value = x.id; o.textContent = x.n; mo.append(o); }
   });
 });
+
+/* conferma sul singolo pulsante e invio automatico dei menu di stato */
+document.addEventListener('click', (e) => {
+  const b = e.target.closest('[data-conferma-btn]');
+  if (b && !window.confirm(b.getAttribute('data-conferma-btn'))) e.preventDefault();
+});
+document.addEventListener('change', (e) => {
+  if (e.target.matches('[data-auto-submit]')) e.target.form.submit();
+});
+document.documentElement.classList.add('js');

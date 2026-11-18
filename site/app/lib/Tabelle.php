@@ -26,6 +26,19 @@ final class Tabelle
                     'attivo' => ['label' => 'Attiva', 'tipo' => 'bool', 'predefinito' => 1],
                 ],
             ],
+            'stati_cliente' => [
+                'titolo' => 'Stati dei clienti', 'singolare' => 'stato', 'ordine' => 'ordine, nome',
+                'ricerca' => ['nome'], 'filtri' => ['attivo'],
+                'lista' => ['ordine', 'nome', 'colore', 'sistema', 'attivo'],
+                'intro' => 'Gli stati che scegli nella scheda del cliente. Quelli "automatici" vengono assegnati dal sistema (nuova richiesta dal sito, preventivo inviato, preventivo accettato): puoi rinominarli ma non eliminarli.',
+                'campi' => [
+                    'nome' => ['label' => 'Nome', 'tipo' => 'testo', 'obbl' => true, 'max' => 60],
+                    'colore' => ['label' => 'Colore', 'tipo' => 'testo', 'obbl' => true, 'max' => 7, 'pattern' => '/^#[0-9a-fA-F]{6}$/', 'predefinito' => '#5a6880', 'aiuto' => 'Codice esadecimale, es. #1f7a4d (verde), #b3302a (rosso), #2563a8 (blu)'],
+                    'ordine' => ['label' => 'Ordine', 'tipo' => 'intero', 'min' => 0, 'max_val' => 9999, 'predefinito' => 100],
+                    'sistema' => ['label' => 'Automatico', 'tipo' => 'bool', 'sola_lettura' => true],
+                    'attivo' => ['label' => 'Attivo', 'tipo' => 'bool', 'predefinito' => 1],
+                ],
+            ],
             'fasce_eta' => [
                 'titolo' => 'Fasce d\'età', 'singolare' => 'fascia d\'età', 'ordine' => 'eta_min',
                 'ricerca' => ['descrizione'], 'filtri' => ['attivo'],
@@ -99,6 +112,7 @@ final class Tabelle
     {
         $v = []; $err = [];
         foreach ($def['campi'] as $k => $c) {
+            if (!empty($c['sola_lettura'])) continue;
             $raw = $post[$k] ?? null;
             $lab = $c['label'];
             switch ($c['tipo']) {
