@@ -1,0 +1,2999 @@
+tipo,marca,marca_attiva,modello,anno_inizio,anno_fine
+auto,Abarth,1,124 GT,2018,
+auto,Abarth,1,500,2008,
+auto,Abarth,1,500 695 Biposto,2014,2014
+auto,Abarth,1,500 695 Tributo Ferrari,2009,
+auto,Abarth,1,500C esseesse,2010,
+auto,Abarth,1,595,2012,2021
+auto,Abarth,1,595C,2012,2021
+auto,Abarth,1,F595,2021,
+auto,Abarth,1,Grande Punto,2007,2010
+auto,Acura,0,CSX,2005,2011
+auto,Acura,0,ILX,2012,
+auto,Acura,0,Integra,2023,
+auto,Acura,0,Integra Type S,2024,
+auto,Acura,0,MDX,2001,2022
+auto,Acura,0,MDX A-Spec,2018,
+auto,Acura,0,NSX,1991,2016
+auto,Acura,0,RDX,2007,
+auto,Acura,0,RL,2004,2012
+auto,Acura,0,RLX,2014,
+auto,Acura,0,TL,1995,2014
+auto,Acura,0,TLX,2020,
+auto,Acura,0,TSX,2003,2014
+auto,Acura,0,TSX Sport Wagon,2010,2014
+auto,Acura,0,ZDX,2009,
+auto,Alfa Romeo,1,147 (3 Doors),2000,2009
+auto,Alfa Romeo,1,147 (5 Doors),2000,2009
+auto,Alfa Romeo,1,159 Sportwagon,2006,2011
+auto,Alfa Romeo,1,4C Coupe,2013,2013
+auto,Alfa Romeo,1,4C Spider,2015,
+auto,Alfa Romeo,1,8C Competizione,2007,2009
+auto,Alfa Romeo,1,Brera,2005,2010
+auto,Alfa Romeo,1,Giulia,2016,
+auto,Alfa Romeo,1,Giulia GTA,2020,
+auto,Alfa Romeo,1,Giulia Quadrifoglio,2016,2016
+auto,Alfa Romeo,1,Giulia Veloce,2016,
+auto,Alfa Romeo,1,Giulietta,2010,
+auto,Alfa Romeo,1,Giulietta Quadrifoglio Verde,2011,2016
+auto,Alfa Romeo,1,GT,2003,2010
+auto,Alfa Romeo,1,Junior,2025,
+auto,Alfa Romeo,1,MiTo,2008,2016
+auto,Alfa Romeo,1,MiTo Quadrifoglio Verde,2009,2009
+auto,Alfa Romeo,1,MiTo Veloce,2016,2016
+auto,Alfa Romeo,1,Spider,1983,2010
+auto,Alfa Romeo,1,Stelvio,2017,
+auto,Alfa Romeo,1,Stelvio Quadrifoglio,2017,
+auto,Alfa Romeo,1,Tonale,2022,
+auto,Alpine,1,A 110 R,2023,
+auto,Alpine,1,A110,2017,
+auto,Alpine,1,A110 R Ultime,2025,
+auto,Alpine,1,A110 S,2021,
+auto,Alpine,1,A110S,2019,2021
+auto,Ariel,0,Atom 2,2003,2008
+auto,Ariel,0,Atom 3,2008,
+auto,Ariel,0,Atom 500 V8,2011,
+auto,Ariel,0,Nomad,2015,
+auto,Artega,0,GT,2010,2012
+auto,Artega,0,Scalo,2015,
+auto,Aston Martin,1,Cygnet,2011,2013
+auto,Aston Martin,1,DB11,2016,
+auto,Aston Martin,1,DB11 AMR,2018,
+auto,Aston Martin,1,DB11 Volante,2018,
+auto,Aston Martin,1,DB12,2024,
+auto,Aston Martin,1,DB12 Volante,2024,
+auto,Aston Martin,1,DB9,2013,2016
+auto,Aston Martin,1,DB9 Carbon Edition,2015,2015
+auto,Aston Martin,1,DB9 Coupe,2004,2012
+auto,Aston Martin,1,DB9 Volante,2004,2015
+auto,Aston Martin,1,DBS,1967,2012
+auto,Aston Martin,1,DBS Superleggera,2018,
+auto,Aston Martin,1,DBS Superleggera Volante,2019,
+auto,Aston Martin,1,DBS Volante,2009,2009
+auto,Aston Martin,1,DBS770 Ultimate,2024,
+auto,Aston Martin,1,DBX,2020,
+auto,Aston Martin,1,DBX707,2022,
+auto,Aston Martin,1,One-77,2009,2012
+auto,Aston Martin,1,Rapide,2010,2013
+auto,Aston Martin,1,Rapide AMR,2017,
+auto,Aston Martin,1,Rapide E,2019,2019
+auto,Aston Martin,1,Rapide S,2013,2018
+auto,Aston Martin,1,V12 Speedster,2020,2020
+auto,Aston Martin,1,V12 Vantage,2009,
+auto,Aston Martin,1,V12 Vantage Roadster,2022,
+auto,Aston Martin,1,V12 Vantage S,2013,2018
+auto,Aston Martin,1,V12 Vantage S Roadster,2014,
+auto,Aston Martin,1,V12 Vantage V600 Coupe,2018,2018
+auto,Aston Martin,1,V12 Zagato,2012,
+auto,Aston Martin,1,V8 Vantage,1977,
+auto,Aston Martin,1,V8 Vantage N420,2010,2014
+auto,Aston Martin,1,V8 Vantage N420 Roadster,2010,2014
+auto,Aston Martin,1,V8 Vantage Roadster,2006,2012
+auto,Aston Martin,1,V8 Vantage S,2011,
+auto,Aston Martin,1,V8 Vantage S Roadster,2011,
+auto,Aston Martin,1,Valhalla,2022,
+auto,Aston Martin,1,Vanquish,2001,
+auto,Aston Martin,1,Vanquish S,2004,2018
+auto,Aston Martin,1,Vanquish Volante,2013,2018
+auto,Aston Martin,1,Vantage,2018,
+auto,Aston Martin,1,Vantage AMR,2019,
+auto,Aston Martin,1,Vantage AMR V12,2017,2017
+auto,Aston Martin,1,Vantage GT12,2015,2016
+auto,Aston Martin,1,Vantage GT8,2016,
+auto,Aston Martin,1,Vantage N430,2014,2014
+auto,Aston Martin,1,Vantage Roadster,2020,
+auto,Aston Martin,1,Virage,2011,2012
+auto,Aston Martin,1,Virage Volante,1992,2012
+auto,Aston Martin,1,Vulcan,2015,2016
+auto,Audi,1,A1,2010,2018
+auto,Audi,1,A1 citycarver,2020,2020
+auto,Audi,1,A1 Quattro,2012,2013
+auto,Audi,1,A1 Sportback,2015,
+auto,Audi,1,A1 Sportback (5 doors),2012,2015
+auto,Audi,1,A3,1996,2017
+auto,Audi,1,A3 allstreet,2025,
+auto,Audi,1,A3 Cabriolet,2008,
+auto,Audi,1,A3 Hatchback (3 doors),2012,2016
+auto,Audi,1,A3 Sedan,2013,
+auto,Audi,1,A3 Sportback,1999,
+auto,Audi,1,A3 Sportback (5 doors),2012,2016
+auto,Audi,1,A3 Sportback e-tron,2013,
+auto,Audi,1,A3 Sportback g-tron,2013,2016
+auto,Audi,1,A4,1994,2019
+auto,Audi,1,A4 8W,2020,2020
+auto,Audi,1,A4 Allroad,2009,2016
+auto,Audi,1,A4 Allroad quattro,2019,2019
+auto,Audi,1,A4 Avant,1996,2020
+auto,Audi,1,A4 Cabriolet,2002,2008
+auto,Audi,1,A4L,2012,2016
+auto,Audi,1,A5 Avant,2025,
+auto,Audi,1,A5 Cabriolet,2009,2012
+auto,Audi,1,A5 Coupe,2007,2017
+auto,Audi,1,A5 Coupé,2011,2011
+auto,Audi,1,A5 Sedan,2025,
+auto,Audi,1,A5 Sportback,2009,2020
+auto,Audi,1,A6,1997,
+auto,Audi,1,A6 AllRoad,2012,2019
+auto,Audi,1,A6 Allroad,2006,2011
+auto,Audi,1,A6 allroad quattro,2019,2019
+auto,Audi,1,A6 Avant,1998,2018
+auto,Audi,1,A6 Avant (C8),2018,
+auto,Audi,1,A6 Sportback e-tron,2025,
+auto,Audi,1,A7 Sportback,2010,
+auto,Audi,1,A8,2017,
+auto,Audi,1,A8 (D3f),2005,2009
+auto,Audi,1,A8 (D4),2010,2017
+auto,Audi,1,A8 L,2010,2018
+auto,Audi,1,e-tron,2019,
+auto,Audi,1,e-tron GT,2025,
+auto,Audi,1,e-tron GT quattro,2021,
+auto,Audi,1,e-tron Sportback,2019,
+auto,Audi,1,Q2,2016,
+auto,Audi,1,Q3,2011,
+auto,Audi,1,Q3 Facelift,2015,2018
+auto,Audi,1,Q3 Sportback,2019,
+auto,Audi,1,Q4 e-tron,2022,2022
+auto,Audi,1,Q4 Sportback e-tron,2022,2022
+auto,Audi,1,Q5,2008,2021
+auto,Audi,1,Q5 Sportback,2020,
+auto,Audi,1,Q5L,2018,2020
+auto,Audi,1,Q6 e-tron quattro,2025,
+auto,Audi,1,Q7,2006,2020
+auto,Audi,1,Q8,2019,
+auto,Audi,1,Q8 e-tron,2022,
+auto,Audi,1,Q8 Sportback e-tron,2023,
+auto,Audi,1,R8 GT,2010,2010
+auto,Audi,1,R8 GT (US),2023,
+auto,Audi,1,R8 GT Spyder,2011,2011
+auto,Audi,1,R8 Spyder 4.2 FSI Quattro,2011,2011
+auto,Audi,1,R8 Spyder V10,2010,2010
+auto,Audi,1,R8 V10,2009,2018
+auto,Audi,1,R8 V10 Performance RWD,2018,2018
+auto,Audi,1,R8 V10 RWS,2017,2017
+auto,Audi,1,R8 V10 Spyder,2016,2018
+auto,Audi,1,R8 V10 Spyder Plus,2017,2017
+auto,Audi,1,R8 V8,2012,2012
+auto,Audi,1,RS 3 Sedan,2016,2022
+auto,Audi,1,RS 3 Sportback,2010,2022
+auto,Audi,1,RS e-tron GT,2021,
+auto,Audi,1,RS Q3,2013,2016
+auto,Audi,1,RS Q8,2020,2020
+auto,Audi,1,RS3 Sedan,2025,
+auto,Audi,1,RS3 Sportback,2025,
+auto,Audi,1,RS4,2005,2008
+auto,Audi,1,RS4 Avant,2000,2008
+auto,Audi,1,RS4 Avant (B8),2012,2015
+auto,Audi,1,RS4 Avant (B9),2017,
+auto,Audi,1,RS4 Cabriolet,2006,2009
+auto,Audi,1,RS5,2010,2017
+auto,Audi,1,RS5 Cabriolet,2013,2015
+auto,Audi,1,RS5 Coupe,2017,
+auto,Audi,1,RS5 Sportback,2018,
+auto,Audi,1,RS6 Avant,2002,
+auto,Audi,1,RS6 Avant performance,2023,
+auto,Audi,1,RS6 Sedan,2008,2010
+auto,Audi,1,RS7 Sportback,2013,
+auto,Audi,1,S1,2014,2018
+auto,Audi,1,S1 Sportback,2014,2018
+auto,Audi,1,S3,1999,
+auto,Audi,1,S3 Cabriolet,2014,
+auto,Audi,1,S3 Sedan,2013,
+auto,Audi,1,S3 Sportback,2008,
+auto,Audi,1,S4,1997,2019
+auto,Audi,1,S4 Avant,1997,2019
+auto,Audi,1,S4 Avant TDI,2020,2020
+auto,Audi,1,S4 Cabriolet,2003,2008
+auto,Audi,1,S4 Sedan,2012,2012
+auto,Audi,1,S4 TDI,2019,
+auto,Audi,1,S5,2007,2012
+auto,Audi,1,S5 Avant,2025,
+auto,Audi,1,S5 Cabriolet,2009,
+auto,Audi,1,S5 Coupe,2012,2016
+auto,Audi,1,S5 Sedan,2025,
+auto,Audi,1,S5 Sportback,2010,
+auto,Audi,1,S6,1999,2019
+auto,Audi,1,S6 Avant,1999,2019
+auto,Audi,1,S6 Avant e-tron,2025,
+auto,Audi,1,S6 Sedan,2019,
+auto,Audi,1,S7,2012,2017
+auto,Audi,1,S7 Sportback,2019,2019
+auto,Audi,1,S8,1996,
+auto,Audi,1,S8 (D4),2012,2013
+auto,Audi,1,S8 Plus,2015,2019
+auto,Audi,1,SQ2,2018,
+auto,Audi,1,SQ5,2013,2021
+auto,Audi,1,SQ5 Sportback,2020,
+auto,Audi,1,SQ7,2016,2020
+auto,Audi,1,SQ8,2020,
+auto,Audi,1,SQ8 e-tron,2023,
+auto,Audi,1,TT Coupe,1998,
+auto,Audi,1,TT Roadster,1999,
+auto,Audi,1,TT RS Coupe,2009,
+auto,Audi,1,TT RS Plus,2012,2016
+auto,Audi,1,TT RS Plus Roadster,2013,2014
+auto,Audi,1,TT RS Roadster,2009,
+auto,Audi,1,TTS,2008,2018
+auto,Audi,1,TTS Coupe,2018,
+auto,Audi,1,TTS Coupe Competition Plus,2020,
+auto,Audi,1,TTS Roadster,2008,
+auto,Audi,1,TTS Roadster Competition Plus,2020,
+auto,Aurus,0,Senat,2018,
+auto,Aurus,0,Senat Limousine,2018,
+auto,Bentley,1,Arnage Blue Train Series,2005,2009
+auto,Bentley,1,Arnage Limousine,2005,2009
+auto,Bentley,1,Arnage R,2005,2009
+auto,Bentley,1,Azure,1995,2009
+auto,Bentley,1,Azure T,2008,2011
+auto,Bentley,1,Batur,2022,
+auto,Bentley,1,Bentayga,2015,
+auto,Bentley,1,BENTAYGA HYBRID,2018,
+auto,Bentley,1,Bentayga S,2021,
+auto,Bentley,1,Bentayga Speed,2019,
+auto,Bentley,1,Brooklands,1992,2011
+auto,Bentley,1,Continental GT,2003,
+auto,Bentley,1,Continental GT Speed,2007,
+auto,Bentley,1,Continental GT Speed Convertible,2021,
+auto,Bentley,1,Continental GT Supersports,2017,2017
+auto,Bentley,1,Continental GT V8,2019,
+auto,Bentley,1,Continental GTC,2006,2019
+auto,Bentley,1,Continental GTC Speed,2009,2013
+auto,Bentley,1,Continental GTC Supersports,2017,
+auto,Bentley,1,Flying Spur,2014,2020
+auto,Bentley,1,Flying Spur Speed,2009,
+auto,Bentley,1,Mulliner Bacalar,2020,
+auto,Bentley,1,Mulsanne,2009,
+auto,BMW,1,1 Series,2025,
+auto,BMW,1,1 Series (F20),2011,2011
+auto,BMW,1,1 Series 3 doors (F21) LCI,2015,2017
+auto,BMW,1,1 Series 3-door (F21),2012,2012
+auto,BMW,1,1 Series 5 doors (F20) LCI,2017,2017
+auto,BMW,1,1 Series 5-door (F20) LCI,2015,2015
+auto,BMW,1,1 Series Convertible (E88),2008,2012
+auto,BMW,1,1 Series Coupe (E82) LCI,2012,2012
+auto,BMW,1,1 Series M Coupe (E82),2011,2011
+auto,BMW,1,1 Series Sedan (F52),2017,2017
+auto,BMW,1,1-Series,2020,2020
+auto,BMW,1,2 Series,2013,2017
+auto,BMW,1,2 Series Active Tourer,2021,
+auto,BMW,1,2 Series Active Tourer (F45),2014,2021
+auto,BMW,1,2 Series Convertible,2014,2017
+auto,BMW,1,2 Series Convertible (F23) LCI,2017,
+auto,BMW,1,2 Series Coupe (G42),2021,
+auto,BMW,1,2 Series Gran Tourer (F45),2015,2018
+auto,BMW,1,2 Series Gran Tourer (F46),2018,
+auto,BMW,1,2-Series Gran Coupe,2020,
+auto,BMW,1,3 Series (F30),2012,2012
+auto,BMW,1,3 Series Convertible (E93),2011,2011
+auto,BMW,1,3 Series Coupe (E92),2006,2011
+auto,BMW,1,3 Series Gran Turismo,2013,2013
+auto,BMW,1,3 Series Gran Turismo (F34),2016,2016
+auto,BMW,1,3 Series Sedan,2025,
+auto,BMW,1,3 Series Sedan (E90),2009,2009
+auto,BMW,1,3 Series Sedan (F30) LCI,2016,2016
+auto,BMW,1,3 Series Sedan (G20) LCI,2023,
+auto,BMW,1,3 Series Touring,1999,
+auto,BMW,1,3 Series Touring (E91),2005,2009
+auto,BMW,1,3 Series Touring (F31),2012,2012
+auto,BMW,1,3 Series Touring (F31) LCI,2016,2016
+auto,BMW,1,3 Series Touring (G21),2019,2019
+auto,BMW,1,4 Series Cabrio (F33),2018,2020
+auto,BMW,1,4 Series Convertible (F33),2014,2014
+auto,BMW,1,4 Series Coupe,2025,
+auto,BMW,1,4 Series Coupe (F32),2013,2020
+auto,BMW,1,4 Series Gran Coupe,2022,
+auto,BMW,1,4 Series Gran Coupe (F36),2014,2021
+auto,BMW,1,4-Series Convertible,2021,
+auto,BMW,1,4-Series Coupe,2021,2021
+auto,BMW,1,5 Series,1972,
+auto,BMW,1,5 Series (F10) LCI,2014,2014
+auto,BMW,1,5 Series Gran Turismo,2013,2013
+auto,BMW,1,5 Series Touring,1992,2017
+auto,BMW,1,5-Series Gran Turismo,2009,2009
+auto,BMW,1,5-Series Touring,2021,
+auto,BMW,1,6 Series Convertible,2012,2012
+auto,BMW,1,6 Series Convertible (E64),2004,2010
+auto,BMW,1,6 Series Convertible LCI (F12),2015,2018
+auto,BMW,1,6 Series Coupe (E63),2003,2011
+auto,BMW,1,6 Series Coupe (F13),2011,2015
+auto,BMW,1,6 Series Coupe LCI (F13),2015,2018
+auto,BMW,1,6 Series Gran Coupe (F06),2012,2015
+auto,BMW,1,6 Series Gran Coupe LCI (F06),2015,2018
+auto,BMW,1,6 Series Gran Turismo (G32 LCI),2020,
+auto,BMW,1,6 Series GT,2017,2017
+auto,BMW,1,7 Series,2022,
+auto,BMW,1,7 Series (F01/02),2008,2012
+auto,BMW,1,7 Series (F01/02) Facelift,2012,2016
+auto,BMW,1,7 Series (G11) LCI,2019,2022
+auto,BMW,1,7 Series (G11/G12),2016,2016
+auto,BMW,1,8 Series Convertible,2022,
+auto,BMW,1,8 Series Convertible (G14),2018,2022
+auto,BMW,1,8 Series Coupe,2022,
+auto,BMW,1,8 Series Coupe (G15),2018,2022
+auto,BMW,1,8 Series Gran Coupe,2020,2020
+auto,BMW,1,i3,2013,
+auto,BMW,1,i3s,2017,
+auto,BMW,1,i4,2022,
+auto,BMW,1,i5,2024,
+auto,BMW,1,i5 Touring (G61),2025,
+auto,BMW,1,i7,2023,
+auto,BMW,1,i8 (I12),2014,2020
+auto,BMW,1,i8 Roadster (I15),2018,2020
+auto,BMW,1,iX,2021,
+auto,BMW,1,iX M60,2022,
+auto,BMW,1,iX1,2022,
+auto,BMW,1,iX2,2024,
+auto,BMW,1,iX3 (G08),2020,
+auto,BMW,1,M2,2023,
+auto,BMW,1,M2 (F87),2015,2018
+auto,BMW,1,M2 Competition,2018,
+auto,BMW,1,M2 CS,2019,2019
+auto,BMW,1,M3 (F80),2014,2018
+auto,BMW,1,M3 Cabriolet (E93),2008,2013
+auto,BMW,1,M3 Competition Touring,2025,
+auto,BMW,1,M3 Coupe (E92),2007,2011
+auto,BMW,1,M3 Coupe (E92) LCI,2010,2013
+auto,BMW,1,M3 CS,2024,
+auto,BMW,1,M3 CS (F80),2017,2018
+auto,BMW,1,M3 GTS (E92),2010,2011
+auto,BMW,1,M3 Sedan,2021,
+auto,BMW,1,M3 Sedan (E90),2008,2011
+auto,BMW,1,M3 Touring,2023,
+auto,BMW,1,M4,2021,2021
+auto,BMW,1,M4 Convertible,2014,
+auto,BMW,1,M4 Coupe,2025,
+auto,BMW,1,M4 Coupe (F82),2014,2020
+auto,BMW,1,M4 CS,2018,
+auto,BMW,1,M4 CSL,2023,
+auto,BMW,1,M4 GTS,2015,2015
+auto,BMW,1,M5,1985,
+auto,BMW,1,M5 Competition,2018,2020
+auto,BMW,1,M5 Touring,1992,
+auto,BMW,1,M6 Cabrio (E64),2006,2010
+auto,BMW,1,M6 Cabrio (F12),2012,2014
+auto,BMW,1,M6 Cabrio LCI,2014,2018
+auto,BMW,1,M6 Coupe (E63),2005,2010
+auto,BMW,1,M6 Coupe (F13),2012,2014
+auto,BMW,1,M6 Coupe LCI,2014,2018
+auto,BMW,1,M6 Gran Coupe (F06),2013,2018
+auto,BMW,1,M8,2019,2019
+auto,BMW,1,M8 Convertible,2019,
+auto,BMW,1,M8 Coupe,2022,
+auto,BMW,1,M8 Gran Coupe,2022,
+auto,BMW,1,X1,2010,
+auto,BMW,1,X2,2024,
+auto,BMW,1,X3,2022,2022
+auto,BMW,1,X3 (E83),2004,2010
+auto,BMW,1,X3 (F25),2010,2017
+auto,BMW,1,X3 (G01),2017,2021
+auto,BMW,1,X3 M,2019,2019
+auto,BMW,1,X3 M (F97),2021,
+auto,BMW,1,X4,2014,
+auto,BMW,1,X4 M (F98),2019,
+auto,BMW,1,X5,2019,
+auto,BMW,1,X5 (E70),2007,2010
+auto,BMW,1,X5 (F15),2014,2018
+auto,BMW,1,X5 M,2020,2020
+auto,BMW,1,X5 M (E70),2009,2014
+auto,BMW,1,X5 M (F85),2014,2018
+auto,BMW,1,X5 M Competition,2024,
+auto,BMW,1,X6,2008,
+auto,BMW,1,X6 M,2014,2020
+auto,BMW,1,X6 M Competition,2024,
+auto,BMW,1,X6M (E71),2009,2014
+auto,BMW,1,X7,2022,
+auto,BMW,1,X7 (G07),2018,2022
+auto,BMW,1,XM,2023,
+auto,BMW,1,Z4,2019,
+auto,BMW,1,Z4 Coupe (E86),2006,2009
+auto,BMW,1,Z4 M Coupe (E86),2006,2009
+auto,BMW,1,Z4 Roadster (E85),2006,2009
+auto,BMW,1,Z4 Roadster (E89),2009,2013
+auto,BMW,1,Z4 Roadster LCI (E89),2013,2016
+auto,Bristol,0,411 Series 6,2010,2010
+auto,Bristol,0,Blenheim 3,1999,2011
+auto,Bristol,0,Blenheim 3G,2002,2011
+auto,Bristol,0,Blenheim Speedster,2004,2011
+auto,Bristol,0,Bullet,2017,
+auto,Bristol,0,Fighter,2002,2011
+auto,Bristol,0,Fighter T,2006,2011
+auto,Bufori,0,Geneva (MKIV),2010,
+auto,Bufori,0,La Joya (MKIII),2004,
+auto,Bugatti,0,Bolide,2022,2022
+auto,Bugatti,0,Centodieci,2019,
+auto,Bugatti,0,Chiron,2016,2016
+auto,Bugatti,0,Chiron Sport,2018,
+auto,Bugatti,0,Chiron Super Sport 300+,2020,
+auto,Bugatti,0,Divo,2018,
+auto,Bugatti,0,La Voiture Noire,2019,
+auto,Bugatti,0,Tourbillon,2026,
+auto,Bugatti,0,Veyron,2005,2011
+auto,Bugatti,0,Veyron Grand Sport,2009,2015
+auto,Bugatti,0,Veyron Grand Sport Vitesse,2012,2015
+auto,Bugatti,0,Veyron Super Sport,2010,2011
+auto,Bugatti,0,W16 Mistral,2022,
+auto,Buick,0,Cascada,2016,2019
+auto,Buick,0,Enclave,2007,
+auto,Buick,0,Encore,2014,2019
+auto,Buick,0,Encore GX,2020,
+auto,Buick,0,Envision,2014,2021
+auto,Buick,0,Envista,2024,
+auto,Buick,0,LaCrosse,2005,2017
+auto,Buick,0,LaCrosse Avenir,2018,2018
+auto,Buick,0,Lucerne,2005,2011
+auto,Buick,0,Regal,1988,2017
+auto,Buick,0,Regal GS,2012,2018
+auto,Buick,0,Regal Sportback,2017,
+auto,Buick,0,Verano,2012,2017
+auto,BYD,1,Atto 2,2020,
+auto,BYD,1,Atto 3,2020,
+auto,BYD,1,Dolphin,2020,
+auto,BYD,1,Dolphin Surf,2020,
+auto,BYD,1,Han,2020,
+auto,BYD,1,Seal,2020,
+auto,BYD,1,Seal U,2020,
+auto,BYD,1,Seal U DM-i,2020,
+auto,BYD,1,Sealion 7,2020,
+auto,BYD,1,Tang,2020,
+auto,Cadillac,0,ATS,2012,2012
+auto,Cadillac,0,ATS Coupe,2014,2019
+auto,Cadillac,0,ATS-V,2015,2019
+auto,Cadillac,0,ATS-V Coupe,2016,2016
+auto,Cadillac,0,BLS,2006,2010
+auto,Cadillac,0,BLS Wagon,2007,2010
+auto,Cadillac,0,Celestiq,2024,
+auto,Cadillac,0,CT4,2020,2020
+auto,Cadillac,0,CT4-V,2020,2020
+auto,Cadillac,0,CT4-V Blackwing,2022,2022
+auto,Cadillac,0,CT5,2020,
+auto,Cadillac,0,CT5-V,2020,2020
+auto,Cadillac,0,CT5-V Blackwing,2022,2022
+auto,Cadillac,0,CT6,2016,
+auto,Cadillac,0,CT6 V-Sport,2018,
+auto,Cadillac,0,CTS,2002,2013
+auto,Cadillac,0,CTS Coupe,2011,2014
+auto,Cadillac,0,CTS Sport Wagon,2009,2014
+auto,Cadillac,0,CTS-V,2003,2019
+auto,Cadillac,0,CTS-V Coupe,2012,2015
+auto,Cadillac,0,CTS-V Sport Wagon,2010,2014
+auto,Cadillac,0,DTS,2005,2011
+auto,Cadillac,0,ELR,2014,2016
+auto,Cadillac,0,Escalade,2000,2021
+auto,Cadillac,0,Escalade ESV,2002,
+auto,Cadillac,0,Escalade EXT,2001,2013
+auto,Cadillac,0,Escalade IQ,2025,
+auto,Cadillac,0,Escalade-V,2022,
+auto,Cadillac,0,Lyriq,2022,
+auto,Cadillac,0,SRX,2005,2016
+auto,Cadillac,0,STS,2004,2010
+auto,Cadillac,0,XLR,2004,2009
+auto,Cadillac,0,XLR-V,2005,2011
+auto,Cadillac,0,XT4,2019,
+auto,Cadillac,0,XT5,2016,
+auto,Cadillac,0,XT6,2019,
+auto,Cadillac,0,XTS,2013,
+auto,Caterham,0,Classic,2000,
+auto,Caterham,0,CSR,2005,
+auto,Caterham,0,Roadsport,2007,
+auto,Caterham,0,Seven 160,2013,
+auto,Caterham,0,Seven 620 R,2013,
+auto,Caterham,0,Super Seven 1600,2020,
+auto,Caterham,0,Superlight,2013,
+auto,Caterham,0,Supersport,2012,2012
+auto,Chevrolet,0,Agile,2009,2016
+auto,Chevrolet,0,Avalanche SUT,2006,2013
+auto,Chevrolet,0,Aveo Sedan,2011,2016
+auto,Chevrolet,0,Aveo/Kalos,2004,2011
+auto,Chevrolet,0,Blazer,2019,
+auto,Chevrolet,0,Blazer EV,2024,
+auto,Chevrolet,0,Bolt,2016,2021
+auto,Chevrolet,0,Bolt EUV,2021,
+auto,Chevrolet,0,Bolt EV,2021,
+auto,Chevrolet,0,Camaro,1970,2016
+auto,Chevrolet,0,Camaro Convertible,2012,2019
+auto,Chevrolet,0,Camaro Coupe,2014,2019
+auto,Chevrolet,0,Camaro SS,1998,2010
+auto,Chevrolet,0,Camaro Z/28,2014,2014
+auto,Chevrolet,0,Camaro ZL1,2012,2017
+auto,Chevrolet,0,Camaro ZL1 Convertible,2013,2017
+auto,Chevrolet,0,Camaro ZL1 Coupe,2019,2019
+auto,Chevrolet,0,Captiva,2006,
+auto,Chevrolet,0,Celta - 3 doors,2000,2015
+auto,Chevrolet,0,Celta - 5 doors,2000,2015
+auto,Chevrolet,0,Classic,2002,2016
+auto,Chevrolet,0,Cobalt,2011,2011
+auto,Chevrolet,0,Cobalt Coupe SS,2005,2011
+auto,Chevrolet,0,Cobalt Sedan,2004,2010
+auto,Chevrolet,0,Cobalt Sedan SS,2008,2010
+auto,Chevrolet,0,Colorado Crew Cab,2015,
+auto,Chevrolet,0,Colorado Double Cab,2003,2012
+auto,Chevrolet,0,Colorado Extended Cab,2003,
+auto,Chevrolet,0,Colorado Regular Cab,2003,2012
+auto,Chevrolet,0,Colorado ZR2 Bison,2024,
+auto,Chevrolet,0,Corvette 427 Convertible Collector Edition,2012,2013
+auto,Chevrolet,0,Corvette C6 Convertible,2004,2013
+auto,Chevrolet,0,Corvette C6 Coupe,2004,2008
+auto,Chevrolet,0,Corvette C7 Z06,2015,2015
+auto,Chevrolet,0,Corvette C8 Stingray,2020,2020
+auto,Chevrolet,0,Corvette Convertible,2008,2013
+auto,Chevrolet,0,Corvette Convertible Grand Sport,2009,2013
+auto,Chevrolet,0,Corvette Coupe,2008,2013
+auto,Chevrolet,0,Corvette E-Ray,2024,
+auto,Chevrolet,0,Corvette E-Ray Convertible,2024,
+auto,Chevrolet,0,Corvette Stingray C7,2013,2019
+auto,Chevrolet,0,Corvette Stingray Convertible C7,2013,
+auto,Chevrolet,0,Corvette Z06,2008,
+auto,Chevrolet,0,Corvette Z06 Convertible,2015,2015
+auto,Chevrolet,0,Corvette ZR1,2008,2013
+auto,Chevrolet,0,Cruze,2009,
+auto,Chevrolet,0,Cruze Hatchback,2017,
+auto,Chevrolet,0,Cruze HB5,2011,
+auto,Chevrolet,0,Cruze Wagon,2012,
+auto,Chevrolet,0,Epica,2006,2011
+auto,Chevrolet,0,Equinox,2004,
+auto,Chevrolet,0,Equinox EV,2024,
+auto,Chevrolet,0,Express,1995,
+auto,Chevrolet,0,HHR,2005,2011
+auto,Chevrolet,0,HHR SS,2007,2011
+auto,Chevrolet,0,Impala,1999,
+auto,Chevrolet,0,Malibu,1996,
+auto,Chevrolet,0,Malibu ECO,2013,2016
+auto,Chevrolet,0,Malibu Maxx,2003,2008
+auto,Chevrolet,0,Malibu Maxx SS,2005,2008
+auto,Chevrolet,0,Malibu SS,2005,2008
+auto,Chevrolet,0,Matiz / Spark (M300),2009,2016
+auto,Chevrolet,0,Nubira/Lacetti 4 door,2004,2009
+auto,Chevrolet,0,Nubira/Lacetti Wagon,2004,2009
+auto,Chevrolet,0,Onix,2012,
+auto,Chevrolet,0,Orlando,2010,2010
+auto,Chevrolet,0,Prisma,2013,
+auto,Chevrolet,0,RST Performance Package,2018,
+auto,Chevrolet,0,Silverad 3500HD Crew Cab,2014,2014
+auto,Chevrolet,0,Silverado 1500,2014,2022
+auto,Chevrolet,0,Silverado 1500 Crew Cab,2008,2012
+auto,Chevrolet,0,Silverado 1500 Double Cab,2013,2018
+auto,Chevrolet,0,Silverado 1500 Extended Cab,2008,2012
+auto,Chevrolet,0,Silverado 1500 Regular Cab,2008,2018
+auto,Chevrolet,0,Silverado 2500 HD Crew Cab,2013,2018
+auto,Chevrolet,0,Silverado 2500 HD Double Cab,2013,2018
+auto,Chevrolet,0,Silverado 2500 HD Regular Cab,2013,2018
+auto,Chevrolet,0,Silverado 2500HD Crew Cab,2008,2013
+auto,Chevrolet,0,Silverado 2500HD Extended Cab,2008,2013
+auto,Chevrolet,0,Silverado 2500HD Regular Cab,2007,2013
+auto,Chevrolet,0,Silverado 3500 HD Double Cab,2013,2013
+auto,Chevrolet,0,Silverado 3500 HD Regular Cab,2013,2018
+auto,Chevrolet,0,Silverado 3500HD Crew Cab,2008,2013
+auto,Chevrolet,0,Silverado 3500HD Extended Cab,2008,2013
+auto,Chevrolet,0,Silverado 3500HD Regular Cab,2008,2013
+auto,Chevrolet,0,Silverado EV,2024,
+auto,Chevrolet,0,Silverado EV WT,2024,
+auto,Chevrolet,0,Silverado HD ZR2,2024,
+auto,Chevrolet,0,Silverado Hybrid,2008,2013
+auto,Chevrolet,0,Sonic,2016,
+auto,Chevrolet,0,Sonic Hatchback,2011,2016
+auto,Chevrolet,0,Sonic RS,2012,
+auto,Chevrolet,0,Sonic Sedan (US),2012,2012
+auto,Chevrolet,0,Spark,2016,
+auto,Chevrolet,0,Spark EV,2013,2016
+auto,Chevrolet,0,Spin,2012,
+auto,Chevrolet,0,SS,2016,2017
+auto,Chevrolet,0,SS SEDAN,2014,2014
+auto,Chevrolet,0,Suburban,1999,2021
+auto,Chevrolet,0,Tahoe,2006,
+auto,Chevrolet,0,Tracker,1999,
+auto,Chevrolet,0,TrailBlazer,2000,2012
+auto,Chevrolet,0,Trailblazer,2012,
+auto,Chevrolet,0,TrailBlazer SS,2005,2008
+auto,Chevrolet,0,Traverse,2008,
+auto,Chevrolet,0,Trax,2013,
+auto,Chevrolet,0,Uplander,2004,2009
+auto,Chevrolet,0,Volt,2011,2019
+auto,Chrysler,0,200,2011,2016
+auto,Chrysler,0,200 Convertible,2011,2014
+auto,Chrysler,0,300,2011,2022
+auto,Chrysler,0,300 SRT8,2011,
+auto,Chrysler,0,300C,1957,2010
+auto,Chrysler,0,300C SRT8,2005,2010
+auto,Chrysler,0,300C Touring,2004,2010
+auto,Chrysler,0,300C Touring SRT8,2006,2010
+auto,Chrysler,0,Aspen,2006,2009
+auto,Chrysler,0,Chrysler 300C,2022,
+auto,Chrysler,0,Crossfire,2003,2008
+auto,Chrysler,0,Crossfire Roadster,2004,2008
+auto,Chrysler,0,Grand Voyager,2008,2015
+auto,Chrysler,0,Pacifica,2003,2021
+auto,Chrysler,0,PT Cruiser,2000,2010
+auto,Chrysler,0,PT Cruiser Convertible,2004,2008
+auto,Chrysler,0,Sebring Convertible,2001,2010
+auto,Chrysler,0,Sebring Sedan,2001,2010
+auto,Chrysler,0,Town & Country,2000,2016
+auto,Citroën,1,AMI,2020,
+auto,Citroën,1,Berlingo,1996,
+auto,Citroën,1,Berlingo X-TR,2006,2008
+auto,Citroën,1,C-Crosser,2007,2012
+auto,Citroën,1,C-Elysee,2013,2013
+auto,Citroën,1,C1,2005,
+auto,Citroën,1,C1 3 doors,2012,2014
+auto,Citroën,1,C1 5 doors,2012,2014
+auto,Citroën,1,C2,2003,2010
+auto,Citroën,1,C2 VTS,2003,2009
+auto,Citroën,1,C3,2002,
+auto,Citroën,1,C3 Aircross,2017,2022
+auto,Citroën,1,C3 Picasso,2008,2013
+auto,Citroën,1,C3 Pluriel,2003,2010
+auto,Citroën,1,C3 X-TR,2005,2009
+auto,Citroën,1,C4,2021,2021
+auto,Citroën,1,C4 Aircross,2012,2017
+auto,Citroën,1,C4 Cactus,2014,2020
+auto,Citroën,1,C4 Coupe,2004,2008
+auto,Citroën,1,C4 Hatchback,2004,2013
+auto,Citroën,1,C4 Picasso,2007,2016
+auto,Citroën,1,C4 Sedan,2007,2012
+auto,Citroën,1,C4 X,2023,
+auto,Citroën,1,C5 Aircross,2018,2018
+auto,Citroën,1,C5 Crosstourer,2014,
+auto,Citroën,1,C5 Estate,2001,2008
+auto,Citroën,1,C5 Liftback,2001,2008
+auto,Citroën,1,C5 Sedan,2008,2017
+auto,Citroën,1,C5 Tourer,2008,
+auto,Citroën,1,C5 X,2021,
+auto,Citroën,1,C8,2002,2008
+auto,Citroën,1,DS 3,2009,2014
+auto,Citroën,1,DS 3 Crossback,2018,2018
+auto,Citroën,1,DS4,2010,
+auto,Citroën,1,DS5,2011,
+auto,Citroën,1,E-Mehari,2016,
+auto,Citroën,1,Grand C4 Picasso,2006,
+auto,Citroën,1,Nemo Combi,2008,2015
+auto,Citroën,1,Xsara Picasso,1999,2012
+auto,Cupra,1,Ateca,2018,2018
+auto,Cupra,1,Born,2021,
+auto,Cupra,1,Formentor,2021,2021
+auto,Cupra,1,Leon,2021,2021
+auto,Cupra,1,Leon Sportstourer,2021,2021
+auto,Cupra,1,Tavascan,2024,
+auto,Cupra,1,Terramar,2025,
+auto,Dacia,1,Bigster,2020,
+auto,Dacia,1,Dokker,2012,2012
+auto,Dacia,1,Duster,2010,
+auto,Dacia,1,Duster Pick-Up,2020,
+auto,Dacia,1,Jogger,2021,
+auto,Dacia,1,Lodgy,2012,
+auto,Dacia,1,Logan,2004,
+auto,Dacia,1,Logan 2,2012,2016
+auto,Dacia,1,Logan MCV,2006,
+auto,Dacia,1,Logan MCV Stepway,2017,
+auto,Dacia,1,Logan Van,2007,2012
+auto,Dacia,1,Pick-up,2007,2012
+auto,Dacia,1,Sandero,2008,
+auto,Dacia,1,Sandero 2,2012,2016
+auto,Dacia,1,Sandero Stepway,2009,
+auto,Dacia,1,Spring,2021,2021
+auto,Dacia,1,Spring Electric Cargo,2021,
+auto,Daewoo,0,Damas II,2003,2011
+auto,Daewoo,0,G2X,2006,2009
+auto,Daewoo,0,Gentra,2005,2011
+auto,Daewoo,0,Lacetti,2002,2009
+auto,Daewoo,0,Lacetti 5 doors,2003,2011
+auto,Daewoo,0,Matiz,2001,2009
+auto,Daewoo,0,Tosca,2006,2015
+auto,Daewoo,0,Winstorm,2006,2011
+auto,Daihatsu,0,Altis,2000,2017
+auto,Daihatsu,0,Ayla,2013,
+auto,Daihatsu,0,Copen,2004,2012
+auto,Daihatsu,0,Cuore,2007,
+auto,Daihatsu,0,Materia,2007,2010
+auto,Daihatsu,0,Sirion,1998,
+auto,Daihatsu,0,Sirion 2,2005,2008
+auto,Daihatsu,0,Terios,1997,2017
+auto,Daihatsu,0,Trevis,2004,2009
+auto,Datsun,0,GO,2013,
+auto,Datsun,0,GO+,2013,
+auto,Datsun,0,Mi-Do,2014,
+auto,Datsun,0,on-Do,2014,
+auto,Dodge,0,Avenger,2007,2011
+auto,Dodge,0,Challenger,1970,2015
+auto,Dodge,0,Challenger SRT,2015,2015
+auto,Dodge,0,Challenger SRT Demon,2018,2018
+auto,Dodge,0,Challenger SRT Demon 170,2023,
+auto,Dodge,0,Charger,1966,
+auto,Dodge,0,Charger Daytona,1969,
+auto,Dodge,0,Charger SRT,2015,2019
+auto,Dodge,0,Charger SRT Hellcat Widebody,2019,
+auto,Dodge,0,Charger SRT8,2006,
+auto,Dodge,0,Dart,2012,2014
+auto,Dodge,0,Durango,1997,
+auto,Dodge,0,Durango SRT,2017,
+auto,Dodge,0,Grand Caravan,1987,2014
+auto,Dodge,0,Hornet,2023,
+auto,Dodge,0,Journey,2008,
+auto,Dodge,0,Magnum,2004,2008
+auto,Dodge,0,Magnum SRT8,2005,2008
+auto,Dodge,0,Nitro,2006,2012
+auto,Dodge,0,Ram 1500,2009,
+auto,Dodge,0,SRT Viper,2012,2017
+auto,Dodge,0,Viper SRT10 Coupe,2003,2010
+auto,Dodge,0,Viper SRT10 Roadster,2003,2010
+auto,Donkervoort,0,D8,1993,2012
+auto,DR,1,1.0,2020,
+auto,DR,1,3.0,2020,
+auto,DR,1,4.0,2020,
+auto,DR,1,5.0,2020,
+auto,DR,1,6.0,2020,
+auto,DR,1,7.0,2020,
+auto,DR,1,dr CityCross,2013,2016
+auto,DR,1,dr2,2010,2014
+auto,DR,1,dr5,2007,2020
+auto,EVO,1,3,2020,
+auto,EVO,1,4,2020,
+auto,EVO,1,5,2020,
+auto,EVO,1,6,2020,
+auto,Ferrari,1,12Cilindri,2025,
+auto,Ferrari,1,12Cilindri Spider,2025,
+auto,Ferrari,1,296 GTB,2022,2022
+auto,Ferrari,1,296 GTS,2023,
+auto,Ferrari,1,430 Scuderia,2007,2009
+auto,Ferrari,1,458 Italia,2009,2015
+auto,Ferrari,1,458 Speciale,2013,2015
+auto,Ferrari,1,458 Speciale A (Aperta),2015,2015
+auto,Ferrari,1,458 Spider,2011,2015
+auto,Ferrari,1,488 GTB,2015,2019
+auto,Ferrari,1,488 Pista,2018,
+auto,Ferrari,1,488 Spider,2016,2019
+auto,Ferrari,1,599 GTB Fiorano,2006,2012
+auto,Ferrari,1,599 GTO,2010,2012
+auto,Ferrari,1,612 Scaglietti,2004,2011
+auto,Ferrari,1,812 GTS,2019,2019
+auto,Ferrari,1,812 Superfast,2017,
+auto,Ferrari,1,California T,2014,2014
+auto,Ferrari,1,Daytona SP3,2021,
+auto,Ferrari,1,F12 Berlinetta,2012,2015
+auto,Ferrari,1,F12 TRS,2014,2014
+auto,Ferrari,1,F12tdf,2015,2017
+auto,Ferrari,1,F149 California,2008,2017
+auto,Ferrari,1,F430,2004,2009
+auto,Ferrari,1,F430 Spider,2005,2009
+auto,Ferrari,1,F60 America,2014,
+auto,Ferrari,1,F8 Spider,2019,2019
+auto,Ferrari,1,F8 Tributo,2019,
+auto,Ferrari,1,F80,2025,
+auto,Ferrari,1,FF,2011,2016
+auto,Ferrari,1,GTC4Lusso,2016,
+auto,Ferrari,1,GTC4Lusso T,2016,
+auto,Ferrari,1,LaFerrari,2013,2015
+auto,Ferrari,1,LaFerrari Aperta,2017,2017
+auto,Ferrari,1,Portofino,2017,2020
+auto,Ferrari,1,Portofino M,2020,
+auto,Ferrari,1,Purosangue,2022,
+auto,Ferrari,1,Roma,2020,2020
+auto,Ferrari,1,Roma Spider,2024,
+auto,Ferrari,1,Scuderia Spider 16M,2008,2009
+auto,Ferrari,1,SF90 Spider (F173A),2020,
+auto,Ferrari,1,SF90 Stradale,2019,
+auto,Ferrari,1,SF90 XX Spider,2024,
+auto,Ferrari,1,SF90 XX Stradale,2024,
+auto,Ferrari,1,SP1,2018,
+auto,Ferrari,1,SP2,2018,
+auto,Fiat,1,124 Spider,2016,
+auto,Fiat,1,500,2007,
+auto,Fiat,1,500 3+1,2020,
+auto,Fiat,1,500 C,2009,
+auto,Fiat,1,500 X,2018,2018
+auto,Fiat,1,500e,2013,
+auto,Fiat,1,500L,2012,
+auto,Fiat,1,500L Trekking,2013,2013
+auto,Fiat,1,500X,2015,2015
+auto,Fiat,1,600,2020,
+auto,Fiat,1,600e,2024,
+auto,Fiat,1,Bravo,1995,2010
+auto,Fiat,1,Croma,1986,2011
+auto,Fiat,1,Doblo,2001,
+auto,Fiat,1,Freemont,2011,2015
+auto,Fiat,1,Freemont Cross,2015,2018
+auto,Fiat,1,Fullback Cross,2016,
+auto,Fiat,1,Fullback Double Cab,2016,
+auto,Fiat,1,Fullback Extended Cab,2016,
+auto,Fiat,1,Grande Panda,2020,
+auto,Fiat,1,Grande Punto,2005,2009
+auto,Fiat,1,Idea,2003,2016
+auto,Fiat,1,Linea,2006,2015
+auto,Fiat,1,Mille,1983,2013
+auto,Fiat,1,Multipla,1998,2010
+auto,Fiat,1,Palio,2011,2016
+auto,Fiat,1,Palio Weekend,2012,2019
+auto,Fiat,1,Panda,1981,2011
+auto,Fiat,1,Panda 100HP,2006,2011
+auto,Fiat,1,Panda 4X4,1986,2012
+auto,Fiat,1,Panda 4x4,2012,
+auto,Fiat,1,Panda City Cross,2017,
+auto,Fiat,1,Panda Cross,2014,2014
+auto,Fiat,1,Pandina,2020,
+auto,Fiat,1,Punto,1994,2018
+auto,Fiat,1,Punto Evo,2009,2012
+auto,Fiat,1,Qubo,2008,2019
+auto,Fiat,1,Sedici,2006,2009
+auto,Fiat,1,Tipo,1988,
+auto,Fiat,1,Tipo / Egea,2015,
+auto,Fiat,1,Tipo Cross,2020,
+auto,Fiat,1,Tipo Station Wagon,2016,
+auto,Fiat,1,Topolino,2024,
+auto,Fiat,1,Uno,2010,
+auto,Fiat,1,Viaggio,2013,2017
+auto,Fisker,0,Karma,2011,2012
+auto,Fisker,0,Ocean,2021,
+auto,Ford,1,B-Max,2012,2012
+auto,Ford,1,Bronco 2-door,2020,
+auto,Ford,1,Bronco 4-door,2020,
+auto,Ford,1,Bronco Raptor,2022,
+auto,Ford,1,Bronco Sport,2020,
+auto,Ford,1,Bullitt,2019,2020
+auto,Ford,1,C-Max,2007,2019
+auto,Ford,1,E-Tourneo Courier,2023,
+auto,Ford,1,EcoSport,2004,
+auto,Ford,1,Ecosport,2013,2017
+auto,Ford,1,EDGE,2018,
+auto,Ford,1,Edge,2006,2018
+auto,Ford,1,Edge ST,2018,
+auto,Ford,1,Escape,2000,
+auto,Ford,1,Everest,2003,
+auto,Ford,1,Expedition,1996,
+auto,Ford,1,Expedition Max,2018,2018
+auto,Ford,1,Explorer,2003,
+auto,Ford,1,Explorer Sport Trac,2002,2010
+auto,Ford,1,F-150,2020,
+auto,Ford,1,F-150 Lightning,2022,
+auto,Ford,1,F-150 Raptor,2017,
+auto,Ford,1,F-150 Raptor SVT,2009,2013
+auto,Ford,1,F-150 Regular Cab,1996,
+auto,Ford,1,F-150 Super Cab,2001,2012
+auto,Ford,1,F-150 Super Crew,2001,2020
+auto,Ford,1,F-150 SuperCab,2012,2012
+auto,Ford,1,F-150 Tremor,2020,
+auto,Ford,1,Fiesta,1976,2017
+auto,Ford,1,Fiesta 3 doors,2017,
+auto,Ford,1,Fiesta 5 doors,2017,2021
+auto,Ford,1,Fiesta Active,2017,
+auto,Ford,1,Fiesta Sedan,2011,2017
+auto,Ford,1,Fiesta ST,2012,
+auto,Ford,1,Fiesta ST 3 doors,2018,2021
+auto,Ford,1,Fiesta ST200,2016,2018
+auto,Ford,1,Figo,2010,
+auto,Ford,1,Flex,2009,2019
+auto,Ford,1,Focus,1998,
+auto,Ford,1,Focus Active Wagon,2021,
+auto,Ford,1,Focus CC,2006,2011
+auto,Ford,1,Focus Coupe,2007,2010
+auto,Ford,1,Focus Estate,2014,2021
+auto,Ford,1,Focus RS,2002,
+auto,Ford,1,Focus Sedan,2007,2018
+auto,Ford,1,Focus ST,2004,
+auto,Ford,1,Focus ST Estate,2012,
+auto,Ford,1,Focus Wagon,1999,2014
+auto,Ford,1,Fusion,2018,
+auto,Ford,1,Fusion Energi,2012,
+auto,Ford,1,Fusion European,2002,2012
+auto,Ford,1,Fusion Hybrid,2012,
+auto,Ford,1,Fusion North American,2005,2018
+auto,Ford,1,Galaxy,1995,2019
+auto,Ford,1,Grand C-Max,2011,2015
+auto,Ford,1,GT,2004,
+auto,Ford,1,Ka,1997,2015
+auto,Ford,1,Ka+,2016,
+auto,Ford,1,Ka+ Active,2018,
+auto,Ford,1,Kuga,2008,
+auto,Ford,1,Maverick,2022,2022
+auto,Ford,1,Mondeo Hatchback,1993,2018
+auto,Ford,1,Mondeo Sedan,1993,2018
+auto,Ford,1,Mondeo Wagon,1993,
+auto,Ford,1,Mustang,1964,
+auto,Ford,1,Mustang Convertible,1964,2018
+auto,Ford,1,Mustang Dark Horse,2024,
+auto,Ford,1,Mustang GT,2024,
+auto,Ford,1,Mustang GT Convertible,2024,
+auto,Ford,1,Mustang GTD,2025,
+auto,Ford,1,Mustang Mach-E,2020,2020
+auto,Ford,1,Mustang Mach-E GT,2021,
+auto,Ford,1,Mustang Mach1,2021,2021
+auto,Ford,1,Mustang Shelby GT350,2015,
+auto,Ford,1,Mustang Shelby GT350R,2015,
+auto,Ford,1,Mustang Shelby GT500,2009,
+auto,Ford,1,Mustang Shelby GT500 Convertible,2009,2014
+auto,Ford,1,Puma,1998,
+auto,Ford,1,Puma ST,2021,2021
+auto,Ford,1,Ranger,2019,
+auto,Ford,1,Ranger Double Cab,2011,
+auto,Ford,1,Ranger Raptor,2023,
+auto,Ford,1,Ranger Regular Cab,2000,
+auto,Ford,1,Ranger Super Cab,2000,
+auto,Ford,1,Ranger Wildtrak,2021,
+auto,Ford,1,Ranger Wildtrak X,2023,
+auto,Ford,1,Raptor Ranger,2018,
+auto,Ford,1,S-Max,2006,2020
+auto,Ford,1,SportKa,2003,2008
+auto,Ford,1,Super Duty Lariat Tremor,2021,
+auto,Ford,1,Taurus,1995,2019
+auto,Ford,1,Taurus SHO,2010,2010
+auto,Ford,1,Taurus X,2007,2009
+auto,Ford,1,Territory (China),2018,
+auto,Ford,1,Tourneo Connect,2003,2018
+auto,Ford,1,Transit Connect Wagon - North American version,2018,2018
+auto,Ford,1,Transit Custom,2019,
+auto,Ford,1,TRANSIT/TOURNEO CONNECT (7-SEATS),2018,
+auto,Ford,1,Turneo Custom,2017,2017
+auto,Geely,0,Emgrand EC7,2009,2009
+auto,Geely,0,LC (Panda),2009,
+auto,Geely,0,LC Cross,2011,2011
+auto,Geely,0,MK Sedan,2006,2014
+auto,Geely,0,MK2 (Hatch),2010,2014
+auto,Genesis,0,G70,2017,
+auto,Genesis,0,G70 Shooting Brake,2021,
+auto,Genesis,0,G80,2016,
+auto,Genesis,0,G90,2016,
+auto,Genesis,0,GV60,2023,
+auto,Genesis,0,GV70,2020,
+auto,Genesis,0,GV80,2021,
+auto,Genesis,0,GV80 Coupe,2025,
+auto,GMC,0,Acadia,2007,2020
+auto,GMC,0,Canyon Crew Cab,2004,
+auto,GMC,0,Canyon Double Cab,2004,2013
+auto,GMC,0,Canyon Regular Cab,2004,2013
+auto,GMC,0,Envoy,2001,2009
+auto,GMC,0,Hummer EV,2021,
+auto,GMC,0,Savana 1500,2013,2015
+auto,GMC,0,Savana 2500,2013,
+auto,GMC,0,Savana 3500,2013,
+auto,GMC,0,Sierra 1500 Crew Cab,2008,2013
+auto,GMC,0,Sierra 1500 Extended Cab,2007,2013
+auto,GMC,0,Sierra 1500 Regular Cab,2008,2013
+auto,GMC,0,Sierra 2500HD,2019,
+auto,GMC,0,Sierra 2500HD Crew Cab,2008,2013
+auto,GMC,0,Sierra 2500HD Extended Cab,2008,2013
+auto,GMC,0,Sierra 2500HD Regular Cab,2008,2013
+auto,GMC,0,Sierra 3500HD Crew Cab,2008,2013
+auto,GMC,0,Sierra 3500HD Extended Cab,2008,2013
+auto,GMC,0,Sierra 3500HD Regular Cab,2008,2014
+auto,GMC,0,Sierra AT4,2018,
+auto,GMC,0,Sierra AT4X,2022,2022
+auto,GMC,0,Sierra Crew Cab,2014,2014
+auto,GMC,0,Sierra Denali,2018,2022
+auto,GMC,0,Sierra Double Cab,2014,2014
+auto,GMC,0,Sierra EV Denali Edition 1,2024,
+auto,GMC,0,Sierra HD AT4X,2024,
+auto,GMC,0,Sierra Regular Cab,2014,2014
+auto,GMC,0,Terrain,2009,
+auto,GMC,0,Yukon,1999,
+auto,GMC,0,Yukon AT4,2020,
+auto,GMC,0,Yukon Denali,2014,2020
+auto,GMC,0,Yukon XL,1999,
+auto,GTA Motor,0,GTA Spano,2012,2015
+auto,Hindustan,0,Ambassador,1959,2014
+auto,Hindustan,0,Pushpak/Trekker,1999,
+auto,Hindustan,0,RTV/Ranger,1998,
+auto,Holden,0,Barina,2001,2018
+auto,Holden,0,Barina RS,2014,
+auto,Holden,0,Barina Sedan,2012,2018
+auto,Holden,0,Barina Spark,2010,2016
+auto,Holden,0,Caprice,2006,
+auto,Holden,0,Captiva,2006,2018
+auto,Holden,0,Combo,2002,
+auto,Holden,0,Commodore,2018,2018
+auto,Holden,0,Commodore Sedan,2013,2017
+auto,Holden,0,Commodore Wagon,2003,2017
+auto,Holden,0,Cruze,2002,
+auto,Holden,0,Malibu,2013,
+auto,Holden,0,Trax,2013,2017
+auto,Holden,0,Ute,2007,2017
+auto,Honda,1,Accord,1977,2018
+auto,Honda,1,Accord Coupe,1994,2013
+auto,Honda,1,Accord Coupe - US,2006,2016
+auto,Honda,1,Accord Crosstour,2010,2010
+auto,Honda,1,Accord Sedan,1982,2013
+auto,Honda,1,Accord Sedan - US,2003,2016
+auto,Honda,1,Accord Sedan US,2006,2008
+auto,Honda,1,Accord Tourer,2003,2008
+auto,Honda,1,Accord Tourer - EU,2011,2011
+auto,Honda,1,Accord US,2021,
+auto,Honda,1,Airwave,2005,2010
+auto,Honda,1,Civic,1995,2019
+auto,Honda,1,Civic Coupe,1994,
+auto,Honda,1,Civic Coupe Si,2006,2015
+auto,Honda,1,Civic eHEV,2023,
+auto,Honda,1,Civic Hatchback,2019,
+auto,Honda,1,Civic Sedan,1987,
+auto,Honda,1,Civic Sedan HF,2012,2016
+auto,Honda,1,Civic Sedan Natural Gas,2012,2016
+auto,Honda,1,Civic Sedan Si,2007,2016
+auto,Honda,1,Civic Sedan Si US,2008,
+auto,Honda,1,Civic Sedan US,2005,
+auto,Honda,1,Civic Si,2025,
+auto,Honda,1,Civic Si Coupe,2015,2016
+auto,Honda,1,Civic Tourer,2013,2017
+auto,Honda,1,Civic Type R,2023,
+auto,Honda,1,Civic Type S,2005,2011
+auto,Honda,1,Civic Type-R,2001,2017
+auto,Honda,1,Civic Type-R Mugen,2009,2010
+auto,Honda,1,CR-V,1996,
+auto,Honda,1,CR-Z,2010,2016
+auto,Honda,1,Crosstour,2013,2016
+auto,Honda,1,e,2020,2020
+auto,Honda,1,e:Ny1,2023,
+auto,Honda,1,Element,2003,2011
+auto,Honda,1,FCX Clarity,2007,2014
+auto,Honda,1,Fit EV,2012,2014
+auto,Honda,1,FR-V / Edix,2004,2011
+auto,Honda,1,HR-V,2018,
+auto,Honda,1,HR-V 5 doors,2014,2018
+auto,Honda,1,Insight,1999,
+auto,Honda,1,insight,2012,2014
+auto,Honda,1,Jazz / Fit,2017,
+auto,Honda,1,Jazz/Fit,2002,2017
+auto,Honda,1,Legend,2009,
+auto,Honda,1,Legend Sedan,1987,2008
+auto,Honda,1,Mobilio,2001,2008
+auto,Honda,1,NSX,1991,2016
+auto,Honda,1,Odyssey,2005,
+auto,Honda,1,Passport,2019,
+auto,Honda,1,Pilot,2009,
+auto,Honda,1,Prologue,2024,
+auto,Honda,1,Ridgeline,2006,2021
+auto,Honda,1,S2000,1999,2009
+auto,Honda,1,S660,2015,
+auto,Honda,1,Stream,2000,2009
+auto,Honda,1,ZR-V,2024,
+auto,Hummer,0,H2,2002,2009
+auto,Hummer,0,H2 SUT,2004,2009
+auto,Hummer,0,H3,2005,2010
+auto,Hummer,0,H3 Alpha,2007,2010
+auto,Hyundai,1,Accent,1999,
+auto,Hyundai,1,Accent five-door,2012,2012
+auto,Hyundai,1,Accent sedan,2012,2012
+auto,Hyundai,1,Atos,2003,2008
+auto,Hyundai,1,Bayon,2022,2022
+auto,Hyundai,1,Coupe / Tiburon,1996,2009
+auto,Hyundai,1,Elantra,2011,
+auto,Hyundai,1,Elantra 4 doors,2006,2010
+auto,Hyundai,1,Elantra Coupe,2012,2014
+auto,Hyundai,1,Elantra GT,2012,
+auto,Hyundai,1,Elantra N,2021,
+auto,Hyundai,1,Elantra Touring,2009,2012
+auto,Hyundai,1,Equus,2010,2016
+auto,Hyundai,1,Genesis,2008,2016
+auto,Hyundai,1,Genesis Coupe,2008,2013
+auto,Hyundai,1,Getz,2002,2011
+auto,Hyundai,1,Grand i10,2013,2013
+auto,Hyundai,1,Grandeur,2005,2011
+auto,Hyundai,1,i10,2008,2019
+auto,Hyundai,1,i20,2009,
+auto,Hyundai,1,i20 5-doors,2018,2020
+auto,Hyundai,1,i20 Active,2015,
+auto,Hyundai,1,i20 Coupe,2015,2018
+auto,Hyundai,1,i20 N,2020,
+auto,Hyundai,1,i30,2007,
+auto,Hyundai,1,i30 Coupe,2012,
+auto,Hyundai,1,i30 Estate,2008,2020
+auto,Hyundai,1,i30 Fastback,2017,2020
+auto,Hyundai,1,i30 N,2017,
+auto,Hyundai,1,i30 Tourer,2017,2019
+auto,Hyundai,1,i30 Wagon,2012,2017
+auto,Hyundai,1,i40 Saloon,2011,2018
+auto,Hyundai,1,i40 Tourer,2012,2018
+auto,Hyundai,1,i40 Wagon,2018,
+auto,Hyundai,1,i800 / H-1,2008,2018
+auto,Hyundai,1,Ioniq,2016,2020
+auto,Hyundai,1,Ioniq 5,2021,
+auto,Hyundai,1,Ioniq 5 N,2024,
+auto,Hyundai,1,Ioniq 6,2023,
+auto,Hyundai,1,ix20,2010,2019
+auto,Hyundai,1,ix35 / Tucson,2009,2015
+auto,Hyundai,1,ix55 / Veracruz,2009,2012
+auto,Hyundai,1,Kona,2017,
+auto,Hyundai,1,Kona Electric,2021,
+auto,Hyundai,1,Kona N,2021,2021
+auto,Hyundai,1,Matrix,2001,2010
+auto,Hyundai,1,Mistra,2014,
+auto,Hyundai,1,NEXO,2018,
+auto,Hyundai,1,Palisade,2019,
+auto,Hyundai,1,Santa Cruz,2022,
+auto,Hyundai,1,Santa Fe,2000,2020
+auto,Hyundai,1,Santa Fe Sport,2016,2018
+auto,Hyundai,1,Sonata,1989,2020
+auto,Hyundai,1,Sonata / i45,2011,2011
+auto,Hyundai,1,Sonata Hybrid,2011,2018
+auto,Hyundai,1,Sonata Plug-in Hybrid,2016,2016
+auto,Hyundai,1,Trajet,2000,2008
+auto,Hyundai,1,Tucson,2004,
+auto,Hyundai,1,Veloster,2011,
+auto,Hyundai,1,Veloster N,2018,
+auto,Hyundai,1,Venue,2020,2020
+auto,Ineos,1,Grenadier,2023,
+auto,Infiniti,0,EX,2007,2013
+auto,Infiniti,0,EX37,2013,2014
+auto,Infiniti,0,FX,2002,2013
+auto,Infiniti,0,G Sedan,2013,2014
+auto,Infiniti,0,G25,2011,2013
+auto,Infiniti,0,G35 Sedan,2001,2008
+auto,Infiniti,0,G37 Convertible,2009,2013
+auto,Infiniti,0,G37 Coupe,2008,2013
+auto,Infiniti,0,G37 Sedan,2009,2009
+auto,Infiniti,0,IPL G Convertible,2012,2013
+auto,Infiniti,0,IPL G Coupe,2011,2013
+auto,Infiniti,0,JX,2012,2014
+auto,Infiniti,0,M Sedan,2010,2013
+auto,Infiniti,0,M35/M45,2005,2010
+auto,Infiniti,0,Q30,2015,2017
+auto,Infiniti,0,Q40,2014,2015
+auto,Infiniti,0,Q50,2013,
+auto,Infiniti,0,Q60,2014,
+auto,Infiniti,0,Q60 Convertible,2013,2015
+auto,Infiniti,0,Q60 IPL,2014,2014
+auto,Infiniti,0,Q70,2013,
+auto,Infiniti,0,QX,2010,2014
+auto,Infiniti,0,QX30,2017,
+auto,Infiniti,0,QX50,2013,
+auto,Infiniti,0,QX55,2021,
+auto,Infiniti,0,QX56,2004,2010
+auto,Infiniti,0,QX60,2013,
+auto,Infiniti,0,QX70,2013,
+auto,Infiniti,0,QX80,2015,
+auto,Isuzu,0,D-Max Arctic Trucks AT35,2016,2016
+auto,Isuzu,0,D-Max Crew Cab,2012,2012
+auto,Isuzu,0,D-Max Double Cab,2015,2015
+auto,Isuzu,0,i-Series Double Cab,2005,2009
+auto,Jaecoo,1,7,2020,
+auto,Jaguar,1,E-Pace,2017,2017
+auto,Jaguar,1,F-Pace,2015,
+auto,Jaguar,1,F-Pace SVR,2018,
+auto,Jaguar,1,F-Type,2014,2014
+auto,Jaguar,1,F-Type 400 Coupe,2017,2020
+auto,Jaguar,1,F-Type Convertible,2017,
+auto,Jaguar,1,F-Type Coupe,2014,
+auto,Jaguar,1,F-Type SVR,2017,2017
+auto,Jaguar,1,F-Type SVR Coupe,2017,2017
+auto,Jaguar,1,F-Type SVR Roadster,2016,2016
+auto,Jaguar,1,I-PACE,2018,
+auto,Jaguar,1,X-Type,2001,2009
+auto,Jaguar,1,X-Type Estate,2004,2009
+auto,Jaguar,1,XE,2015,
+auto,Jaguar,1,XE 300 Sport,2018,
+auto,Jaguar,1,XE SV Project 8,2017,
+auto,Jaguar,1,XF,2015,
+auto,Jaguar,1,XF (X250),2008,2015
+auto,Jaguar,1,XF (X260),2020,
+auto,Jaguar,1,XF Sportbrake,2017,2020
+auto,Jaguar,1,XF Sportbrake (X250),2012,2015
+auto,Jaguar,1,XF Sportbrake (X260),2020,
+auto,Jaguar,1,XFR,2009,2015
+auto,Jaguar,1,XJ,1979,2019
+auto,Jaguar,1,XJR,1994,2010
+auto,Jaguar,1,XJR (X351),2013,2013
+auto,Jaguar,1,XJR575,2017,
+auto,Jaguar,1,XK,2006,2014
+auto,Jaguar,1,XK Cabrio,2010,2014
+auto,Jaguar,1,XK Convertible (X150),2006,2009
+auto,Jaguar,1,XKR,2009,2009
+auto,Jaguar,1,XKR Convertible,1998,2010
+auto,Jaguar,1,XKR-S,2008,2011
+auto,Jaguar,1,XKR-S Convertible,2012,2012
+auto,Jeep,1,Avenger,2022,
+auto,Jeep,1,Cherokee KL,2014,2019
+auto,Jeep,1,Commander,2005,2010
+auto,Jeep,1,Compass,2007,2019
+auto,Jeep,1,Gladiator,2021,
+auto,Jeep,1,Grand Cherokee,1999,
+auto,Jeep,1,Grand Cherokee L,2020,
+auto,Jeep,1,Grand Cherokee SRT-8,2006,2010
+auto,Jeep,1,Grand Cherokee SRT8,2012,2013
+auto,Jeep,1,GRAND CHEROKEE TRACKHAWK,2018,
+auto,Jeep,1,Grand Wagoneer,2022,2022
+auto,Jeep,1,Liberty KK,2008,2008
+auto,Jeep,1,Renegade,2014,2022
+auto,Jeep,1,Wagoneer,1963,2022
+auto,Jeep,1,Wagoneer S,2024,
+auto,Jeep,1,Wrangler 4xe,2022,
+auto,Jeep,1,Wrangler JK Unlimited,2007,2012
+auto,Jeep,1,Wrangler Rubicon 392,2024,
+auto,Jeep,1,Wrangler Rubicon 4xe,2024,
+auto,Jeep,1,Wrangler Rubicon JL,2018,2018
+auto,Jeep,1,Wrangler Unlimited Rubicon JL,2018,2018
+auto,Jeep,1,Wrangler Willys,2024,
+auto,Karma,0,Revero GT,2019,
+auto,Karma,0,Revero GTS,2019,
+auto,Kia,1,Borrego,2009,
+auto,Kia,1,Carens,2000,2018
+auto,Kia,1,Carnival,2022,
+auto,Kia,1,Carnival/Sedona,2002,2021
+auto,Kia,1,Carnival/Sedona SWB,2006,2015
+auto,Kia,1,cee'd,2007,
+auto,Kia,1,cee'd Sport Wagon,2007,2012
+auto,Kia,1,cee'd Sportswagon,2012,2012
+auto,Kia,1,Ceed,2018,
+auto,Kia,1,Cerato / Spectra Hatchback,2004,2009
+auto,Kia,1,Cerato / Spectra Sedan,2004,2009
+auto,Kia,1,Cerato/Forte,2013,
+auto,Kia,1,e-Niro,2018,2018
+auto,Kia,1,EV3,2025,
+auto,Kia,1,EV5,2024,
+auto,Kia,1,EV6,2021,
+auto,Kia,1,Forte,2009,
+auto,Kia,1,Forte Koup,2010,2014
+auto,Kia,1,K4,2025,
+auto,Kia,1,K5,2020,
+auto,Kia,1,K7 / Cadenza,2013,
+auto,Kia,1,K9 / K900,2012,2018
+auto,Kia,1,K900/K9,2018,
+auto,Kia,1,Niro,2016,
+auto,Kia,1,Niro Plug-In Hybrid,2018,
+auto,Kia,1,Opirus/Amanti,2003,2010
+auto,Kia,1,Optima,2016,2019
+auto,Kia,1,Optima (US),2018,2020
+auto,Kia,1,Optima / K5,2010,2016
+auto,Kia,1,Optima / Magentis,2001,2010
+auto,Kia,1,Optima Sportswagon,2016,
+auto,Kia,1,Picanto,2004,
+auto,Kia,1,Picanto - 3 doors,2011,2011
+auto,Kia,1,Picanto 3 doors,2015,2017
+auto,Kia,1,Picanto 5 doors,2011,2020
+auto,Kia,1,Picanto X-Line,2017,2017
+auto,Kia,1,Pro cee'd,2007,2013
+auto,Kia,1,pro_cee'd,2013,2013
+auto,Kia,1,pro_cee’d GT,2013,
+auto,Kia,1,ProCeed,2019,2019
+auto,Kia,1,Rio,2012,
+auto,Kia,1,Rio 5 doors,2011,2016
+auto,Kia,1,Rio Hatchback,2005,2011
+auto,Kia,1,Rio Sedan,2005,2011
+auto,Kia,1,Rondo,2008,
+auto,Kia,1,Seltos,2019,
+auto,Kia,1,Sorento,2002,
+auto,Kia,1,Sorento (US),2018,
+auto,Kia,1,Soul,2008,
+auto,Kia,1,Soul EV,2018,
+auto,Kia,1,Sportage,2004,
+auto,Kia,1,Sportage HEV,2022,
+auto,Kia,1,Stinger,2017,
+auto,Kia,1,Stonic,2017,
+auto,Kia,1,Stonic GT-Line,2020,
+auto,Kia,1,Telluride,2019,
+auto,Kia,1,Venga,2009,2019
+auto,Kia,1,XCeed,2022,
+auto,Koenigsegg,0,Agera,2010,2014
+auto,Koenigsegg,0,Agera R,2011,2014
+auto,Koenigsegg,0,Agera RS,2015,2016
+auto,Koenigsegg,0,Agera S,2013,2014
+auto,Koenigsegg,0,CCX,2006,2010
+auto,Koenigsegg,0,CCXR,2007,2010
+auto,Koenigsegg,0,Gemera,2020,
+auto,Koenigsegg,0,One:1,2014,2015
+auto,Koenigsegg,0,Regera,2015,2015
+auto,KTM,1,X-Bow,2008,
+auto,KTM,1,X-Bow GT,2013,
+auto,KTM,1,X-Bow R,2011,2011
+auto,KTM,1,X-Bow RR,2012,
+auto,Lada,0,110,1998,2008
+auto,Lada,0,111,1998,2008
+auto,Lada,0,112,1999,2008
+auto,Lada,0,Kalina Hatchback,2007,2013
+auto,Lada,0,Kalina Sedan,2006,
+auto,Lada,0,NIVA,1976,
+auto,Lada,0,Priora,2008,2018
+auto,Lamborghini,1,Aventador LP 700-4,2011,2016
+auto,Lamborghini,1,Aventador LP 700-4 Roadster,2012,
+auto,Lamborghini,1,Aventador LP750-4 SV,2015,2017
+auto,Lamborghini,1,Aventador LP750-4 SV Roadster,2015,2017
+auto,Lamborghini,1,Aventador S,2017,
+auto,Lamborghini,1,Aventador S Roadster,2017,
+auto,Lamborghini,1,Aventador SVJ,2018,
+auto,Lamborghini,1,Aventador SVJ Roadster,2019,
+auto,Lamborghini,1,Centenario,2016,2017
+auto,Lamborghini,1,Centenario Roadster,2016,
+auto,Lamborghini,1,Gallardo,2003,2008
+auto,Lamborghini,1,Gallardo 560-4 Spyder,2008,2013
+auto,Lamborghini,1,Gallardo LP 550-2 Spyder,2012,2013
+auto,Lamborghini,1,Gallardo LP 550-2 Valentino Balboni,2009,2013
+auto,Lamborghini,1,Gallardo LP 560-4,2008,2012
+auto,Lamborghini,1,Gallardo LP 560-4 (2),2012,2013
+auto,Lamborghini,1,Gallardo LP 570-4 Edizione Tecnica,2012,2013
+auto,Lamborghini,1,Gallardo LP 570-4 Superleggera,2010,2013
+auto,Lamborghini,1,Gallardo LP 579-4 Spyder Performante,2010,2010
+auto,Lamborghini,1,Gallardo LP570-4 Squadra Corse,2013,2013
+auto,Lamborghini,1,Gallardo Spyder,2006,2008
+auto,Lamborghini,1,Gallardo Superleggera,2007,2008
+auto,Lamborghini,1,Huracan 580-2,2016,2016
+auto,Lamborghini,1,Huracan Evo,2019,2019
+auto,Lamborghini,1,Huracan Evo Epyder,2019,2019
+auto,Lamborghini,1,Huracan EVO RWD,2019,2019
+auto,Lamborghini,1,Huracan LP 610-4,2014,2014
+auto,Lamborghini,1,Huracan LP610-4 Spyder,2015,2015
+auto,Lamborghini,1,Huracan Performante,2017,2017
+auto,Lamborghini,1,Huracan Performante Spyder,2018,2018
+auto,Lamborghini,1,Huracan STO,2021,2021
+auto,Lamborghini,1,Huracan Tecnica,2023,
+auto,Lamborghini,1,LP780-4 Ultimae,2022,
+auto,Lamborghini,1,LP780-4 Ultimae Roadster,2022,
+auto,Lamborghini,1,Murcielago LP 640,2006,2010
+auto,Lamborghini,1,Murcielago LP 640 Roadster,2007,2010
+auto,Lamborghini,1,Murcielago LP 670-4 SV,2009,2009
+auto,Lamborghini,1,Reventon,2008,2009
+auto,Lamborghini,1,Revuelto,2024,
+auto,Lamborghini,1,Sian,2019,
+auto,Lamborghini,1,Sian Roadster,2020,
+auto,Lamborghini,1,Temerario,2025,
+auto,Lamborghini,1,Urus,2018,
+auto,Lamborghini,1,Urus Performante,2022,
+auto,Lamborghini,1,Urus S,2023,
+auto,Lamborghini,1,Veneno,2013,2014
+auto,Lamborghini,1,Veneno Roadster,2014,
+auto,Lancia,1,Delta,1979,2014
+auto,Lancia,1,Flavia,2013,2015
+auto,Lancia,1,Musa,2003,2012
+auto,Lancia,1,Phedra,2002,2010
+auto,Lancia,1,Thema,1984,2011
+auto,Lancia,1,Thesis,2001,2009
+auto,Lancia,1,Voyager,2011,2015
+auto,Lancia,1,Ypsilon,2003,
+auto,Lancia,1,Ypsilon Unyca,2011,2011
+auto,Land Rover,1,Defender 110,1991,2020
+auto,Land Rover,1,Defender 130,2022,
+auto,Land Rover,1,Defender 90,1991,2019
+auto,Land Rover,1,Defender 90 Works V8,2018,2019
+auto,Land Rover,1,Defender OCTA,2025,
+auto,Land Rover,1,Discovery,1990,
+auto,Land Rover,1,Discovery - LR3,2004,2009
+auto,Land Rover,1,Discovery - LR4,2013,
+auto,Land Rover,1,Discovery Sport,2014,
+auto,Land Rover,1,Discovery SVX,2018,
+auto,Land Rover,1,Freelander - LR2,2006,2014
+auto,Land Rover,1,LR4,2010,2010
+auto,Land Rover,1,Range Rover,1988,2021
+auto,Land Rover,1,Range Rover Evoque,2011,
+auto,Land Rover,1,Range Rover Evoque Convertible,2016,
+auto,Land Rover,1,Range Rover Evoque Coupe,2011,2015
+auto,Land Rover,1,Range Rover L,2014,
+auto,Land Rover,1,Range Rover LWB,2021,
+auto,Land Rover,1,Range Rover PHEV,2017,
+auto,Land Rover,1,Range Rover Sport,2005,2022
+auto,Land Rover,1,Range Rover Sport HST,2019,
+auto,Land Rover,1,Range Rover Sport PHEV,2017,
+auto,Land Rover,1,Range Rover Sport SV,2024,
+auto,Land Rover,1,Range Rover Sport SVR,2017,
+auto,Land Rover,1,Range Rover SWB,2021,
+auto,Land Rover,1,Range Rover Velar,2018,
+auto,Leapmotor,1,B10,2020,
+auto,Leapmotor,1,C10,2020,
+auto,Leapmotor,1,T03,2020,
+auto,Lexus,1,CT,2011,
+auto,Lexus,1,ES,2002,
+auto,Lexus,1,GS,1998,2016
+auto,Lexus,1,GS F,2015,2015
+auto,Lexus,1,GX,2003,
+auto,Lexus,1,GX 460,2013,2019
+auto,Lexus,1,HS 250h,2009,2013
+auto,Lexus,1,IS,1998,
+auto,Lexus,1,IS C,2009,2013
+auto,Lexus,1,IS F,2008,
+auto,Lexus,1,LBX,2024,
+auto,Lexus,1,LC,2017,2017
+auto,Lexus,1,LC 500 Convertible,2021,2021
+auto,Lexus,1,LFA,2010,2010
+auto,Lexus,1,LM,2024,
+auto,Lexus,1,LS,1990,
+auto,Lexus,1,LX,1996,
+auto,Lexus,1,NX,2014,
+auto,Lexus,1,RC,2014,
+auto,Lexus,1,RC F,2015,2015
+auto,Lexus,1,RX,1998,
+auto,Lexus,1,RZ 450e,2022,
+auto,Lexus,1,SC,1991,2010
+auto,Lexus,1,TX,2024,
+auto,Lexus,1,UX,2018,
+auto,Lexus,1,UX 300e,2020,
+auto,Lightyear,0,0,2023,
+auto,Lincoln,0,Aviator,2003,2020
+auto,Lincoln,0,Continental,1958,2017
+auto,Lincoln,0,Corsair,2020,
+auto,Lincoln,0,Corsair Grand Touring,2023,
+auto,Lincoln,0,Mark LT,2006,2009
+auto,Lincoln,0,MKC,2015,2019
+auto,Lincoln,0,MKS,2009,2013
+auto,Lincoln,0,MKT,2010,2013
+auto,Lincoln,0,MKX,2007,2016
+auto,Lincoln,0,MKZ,2007,2017
+auto,Lincoln,0,Nautilus,2019,
+auto,Lincoln,0,Navigator,1998,2018
+auto,Lincoln,0,Navigator L,2007,2018
+auto,Lincoln,0,Town Car,1998,2008
+auto,Lincoln,0,Zephyr,1936,2022
+auto,Lotus,1,2 Eleven,2007,2015
+auto,Lotus,1,3 Eleven 430,2018,
+auto,Lotus,1,Eletre,2022,
+auto,Lotus,1,Elise,1997,2008
+auto,Lotus,1,Elise Cup 250,2016,2016
+auto,Lotus,1,Elise Series 3,2010,2010
+auto,Lotus,1,Emira,2022,2022
+auto,Lotus,1,Europa S,2006,2010
+auto,Lotus,1,Evija,2020,
+auto,Lotus,1,Evora,2008,
+auto,Lotus,1,Evora 400,2015,2015
+auto,Lotus,1,Evora GT (North America),2019,
+auto,Lotus,1,Evora GT430,2017,2018
+auto,Lotus,1,Evora Sport 410,2016,2018
+auto,Lotus,1,Exige,2000,2012
+auto,Lotus,1,Exige 410 Sport,2017,2021
+auto,Lotus,1,Exige S,2012,2021
+auto,Lotus,1,Sport 240 Final Edition,2021,
+auto,Lotus,1,Sport 390 Final Edition,2021,
+auto,Lotus,1,Sport 420 Final Edition,2021,
+auto,Lucid,0,Air,2021,
+auto,Lynk & Co,1,01,2020,
+auto,Lynk & Co,1,02,2020,
+auto,Lynk & Co,1,08,2020,
+auto,Mahindra,0,Bolero,2011,
+auto,Mahindra,0,Scorpio / Goa,2002,
+auto,Mahindra,0,Thar,2010,
+auto,Mahindra,0,Verito,2012,
+auto,Marussia,0,B1,2010,
+auto,Marussia,0,B2,2010,
+auto,Maruti Suzuki,0,800,2000,
+auto,Maruti Suzuki,0,Alto,2000,2014
+auto,Maruti Suzuki,0,Ciaz,2014,2017
+auto,Maruti Suzuki,0,Gypsy,1985,
+auto,Maruti Suzuki,0,Swift,2006,
+auto,Maruti Suzuki,0,Wagon R,2005,
+auto,Maruti Suzuki,0,Zen Estilo,2006,2009
+auto,Maserati,1,Ghibli,1967,
+auto,Maserati,1,Ghibli GranLusso,2017,2020
+auto,Maserati,1,Ghibli Trofeo,2020,
+auto,Maserati,1,GranCabrio,2010,2018
+auto,Maserati,1,GranCabrio Folgore,2025,
+auto,Maserati,1,GranCabrio Trofeo,2025,
+auto,Maserati,1,GranTurismo,2007,2018
+auto,Maserati,1,GranTurismo Folgore,2023,
+auto,Maserati,1,GranTurismo MC Stradale,2011,2011
+auto,Maserati,1,GranTurismo Modena,2023,
+auto,Maserati,1,GranTurismo S,2008,2008
+auto,Maserati,1,GranTurismo Trofeo,2023,
+auto,Maserati,1,Grecale GT,2023,
+auto,Maserati,1,Grecale Modena,2023,
+auto,Maserati,1,Grecale Trofeo,2023,
+auto,Maserati,1,Grescale Folgore,2024,
+auto,Maserati,1,Levante,2016,2016
+auto,Maserati,1,Levante Trofeo,2018,
+auto,Maserati,1,MC20,2021,2021
+auto,Maserati,1,MC20 Cielo,2022,2022
+auto,Maserati,1,Quattroporte S,2008,2012
+auto,Maserati,1,Quattroporte Sport GT S,2009,2013
+auto,Maserati,1,Quattroporte Trofeo,2020,
+auto,Maserati,1,Quattroporte V,2003,2012
+auto,Maserati,1,Quattroporte VI,2013,
+auto,Maybach,0,57 (W240),2002,2012
+auto,Maybach,0,57 Spezial (W240),2006,2012
+auto,Maybach,0,57 Zeppelin,2009,2012
+auto,Maybach,0,62 (V240),2002,2012
+auto,Maybach,0,62 Zeppelin,2009,2012
+auto,Maybach,0,Landaulet,2008,2012
+auto,Mazda,1,2,2007,
+auto,Mazda,1,2 / Demio - sedan,2008,2014
+auto,Mazda,1,3 / Axela Hatchback,2009,2018
+auto,Mazda,1,3 / Axela Sedan,2004,
+auto,Mazda,1,3 MPS / MAZDASPEED3,2006,2013
+auto,Mazda,1,3/Axela Hatchback,2004,2019
+auto,Mazda,1,5 / Premacy,2005,
+auto,Mazda,1,6 / Atenza Sedan,2015,
+auto,Mazda,1,6 / Atenza Wagon,2015,
+auto,Mazda,1,6/Atenza Hatchback,2002,2013
+auto,Mazda,1,6/Atenza Sedan,2002,2013
+auto,Mazda,1,6/Atenza Wagon,2002,2015
+auto,Mazda,1,Biante,2008,
+auto,Mazda,1,BT-50,2006,2020
+auto,Mazda,1,CX-3,2015,
+auto,Mazda,1,CX-30,2019,
+auto,Mazda,1,CX-5,2012,
+auto,Mazda,1,CX-50,2021,
+auto,Mazda,1,CX-60,2022,
+auto,Mazda,1,CX-7,2007,2012
+auto,Mazda,1,CX-70,2025,
+auto,Mazda,1,CX-8,2017,
+auto,Mazda,1,CX-80,2024,
+auto,Mazda,1,CX-9,2007,
+auto,Mazda,1,CX-90,2024,
+auto,Mazda,1,Flair,2012,
+auto,Mazda,1,Flairwagon,2012,2013
+auto,Mazda,1,MX-30,2020,2020
+auto,Mazda,1,MX-30 e-Skyactiv R-EV,2024,
+auto,Mazda,1,MX-5 / Miata,1989,2015
+auto,Mazda,1,MX-5 / Miata RF,2016,
+auto,Mazda,1,MX-5 / Miata Roadster Coupe,2012,
+auto,Mazda,1,MX-5/Miata (ND),2015,2015
+auto,Mazda,1,RX-8,2003,2012
+auto,Mazda,1,Tribute,2001,2008
+auto,Mazda,1,Tribute Hybrid,2009,2009
+auto,McLaren,1,12C GT Sprint,2013,2014
+auto,McLaren,1,540C,2015,
+auto,McLaren,1,570GT,2016,2016
+auto,McLaren,1,570S,2016,2016
+auto,McLaren,1,570S Spider,2017,
+auto,McLaren,1,600LT,2018,
+auto,McLaren,1,620R,2019,
+auto,McLaren,1,650S,2014,2017
+auto,McLaren,1,650S Spider,2014,2017
+auto,McLaren,1,675LT,2015,2017
+auto,McLaren,1,675LT Spider,2016,2017
+auto,McLaren,1,720S,2017,
+auto,McLaren,1,720S Spider,2018,
+auto,McLaren,1,750S,2024,
+auto,McLaren,1,750S Spider,2024,
+auto,McLaren,1,765LT,2020,
+auto,McLaren,1,Artura,2021,
+auto,McLaren,1,Artura Spider,2025,
+auto,McLaren,1,Elva,2020,2020
+auto,McLaren,1,GT,2020,2020
+auto,McLaren,1,GTS,2024,
+auto,McLaren,1,MP4-12C,2011,2014
+auto,McLaren,1,MP4-12C Spider,2012,2015
+auto,McLaren,1,P1,2013,2013
+auto,McLaren,1,Senna,2018,
+auto,McLaren,1,Speedtail,2018,2018
+auto,Mercedes-Benz,1,53 AMG,2021,
+auto,Mercedes-Benz,1,A 35 4MATIC Sedan,2019,
+auto,Mercedes-Benz,1,A 35 AMG 4MATIC,2018,
+auto,Mercedes-Benz,1,A-Class (W177),2018,2022
+auto,Mercedes-Benz,1,A-Class L Sedan,2018,
+auto,Mercedes-Benz,1,A-Class Sedan,2022,
+auto,Mercedes-Benz,1,A-Class Sedan (V177),2018,
+auto,Mercedes-Benz,1,A-Klasse (W169),2008,2012
+auto,Mercedes-Benz,1,A-Klasse (W176),2015,2018
+auto,Mercedes-Benz,1,A-Klasse Coupe (C169),2008,2012
+auto,Mercedes-Benz,1,A45 (W176),2015,
+auto,Mercedes-Benz,1,A45 4MATIC+,2019,2019
+auto,Mercedes-Benz,1,AMG GT 43 4MATIC 4-Door,2018,
+auto,Mercedes-Benz,1,B-Class,2022,
+auto,Mercedes-Benz,1,B-Klasse,2008,2010
+auto,Mercedes-Benz,1,B-Klasse (W246),2012,2014
+auto,Mercedes-Benz,1,C 43 (W205),2015,2018
+auto,Mercedes-Benz,1,C 43 4MATIC,2018,
+auto,Mercedes-Benz,1,C 43 4MATIC (C205),2018,
+auto,Mercedes-Benz,1,C 43 T-Modell (S205),2015,2018
+auto,Mercedes-Benz,1,C 450 AMG (W205),2014,2015
+auto,Mercedes-Benz,1,C 63 (W205),2015,2018
+auto,Mercedes-Benz,1,C 63 AMG (W204),2007,2014
+auto,Mercedes-Benz,1,C 63 AMG T-Modell (S204),2011,2014
+auto,Mercedes-Benz,1,C 63 AMG T-Modell (S205),2014,
+auto,Mercedes-Benz,1,C 63 Cabriolet (A205),2016,2018
+auto,Mercedes-Benz,1,C 63 Coupe (C205),2016,2021
+auto,Mercedes-Benz,1,C 63 S E PERFORMANCE,2022,
+auto,Mercedes-Benz,1,C 63 T-Modell (S204),2007,2011
+auto,Mercedes-Benz,1,C-Class (A205),2018,
+auto,Mercedes-Benz,1,C-Class (W205),2018,2021
+auto,Mercedes-Benz,1,C-Class (W206),2021,
+auto,Mercedes-Benz,1,C-Class All-Terrain,2021,
+auto,Mercedes-Benz,1,C-Class Cabriolet (A205),2016,
+auto,Mercedes-Benz,1,C-Class Coupe (C205),2016,
+auto,Mercedes-Benz,1,C-Class T-Modell (S205),2014,2021
+auto,Mercedes-Benz,1,C-Class T-Modell (S206),2021,
+auto,Mercedes-Benz,1,C-Klasse (W204),2007,2013
+auto,Mercedes-Benz,1,C-Klasse Coupe (C204),2011,2013
+auto,Mercedes-Benz,1,C-Klasse Coupe AMG (C204),2011,2016
+auto,Mercedes-Benz,1,C-Klasse T-Modell (S204),2007,2011
+auto,Mercedes-Benz,1,C43,2022,
+auto,Mercedes-Benz,1,C43 (W205),2018,2022
+auto,Mercedes-Benz,1,C43 AMG Estate,2022,
+auto,Mercedes-Benz,1,C63 S E Performance,2022,
+auto,Mercedes-Benz,1,Citan,2021,
+auto,Mercedes-Benz,1,CL (C216),2006,2010
+auto,Mercedes-Benz,1,CL 63 AMG (C216),2007,2013
+auto,Mercedes-Benz,1,CL 65 AMG (C216),2007,2012
+auto,Mercedes-Benz,1,CLA (C117),2013,2018
+auto,Mercedes-Benz,1,CLA 35 4MATIC Shooting Brake,2019,
+auto,Mercedes-Benz,1,CLA 35 Coupe,2019,2019
+auto,Mercedes-Benz,1,CLA 45 (C117),2013,2016
+auto,Mercedes-Benz,1,CLA 45 4MATIC+ Shooting Brake,2019,2019
+auto,Mercedes-Benz,1,CLA 45 Coupe,2017,2019
+auto,Mercedes-Benz,1,CLA 45 S 4MATIC+,2024,
+auto,Mercedes-Benz,1,CLA 45 Shooting Brake,2015,2015
+auto,Mercedes-Benz,1,CLC (W203),2008,2011
+auto,Mercedes-Benz,1,CLE 53 Coupe,2024,
+auto,Mercedes-Benz,1,CLE53 Cabriolet,2024,
+auto,Mercedes-Benz,1,CLK (C209),2005,2009
+auto,Mercedes-Benz,1,CLK 63 AMG (C209),2006,2009
+auto,Mercedes-Benz,1,CLK 63 AMG Black Series (C209),2007,2009
+auto,Mercedes-Benz,1,CLK 63 AMG Cabrio (A209),2006,2009
+auto,Mercedes-Benz,1,CLK Cabrio (A209),2005,2009
+auto,Mercedes-Benz,1,CLS,2021,
+auto,Mercedes-Benz,1,CLS 53 AMG,2021,
+auto,Mercedes-Benz,1,CLS 53 Sedan (C257),2018,2021
+auto,Mercedes-Benz,1,CLS 63 AMG (C218),2011,2014
+auto,Mercedes-Benz,1,CLS 63 AMG (C219),2006,2010
+auto,Mercedes-Benz,1,CLS AMG Shooting Brake,2012,
+auto,Mercedes-Benz,1,CLS Class (C257),2018,2021
+auto,Mercedes-Benz,1,CLS Shooting Brake (X218),2012,2017
+auto,Mercedes-Benz,1,CLS-Klasse (C218),2010,2014
+auto,Mercedes-Benz,1,CLS-Klasse (C219),2008,2010
+auto,Mercedes-Benz,1,E 53 Cabrio (A238),2018,2020
+auto,Mercedes-Benz,1,E 53 Coupe (C238),2020,
+auto,Mercedes-Benz,1,E 63 AMG (W212),2013,2016
+auto,Mercedes-Benz,1,E 63 AMG (W213),2016,
+auto,Mercedes-Benz,1,E 63 AMG T-Modell (S211),2006,2009
+auto,Mercedes-Benz,1,E 63 AMG T-Modell (S212),2009,2017
+auto,Mercedes-Benz,1,E 63 AMG T-Modell (S213),2017,
+auto,Mercedes-Benz,1,E-Class (W213),2016,2020
+auto,Mercedes-Benz,1,E-Class Cabrio (A238),2020,
+auto,Mercedes-Benz,1,E-Class Cabriolet (A238),2016,2020
+auto,Mercedes-Benz,1,E-Class Coupe (C238),2016,
+auto,Mercedes-Benz,1,E-Class T-Modell All-Terrain (S213),2017,2020
+auto,Mercedes-Benz,1,E-Klasse (W211),2006,2009
+auto,Mercedes-Benz,1,E-Klasse (W212),2009,2012
+auto,Mercedes-Benz,1,E-Klasse Cabriolet (A207),2009,2012
+auto,Mercedes-Benz,1,E-Klasse Coupe (C 207),2009,2012
+auto,Mercedes-Benz,1,E-Klasse T-Modell (S 212),2009,2012
+auto,Mercedes-Benz,1,E-Klasse T-Modell (S211),2006,2009
+auto,Mercedes-Benz,1,E43 AMG (W213),2016,2018
+auto,Mercedes-Benz,1,E43 AMG T-Modell (S213),2016,2018
+auto,Mercedes-Benz,1,E53,2021,2021
+auto,Mercedes-Benz,1,E53 AMG (W213),2018,2020
+auto,Mercedes-Benz,1,E53 AMG Cabriolet (A238),2020,
+auto,Mercedes-Benz,1,E53 AMG T-Modell (S213),2018,
+auto,Mercedes-Benz,1,E53 Coupe (C238),2018,2020
+auto,Mercedes-Benz,1,E53 Hybrid,2025,
+auto,Mercedes-Benz,1,E53 Hybrid Estate,2025,
+auto,Mercedes-Benz,1,EQE,2021,
+auto,Mercedes-Benz,1,EQE SUV,2022,
+auto,Mercedes-Benz,1,EQS,2022,
+auto,Mercedes-Benz,1,G 63 (W464),2018,
+auto,Mercedes-Benz,1,G63,2025,
+auto,Mercedes-Benz,1,GL 63 AMG (X166),2012,2016
+auto,Mercedes-Benz,1,GL-Klasse (X164),2006,2012
+auto,Mercedes-Benz,1,GL-Klasse (X165),2012,2016
+auto,Mercedes-Benz,1,GLA (X156),2013,2020
+auto,Mercedes-Benz,1,GLA 35,2021,
+auto,Mercedes-Benz,1,GLA 45 AMG (X156),2014,2020
+auto,Mercedes-Benz,1,GLA45,2021,2021
+auto,Mercedes-Benz,1,GLA45 S,2024,
+auto,Mercedes-Benz,1,GLB 35,2020,
+auto,Mercedes-Benz,1,GLC (X253),2015,2022
+auto,Mercedes-Benz,1,GLC (X254),2022,
+auto,Mercedes-Benz,1,GLC 43 (X253),2016,2019
+auto,Mercedes-Benz,1,GLC 43 4MATIC,2019,
+auto,Mercedes-Benz,1,GLC 43 4MATIC Coupe,2020,2020
+auto,Mercedes-Benz,1,GLC 63 (X253),2017,2019
+auto,Mercedes-Benz,1,GLC 63 4MATIC,2019,
+auto,Mercedes-Benz,1,GLC 63 Coupe,2018,2018
+auto,Mercedes-Benz,1,GLC 63 S E Performance,2024,
+auto,Mercedes-Benz,1,GLC 63 S E Performance Coupe,2024,
+auto,Mercedes-Benz,1,GLC Coupe (C253),2016,2019
+auto,Mercedes-Benz,1,GLC43 Coupe,2016,2016
+auto,Mercedes-Benz,1,GLE,2020,2020
+auto,Mercedes-Benz,1,GLE (W166),2015,2019
+auto,Mercedes-Benz,1,GLE 43 Coupe,2015,2016
+auto,Mercedes-Benz,1,GLE 53,2024,
+auto,Mercedes-Benz,1,GLE 53 4MATIC+ Coupe,2020,
+auto,Mercedes-Benz,1,GLE 63 4MATIC+ Coupe,2020,2020
+auto,Mercedes-Benz,1,GLE 63 S,2024,
+auto,Mercedes-Benz,1,GLE 63 S 4Matic+ Coupe,2024,
+auto,Mercedes-Benz,1,GLE AMG (W166),2015,
+auto,Mercedes-Benz,1,GLE Coupe (C292),2015,2019
+auto,Mercedes-Benz,1,GLK-Klasse (X204),2008,
+auto,Mercedes-Benz,1,GLS 63,2017,
+auto,Mercedes-Benz,1,GLS-Class (X166),2016,2019
+auto,Mercedes-Benz,1,GT (C190),2017,
+auto,Mercedes-Benz,1,GT 4-Door coupe 63 4Matic+,2018,2018
+auto,Mercedes-Benz,1,GT 53,2021,2021
+auto,Mercedes-Benz,1,GT 53 4MATIC+ (X290,2019,2019
+auto,Mercedes-Benz,1,GT 63 S E PERFORMANCE,2024,
+auto,Mercedes-Benz,1,GT C Roadster (R190),2016,
+auto,Mercedes-Benz,1,GT Coupe,2015,
+auto,Mercedes-Benz,1,GT R (C 190),2018,
+auto,Mercedes-Benz,1,GT R PRO,2018,
+auto,Mercedes-Benz,1,GT R Roadster,2019,2019
+auto,Mercedes-Benz,1,GT Roadster,2020,
+auto,Mercedes-Benz,1,GT Roadster (R190),2016,2016
+auto,Mercedes-Benz,1,GT S (C190),2015,2020
+auto,Mercedes-Benz,1,GT S Roadster (R190),2018,2020
+auto,Mercedes-Benz,1,GT53 4-Door,2023,
+auto,Mercedes-Benz,1,GT63 S AMG E Performance,2025,
+auto,Mercedes-Benz,1,ML 63 AMG (W164),2005,2011
+auto,Mercedes-Benz,1,ML-Klasse (W164),2005,2011
+auto,Mercedes-Benz,1,ML-Klasse (W166),2011,2015
+auto,Mercedes-Benz,1,ONE,2023,
+auto,Mercedes-Benz,1,R 63 AMG (W251),2006,2008
+auto,Mercedes-Benz,1,R-Class Long (W251),2010,2013
+auto,Mercedes-Benz,1,R-Klasse (W251),2010,2013
+auto,Mercedes-Benz,1,R-Klasse Lang (W251),2005,2010
+auto,Mercedes-Benz,1,S 63,2013,2013
+auto,Mercedes-Benz,1,S 63 AMG (W221),2006,2013
+auto,Mercedes-Benz,1,S 63 AMG Coupe (C217),2017,
+auto,Mercedes-Benz,1,S 63 Cabriolet,2016,2016
+auto,Mercedes-Benz,1,S 63 Cabriolet (A217),2017,
+auto,Mercedes-Benz,1,S 63 L,2017,2017
+auto,Mercedes-Benz,1,S 65 AMG (W221),2006,2013
+auto,Mercedes-Benz,1,S 65 AMG (W222),2013,2017
+auto,Mercedes-Benz,1,S 65 Cabriolet (A217),2016,
+auto,Mercedes-Benz,1,S 65 Coupe (C217),2017,
+auto,Mercedes-Benz,1,S 65 L (V222),2017,
+auto,Mercedes-Benz,1,S-Class,2017,2020
+auto,Mercedes-Benz,1,S-Class (W223) / (V223),2020,
+auto,Mercedes-Benz,1,S-Class Cabriolet (A217),2016,2017
+auto,Mercedes-Benz,1,S-Class Coupe (C217),2014,2020
+auto,Mercedes-Benz,1,S-Class Maybach (X222),2015,2020
+auto,Mercedes-Benz,1,S-Class Maybach (X223),2020,
+auto,Mercedes-Benz,1,S-Klasse (W221),2009,2013
+auto,Mercedes-Benz,1,S63 E Performance,2024,
+auto,Mercedes-Benz,1,S650 PULLMAN MAYBACH,2018,
+auto,Mercedes-Benz,1,SL 55 AMG (R230),2006,
+auto,Mercedes-Benz,1,SL 63 AMG (R230),2008,2011
+auto,Mercedes-Benz,1,SL 63 AMG (R231),2012,
+auto,Mercedes-Benz,1,SL 65 AMG (R230),2004,2012
+auto,Mercedes-Benz,1,SL 65 AMG (R231),2012,
+auto,Mercedes-Benz,1,SL 65 AMG Black Series,2008,2012
+auto,Mercedes-Benz,1,SL-Class (R231),2016,
+auto,Mercedes-Benz,1,SL-Class AMG,2021,
+auto,Mercedes-Benz,1,SL-Klasse (R230),2006,2011
+auto,Mercedes-Benz,1,SL63 S E Performance,2024,
+auto,Mercedes-Benz,1,SLC 43 (R172),2016,
+auto,Mercedes-Benz,1,SLC-Class (R172),2016,
+auto,Mercedes-Benz,1,SLK (R171),2008,2011
+auto,Mercedes-Benz,1,SLK (R172),2011,2016
+auto,Mercedes-Benz,1,SLK 55 AMG (R171),2008,2011
+auto,Mercedes-Benz,1,SLK 55 AMG (R172),2012,2016
+auto,Mercedes-Benz,1,SLK 55 AMG Black Series (R171),2006,2008
+auto,Mercedes-Benz,1,SLR McLaren Roadster (C199),2007,2009
+auto,Mercedes-Benz,1,SLR Stirling Moss,2009,2009
+auto,Mercedes-Benz,1,SLS AMG Black Series,2013,2014
+auto,Mercedes-Benz,1,SLS AMG GT,2012,2014
+auto,Mercedes-Benz,1,SLS AMG Roadster,2012,2014
+auto,Mercedes-Benz,1,SLS AMG Roadster (C197),2011,2012
+auto,Mercedes-Benz,1,T-Class,2022,
+auto,Mercedes-Benz,1,V-Class,2019,
+auto,Mercedes-Benz,1,V-Class (W447),2014,2019
+auto,Mercedes-Benz,1,VIANO,2003,2014
+auto,Mercedes-Benz,1,Vito Tourer,2020,
+auto,Mercedes-Benz,1,X-Class,2017,2020
+auto,Mercury,0,Grand Marquis,2002,2011
+auto,Mercury,0,Mariner,2004,2011
+auto,Mercury,0,Milan,2005,2011
+auto,Mercury,0,Mountaineer,2006,2010
+auto,Mercury,0,Sable,2007,2009
+auto,MG,1,3,2014,2014
+auto,MG,1,3 Hybrid+,2025,
+auto,MG,1,4 EV,2023,
+auto,MG,1,4 XPower,2024,
+auto,MG,1,GS,2015,2015
+auto,MG,1,HS,2019,2019
+auto,MG,1,Marvel R,2021,
+auto,MG,1,MG 5 EV,2021,
+auto,MG,1,MG6 GT,2011,
+auto,MG,1,MG6 Magnette,2011,
+auto,MG,1,ZS,2017,2021
+auto,MG,1,ZS EV,2021,
+auto,MINI,1,Clubman,2007,2019
+auto,MINI,1,Clubvan,2012,
+auto,MINI,1,Convertible,2004,
+auto,MINI,1,Cooper S 5-door,2025,
+auto,MINI,1,Cooper SE,2024,
+auto,MINI,1,Cooper SE Convertible,2023,
+auto,MINI,1,Copper S,2022,2022
+auto,MINI,1,Countryman,2010,2021
+auto,MINI,1,Countryman C,2024,
+auto,MINI,1,Countryman SE ALL4,2024,
+auto,MINI,1,Coupe,2011,2015
+auto,MINI,1,F55 Hatch,2014,2014
+auto,MINI,1,Hatch,1997,2021
+auto,MINI,1,Hatch (R56),2006,2014
+auto,MINI,1,John Cooper Works GP,2019,
+auto,MINI,1,Mini Cooper 3-door,2021,
+auto,MINI,1,Paceman,2013,2016
+auto,MINI,1,Roadster (R59),2011,2011
+auto,Mitsubishi,1,ASX,2020,
+auto,Mitsubishi,1,ASX / RVR / Outlander Sport,2010,2019
+auto,Mitsubishi,1,Attrage,2013,
+auto,Mitsubishi,1,Colt,1988,
+auto,Mitsubishi,1,Colt CZ3,2004,2008
+auto,Mitsubishi,1,Colt CZC,2006,2012
+auto,Mitsubishi,1,Colt CZT,2005,2008
+auto,Mitsubishi,1,Colt Ralliart,2008,2012
+auto,Mitsubishi,1,Eclipse,1990,2012
+auto,Mitsubishi,1,Eclipse Cross,2017,
+auto,Mitsubishi,1,Eclipse Spyder,2000,2012
+auto,Mitsubishi,1,Endeavor,2002,2011
+auto,Mitsubishi,1,Galant,1988,2012
+auto,Mitsubishi,1,Galant (US),2004,2008
+auto,Mitsubishi,1,i-MiEV,2009,
+auto,Mitsubishi,1,L 200/Triton Crew Cab,2005,
+auto,Mitsubishi,1,L 200/Triton Single Cab,2005,
+auto,Mitsubishi,1,L200 Club Cab,2015,2015
+auto,Mitsubishi,1,L200 Double Cab,1995,2015
+auto,Mitsubishi,1,Lancer,1988,
+auto,Mitsubishi,1,Lancer Ralliart,2008,2011
+auto,Mitsubishi,1,Lancer Sportback,2008,
+auto,Mitsubishi,1,Mirage,2012,
+auto,Mitsubishi,1,Mirage G4,2016,
+auto,Mitsubishi,1,Mirage G4/Attrage,2015,2015
+auto,Mitsubishi,1,Mirage GT,2016,2019
+auto,Mitsubishi,1,Outlander,2012,
+auto,Mitsubishi,1,Outlander / Airtrek,2003,2016
+auto,Mitsubishi,1,Outlander PHEV,2016,
+auto,Mitsubishi,1,Outlander/Airtrek,2007,2011
+auto,Mitsubishi,1,Pajero Pinin / Shogun Pinin / Montero iO SWB,1998,
+auto,Mitsubishi,1,Pajero/Montero/Shogun,2006,
+auto,Mitsubishi,1,Pajero/Montero/Shogun 3 doors,2006,
+auto,Mitsubishi,1,Pajero/Montero/Shogun Sport,2004,2008
+auto,Mitsubishi,1,Raider Crew Cab,2005,2009
+auto,Mitsubishi,1,Raider Double Cab,2005,2009
+auto,Mitsubishi,1,Space Star,2002,
+auto,Morgan,0,3 wheeler,2011,
+auto,Morgan,0,4/4 2 seater,2008,
+auto,Morgan,0,4/4 4 Seater,2006,2011
+auto,Morgan,0,Aero 8,2001,2015
+auto,Morgan,0,Aero SuperSports,2010,2010
+auto,Morgan,0,AeroMax,2005,2011
+auto,Morgan,0,Plus 4,2005,2020
+auto,Morgan,0,Plus 4 4 seater,2006,
+auto,Morgan,0,Plus 8,2012,
+auto,Morgan,0,Plus Four,2020,
+auto,Morgan,0,Plus Six,2019,
+auto,Morgan,0,Roadster,2004,
+auto,Morgan,0,Roadster 4 seater,2006,
+auto,NIO,1,EC6,2020,
+auto,NIO,1,EP9,2016,
+auto,NIO,1,ES6,2018,
+auto,NIO,1,ES8,2018,
+auto,NIO,1,ET7,2020,
+auto,Nissan,1,350 Z,2006,2008
+auto,Nissan,1,350Z Roadster,2005,2009
+auto,Nissan,1,370Z,2008,2012
+auto,Nissan,1,370Z Coupe,2012,
+auto,Nissan,1,370z Nismo,2009,
+auto,Nissan,1,370Z Roadster,2009,
+auto,Nissan,1,Altima,1998,
+auto,Nissan,1,Altima (Thailand),2011,
+auto,Nissan,1,Altima Coupe,2007,
+auto,Nissan,1,Altima Sedan,2012,2018
+auto,Nissan,1,Ariya,2020,
+auto,Nissan,1,Ariya Nismo,2025,
+auto,Nissan,1,Armada,2003,
+auto,Nissan,1,CrossCabriolet,2011,2014
+auto,Nissan,1,Cube,2009,2009
+auto,Nissan,1,Frontier,2009,
+auto,Nissan,1,Frontier/Navara Double Cab,2019,2021
+auto,Nissan,1,Frontier/Navara King Cab,2019,
+auto,Nissan,1,Grand Livina,2006,
+auto,Nissan,1,GT-R,2017,
+auto,Nissan,1,GT-R (R35),2007,2011
+auto,Nissan,1,GT-R (R35) - Facelift,2011,2016
+auto,Nissan,1,GT-R (R35) Nismo,2014,2016
+auto,Nissan,1,GT-R Nismo,2020,
+auto,Nissan,1,Juke,2010,
+auto,Nissan,1,Juke Nismo,2013,2013
+auto,Nissan,1,Kicks,2016,
+auto,Nissan,1,Leaf,2010,2018
+auto,Nissan,1,Maxima,1989,
+auto,Nissan,1,Micra,1989,
+auto,Nissan,1,Micra C+C,2005,2008
+auto,Nissan,1,Murano,2003,
+auto,Nissan,1,Navara / Frontier Double Cab,2005,2015
+auto,Nissan,1,Navara / Frontier King Cab,2005,2015
+auto,Nissan,1,Navara NP300 Double Cab,2015,
+auto,Nissan,1,Navara NP300 King Cab,2015,
+auto,Nissan,1,Note,2005,2013
+auto,Nissan,1,NP300 Pickup Double Cab,2008,2014
+auto,Nissan,1,NP300 Pickup King Cab,2008,2014
+auto,Nissan,1,NP300 Pickup Single Cab,2008,2015
+auto,Nissan,1,NV200,2009,
+auto,Nissan,1,Pathfinder,2001,
+auto,Nissan,1,Patrol,2010,
+auto,Nissan,1,Patrol LWB,1988,2010
+auto,Nissan,1,Pixo,2009,2013
+auto,Nissan,1,Platina,2006,2010
+auto,Nissan,1,Pulsar,2014,
+auto,Nissan,1,Qashqai,2007,2022
+auto,Nissan,1,Quest,2004,
+auto,Nissan,1,Rogue,2007,
+auto,Nissan,1,Rogue Sport,2019,
+auto,Nissan,1,Sakura,2022,
+auto,Nissan,1,Sentra,2000,
+auto,Nissan,1,Sentra SE-R,2004,
+auto,Nissan,1,Serena,1991,
+auto,Nissan,1,Skyline Sedan,2001,
+auto,Nissan,1,Sunny,2010,
+auto,Nissan,1,Teana,2003,
+auto,Nissan,1,Terrano,2013,
+auto,Nissan,1,Tiida/Versa,2006,2018
+auto,Nissan,1,Tiida/Versa Sedan,2006,
+auto,Nissan,1,Titan Crew Cab,2004,2020
+auto,Nissan,1,Titan King Cab,2004,2015
+auto,Nissan,1,Titan XD Crew Cab,2015,2019
+auto,Nissan,1,Versa,2022,
+auto,Nissan,1,Versa/Note,2017,
+auto,Nissan,1,X-Trail,2001,
+auto,Nissan,1,X-Trail (T31),2007,2013
+auto,Nissan,1,X-Trail (T32),2014,2022
+auto,Nissan,1,XTerra,2002,2015
+auto,Nissan,1,Z,2021,
+auto,Nissan,1,Z Nismo,2024,
+auto,Omoda,1,5,2020,
+auto,Omoda,1,E5,2020,
+auto,Opel,1,Adam,2013,2013
+auto,Opel,1,Adam Rocks,2013,2013
+auto,Opel,1,Agila,2000,2015
+auto,Opel,1,Ampera,2011,2011
+auto,Opel,1,Ampera-e,2017,2017
+auto,Opel,1,Antara,2007,2017
+auto,Opel,1,Astra,1991,
+auto,Opel,1,Astra 3 Doors (GTC),2005,2009
+auto,Opel,1,Astra 3 Doors (GTC) OPC,2005,2009
+auto,Opel,1,Astra Electric,2023,
+auto,Opel,1,Astra GTC,2011,
+auto,Opel,1,Astra OPC,2013,
+auto,Opel,1,Astra Sedan,1992,2009
+auto,Opel,1,Astra Sport Sedan,2012,
+auto,Opel,1,Astra Sport Tourer,2020,2022
+auto,Opel,1,Astra Sport Tourer Electric,2023,
+auto,Opel,1,Astra Sports Tourer,2010,
+auto,Opel,1,Astra Twin Top,2006,2011
+auto,Opel,1,Cascada Coupe Cabrio,2013,2013
+auto,Opel,1,Combo,2001,2011
+auto,Opel,1,Combo Life,2018,
+auto,Opel,1,Corsa,1993,
+auto,Opel,1,Corsa OPC,2007,
+auto,Opel,1,Corsa-e,2019,
+auto,Opel,1,Crossland,2020,
+auto,Opel,1,Crossland X,2017,
+auto,Opel,1,Frontera,2025,
+auto,Opel,1,Grandland,2022,
+auto,Opel,1,Grandland X,2017,2021
+auto,Opel,1,GT,1968,2009
+auto,Opel,1,Insignia Country Tourer,2013,
+auto,Opel,1,Insignia Grand Sport,2017,
+auto,Opel,1,Insignia GSi,2017,
+auto,Opel,1,Insignia Hatchback,2008,
+auto,Opel,1,Insignia OPC,2009,
+auto,Opel,1,Insignia Sedan,2008,2017
+auto,Opel,1,Insignia Sports Tourer,2009,
+auto,Opel,1,Insignia Sports Tourer GSi,2017,
+auto,Opel,1,Insignia Sports Tourer OPC,2009,2017
+auto,Opel,1,Karl,2015,2019
+auto,Opel,1,Meriva,2003,2014
+auto,Opel,1,Meriva OPC,2005,2010
+auto,Opel,1,Mokka,2012,2016
+auto,Opel,1,Mokka X,2016,2020
+auto,Opel,1,Mokka-e,2020,
+auto,Opel,1,Rocks-e,2021,
+auto,Opel,1,Signum,2003,2008
+auto,Opel,1,Tigra Twin Top,2005,2009
+auto,Opel,1,Vectra Caravan,1996,2008
+auto,Opel,1,Vectra Caravan OPC,2005,2008
+auto,Opel,1,Vectra GTS,2002,2008
+auto,Opel,1,Vectra GTS OPC,2005,2008
+auto,Opel,1,Vectra Sedan,1988,2008
+auto,Opel,1,Zafira,1999,2014
+auto,Opel,1,Zafira Life,2019,2019
+auto,Opel,1,Zafira OPC,2001,
+auto,Opel,1,Zafira Tourer,2011,2016
+auto,Opel,1,Zafira Tourer C,2016,2019
+auto,Pagani,0,Huayra,2012,
+auto,Pagani,0,Huayra Roadster,2017,2019
+auto,Pagani,0,Huayra Roadster BC,2019,2019
+auto,Pagani,0,Imola,2020,
+auto,Pagani,0,Utopia,2022,
+auto,Pagani,0,Zonda Cinque,2008,2009
+auto,Pagani,0,Zonda Cinque Roadster,2009,2010
+auto,Pagani,0,Zonda F,2005,
+auto,Pagani,0,Zonda F Roadster,2006,2009
+auto,Panoz,0,Avezzano,2017,
+auto,Panoz,0,Roadster,2015,
+auto,Perodua,0,Alza,2009,
+auto,Perodua,0,Aruz,2019,
+auto,Perodua,0,Axia,2014,
+auto,Perodua,0,Bezza,2016,2019
+auto,Perodua,0,Bezza AV,2019,
+auto,Perodua,0,Myvi,2015,
+auto,Peugeot,1,1007,2007,2009
+auto,Peugeot,1,107,2005,2014
+auto,Peugeot,1,108,2014,
+auto,Peugeot,1,2008,2013,
+auto,Peugeot,1,206,1998,2010
+auto,Peugeot,1,206+ 3 doors,2009,2013
+auto,Peugeot,1,206+ 5 doors,2009,2012
+auto,Peugeot,1,207,2006,2009
+auto,Peugeot,1,207 - 3 doors,2009,2009
+auto,Peugeot,1,207 - 5 doors,2009,2012
+auto,Peugeot,1,207 5 doors,2006,2009
+auto,Peugeot,1,207 CC,2007,2014
+auto,Peugeot,1,207 RC,2007,2009
+auto,Peugeot,1,207 SW Outdoor,2008,2012
+auto,Peugeot,1,208,2020,2020
+auto,Peugeot,1,208 3 doors,2012,2018
+auto,Peugeot,1,208 5 doors,2012,2019
+auto,Peugeot,1,208 GTI,2013,2015
+auto,Peugeot,1,208 GTi 3 doors,2015,2018
+auto,Peugeot,1,208 XY,2013,2015
+auto,Peugeot,1,3008,2009,
+auto,Peugeot,1,301,2012,2017
+auto,Peugeot,1,307,2001,2008
+auto,Peugeot,1,307 Break,2002,2008
+auto,Peugeot,1,307 CC,2003,2008
+auto,Peugeot,1,307 Sedan,2006,2008
+auto,Peugeot,1,307 SW,2002,2008
+auto,Peugeot,1,308,2008,
+auto,Peugeot,1,308 - 5 doors,2013,2017
+auto,Peugeot,1,308 CC,2008,2015
+auto,Peugeot,1,308 GT,2014,
+auto,Peugeot,1,308 GTi,2015,2017
+auto,Peugeot,1,308 SW,2008,
+auto,Peugeot,1,308 SW GT,2014,
+auto,Peugeot,1,4007,2007,2012
+auto,Peugeot,1,407,2004,2010
+auto,Peugeot,1,407 Coupe,2005,2008
+auto,Peugeot,1,407 SW,2004,2010
+auto,Peugeot,1,408,2010,
+auto,Peugeot,1,5008,2009,
+auto,Peugeot,1,508,2014,
+auto,Peugeot,1,508 Berline,2010,2010
+auto,Peugeot,1,508 RXH,2014,2018
+auto,Peugeot,1,508 SW,2010,
+auto,Peugeot,1,607,2000,2010
+auto,Peugeot,1,e-208,2020,
+auto,Peugeot,1,Hoggar,2010,2014
+auto,Peugeot,1,iOn,2010,2012
+auto,Peugeot,1,Landtrek,2020,
+auto,Peugeot,1,Landtrek Single Cab,2020,
+auto,Peugeot,1,Partner Combi,2002,2008
+auto,Peugeot,1,Peugeot 4008,2012,2017
+auto,Peugeot,1,Peugeot 508 RXH,2011,2014
+auto,Peugeot,1,Pick Up,2017,
+auto,Peugeot,1,RCZ,2009,2013
+auto,Peugeot,1,RCZ R,2013,2013
+auto,Peugeot,1,RIFTER,2018,
+auto,Peugeot,1,SW,2018,2018
+auto,Peugeot,1,Tepee Bipper,2008,
+auto,Peugeot,1,Tepee Expert,2007,
+auto,Peugeot,1,Tepee Partner,2008,2012
+auto,Peugeot,1,Traveller,2016,2016
+auto,Pininfarina,0,B95,2025,
+auto,Pininfarina,0,Battista,2019,2019
+auto,Polestar,1,2,2022,
+auto,Polestar,1,4,2024,
+auto,Polestar,1,Polestar 1,2019,
+auto,Polestar,1,Polestar 3,2022,
+auto,Pontiac,0,G3,2009,2011
+auto,Pontiac,0,G5,2007,2010
+auto,Pontiac,0,G5 Sedan,2004,2010
+auto,Pontiac,0,G6 Convertible,2006,2010
+auto,Pontiac,0,G6 Coupe,2006,2010
+auto,Pontiac,0,G6 Sedan,2005,2010
+auto,Pontiac,0,G8,2007,2009
+auto,Pontiac,0,Grand Prix,1990,2008
+auto,Pontiac,0,Montana SV6,2005,2009
+auto,Pontiac,0,Solstice,2005,2009
+auto,Pontiac,0,Solstice Coupe,2008,2009
+auto,Pontiac,0,Torrent,2005,2009
+auto,Pontiac,0,Vibe,2002,2010
+auto,Pontiac,0,Vibe GT,2003,2010
+auto,Porsche,1,718 Boxster (982),2016,2016
+auto,Porsche,1,718 Boxster GTS 4.0,2020,2020
+auto,Porsche,1,718 Boxster S (982),2016,2016
+auto,Porsche,1,718 Boxster T (982),2020,2020
+auto,Porsche,1,718 Cayman GT4 RS,2022,2022
+auto,Porsche,1,718 Cayman T (982C),2020,2020
+auto,Porsche,1,718 Spyder,2019,2019
+auto,Porsche,1,718 Spyder RS,2024,
+auto,Porsche,1,911 Carrera (991),2012,2015
+auto,Porsche,1,911 Carrera (997),2004,2012
+auto,Porsche,1,911 Carrera 4 (991),2012,2015
+auto,Porsche,1,911 Carrera 4 (997),2005,2012
+auto,Porsche,1,911 Carrera 4 Cabriolet (991),2012,
+auto,Porsche,1,911 Carrera 4 Cabriolet (997),2005,2011
+auto,Porsche,1,911 Carrera 4 GTS,2022,
+auto,Porsche,1,911 Carrera 4 GTS (991),2014,2018
+auto,Porsche,1,911 Carrera 4 GTS Cabriolet (991),2014,2018
+auto,Porsche,1,911 Carrera 4S (991),2012,2018
+auto,Porsche,1,911 Carrera 4S (992),2018,
+auto,Porsche,1,911 Carrera 4S (997),2005,2012
+auto,Porsche,1,911 Carrera 4S Cabriolet (991),2012,2018
+auto,Porsche,1,911 Carrera 4S Cabriolet (992),2018,
+auto,Porsche,1,911 Carrera 4S Cabriolet (997),2005,2012
+auto,Porsche,1,911 Carrera Cabrio (991),2015,2019
+auto,Porsche,1,911 Carrera Cabriolet,2025,
+auto,Porsche,1,911 Carrera Cabriolet (991),2012,2015
+auto,Porsche,1,911 Carrera Cabriolet (997),2005,2012
+auto,Porsche,1,911 Carrera Coupe (991),2015,2019
+auto,Porsche,1,911 Carrera Coupe (992),2019,
+auto,Porsche,1,911 Carrera GTS,2014,2021
+auto,Porsche,1,911 Carrera GTS (997),2010,2011
+auto,Porsche,1,911 Carrera GTS Cabriolet,2014,
+auto,Porsche,1,911 Carrera GTS Cabriolet (997),2010,2011
+auto,Porsche,1,911 Carrera S (991),2012,2015
+auto,Porsche,1,911 Carrera S (992),2019,
+auto,Porsche,1,911 Carrera S (997),2004,2011
+auto,Porsche,1,911 Carrera S Cabriolet (991),2012,2018
+auto,Porsche,1,911 Carrera S Cabriolet (997),2005,2011
+auto,Porsche,1,911 Carrera S Coupe (991),2015,2019
+auto,Porsche,1,911 Carrera T,2017,
+auto,Porsche,1,911 Carrera Targa 4 (991),2014,2016
+auto,Porsche,1,911 Carrera Targa 4 (997),2006,2013
+auto,Porsche,1,911 Carrera Targa 4S (991),2014,2020
+auto,Porsche,1,911 Carrera Targa 4S (997),2006,2013
+auto,Porsche,1,911 GT2 (997),2007,2009
+auto,Porsche,1,911 GT2 RS (991),2017,2019
+auto,Porsche,1,911 GT2 RS (997),2010,2012
+auto,Porsche,1,911 GT3,2025,
+auto,Porsche,1,911 GT3 (991),2013,2017
+auto,Porsche,1,911 GT3 (991.2),2017,2021
+auto,Porsche,1,911 GT3 (997),2006,2011
+auto,Porsche,1,911 GT3 RS (991.1),2016,2018
+auto,Porsche,1,911 GT3 RS (991.2),2018,2019
+auto,Porsche,1,911 GT3 RS (992),2022,
+auto,Porsche,1,911 GT3 RS (997),2006,2009
+auto,Porsche,1,911 GT3 RS (997.2),2009,2011
+auto,Porsche,1,911 GT3 RS 4.0 (991),2011,2013
+auto,Porsche,1,911 GT3 Touring Package,2025,
+auto,Porsche,1,911 R,2016,
+auto,Porsche,1,911 Speedster,2019,
+auto,Porsche,1,911 Sport Classic (911),2010,2012
+auto,Porsche,1,911 Targa 4 (991.2),2016,2020
+auto,Porsche,1,911 Targa 4 (992),2020,
+auto,Porsche,1,911 Targa 4 GTS,2021,
+auto,Porsche,1,911 Targa 4 GTS (991),2015,2021
+auto,Porsche,1,911 Targa 4S (992),2020,
+auto,Porsche,1,911 Turbo (991),2013,2016
+auto,Porsche,1,911 Turbo (991.2),2016,2020
+auto,Porsche,1,911 Turbo (992),2020,
+auto,Porsche,1,911 Turbo (997),2006,2011
+auto,Porsche,1,911 Turbo Cabriolet (991),2013,2016
+auto,Porsche,1,911 Turbo Cabriolet (991.2),2016,2020
+auto,Porsche,1,911 Turbo Cabriolet (997),2007,2011
+auto,Porsche,1,911 Turbo S (991),2013,2016
+auto,Porsche,1,911 Turbo S (991.2),2016,2020
+auto,Porsche,1,911 Turbo S (992),2020,
+auto,Porsche,1,911 Turbo S (997),2010,2011
+auto,Porsche,1,911 Turbo S Cabriolet (991),2013,2016
+auto,Porsche,1,911 Turbo S Cabriolet (991.2),2016,2020
+auto,Porsche,1,911 Turbo S Cabriolet (992),2020,
+auto,Porsche,1,911 Turbo S Cabriolet (997),2010,2011
+auto,Porsche,1,917 Cayman (982C),2016,2016
+auto,Porsche,1,917 Cayman S (982C),2016,2016
+auto,Porsche,1,918 Spyder,2014,2014
+auto,Porsche,1,Boxster (981),2012,2012
+auto,Porsche,1,Boxster (987.2),2009,2009
+auto,Porsche,1,Boxster S (981),2012,2012
+auto,Porsche,1,Boxster Spyder (981),2016,2016
+auto,Porsche,1,Boxster Spyder (987.2),2009,2009
+auto,Porsche,1,Cayenne,2018,
+auto,Porsche,1,Cayenne (957),2007,2009
+auto,Porsche,1,Cayenne (958),2010,2017
+auto,Porsche,1,Cayenne Coupe,2020,2020
+auto,Porsche,1,Cayenne Diesel,2010,2017
+auto,Porsche,1,Cayenne Diesel (957),2008,2010
+auto,Porsche,1,Cayenne E-Hybrid,2019,
+auto,Porsche,1,CAYENNE GTS,2021,2021
+auto,Porsche,1,Cayenne GTS (957),2008,2010
+auto,Porsche,1,Cayenne GTS (958),2012,2018
+auto,Porsche,1,Cayenne GTS Coupe (PO536),2020,
+auto,Porsche,1,Cayenne S,2024,
+auto,Porsche,1,Cayenne S (957),2007,2009
+auto,Porsche,1,Cayenne S (958),2010,2017
+auto,Porsche,1,Cayenne S Coupe,2024,
+auto,Porsche,1,Cayenne S Diesel (958),2012,2017
+auto,Porsche,1,Cayenne S E-Hybrid (958),2014,
+auto,Porsche,1,Cayenne S Hybrid (958),2010,2014
+auto,Porsche,1,Cayenne S TransSyberia (957),2009,2011
+auto,Porsche,1,Cayenne Turbo,2014,
+auto,Porsche,1,Cayenne Turbo (957),2007,2009
+auto,Porsche,1,Cayenne Turbo (958),2010,2014
+auto,Porsche,1,Cayenne Turbo (PO536),2017,
+auto,Porsche,1,Cayenne Turbo E-Hybrid,2024,
+auto,Porsche,1,Cayenne Turbo E-Hybrid Coupe with GT Package,2024,
+auto,Porsche,1,Cayenne Turbo GT,2024,
+auto,Porsche,1,Cayenne Turbo S (957),2008,2009
+auto,Porsche,1,Cayenne Turbo S (958),2012,2017
+auto,Porsche,1,Cayenne Turbo S E-Hybrid (PO536),2019,
+auto,Porsche,1,Cayman (981C),2012,2012
+auto,Porsche,1,Cayman (987.2C),2009,2009
+auto,Porsche,1,Cayman GT4 (981C),2016,2016
+auto,Porsche,1,Cayman GT4 (982),2020,2020
+auto,Porsche,1,Cayman GTS,2018,2018
+auto,Porsche,1,Cayman GTS 4.0 (982C),2020,2020
+auto,Porsche,1,Cayman R (987.2C),2010,2010
+auto,Porsche,1,Cayman S (981C),2014,2014
+auto,Porsche,1,Cayman S (987.2C),2009,2009
+auto,Porsche,1,CCayenne Turbo Coupe,2019,2019
+auto,Porsche,1,GT3,2022,2022
+auto,Porsche,1,GTS,2021,
+auto,Porsche,1,GTS Sport Turismo,2021,
+auto,Porsche,1,Macan (95B),2014,
+auto,Porsche,1,Macan 4 Electric,2025,
+auto,Porsche,1,Macan GTS (95B),2015,
+auto,Porsche,1,Macan S (95B),2014,
+auto,Porsche,1,Macan S Diesel (95B),2014,2018
+auto,Porsche,1,Macan T,2022,
+auto,Porsche,1,Macan Turbo,2020,2020
+auto,Porsche,1,Macan Turbo (95B),2014,2019
+auto,Porsche,1,Macan Turbo Electric,2025,
+auto,Porsche,1,Panamera,2021,
+auto,Porsche,1,Panamera (907),2009,2013
+auto,Porsche,1,Panamera (970),2013,2016
+auto,Porsche,1,Panamera (971),2016,2020
+auto,Porsche,1,Panamera 4,2023,
+auto,Porsche,1,Panamera 4 (907),2009,2013
+auto,Porsche,1,Panamera 4 (970),2013,2016
+auto,Porsche,1,Panamera 4 (971),2016,2020
+auto,Porsche,1,Panamera 4 E-Hybrid (971),2016,2020
+auto,Porsche,1,Panamera 4 E-Hybrid Sport Turismo (971),2017,2020
+auto,Porsche,1,Panamera 4 Sport Turismo (971),2017,2020
+auto,Porsche,1,Panamera 4S (970),2009,2016
+auto,Porsche,1,Panamera 4S (971),2016,2020
+auto,Porsche,1,Panamera 4S Diesel (971),2016,2020
+auto,Porsche,1,Panamera 4S Diesel Sport Turismo,2017,2017
+auto,Porsche,1,Panamera 4S E-Hybrid (971),2020,
+auto,Porsche,1,Panamera 4S E-Hybrid Executive (971),2020,
+auto,Porsche,1,Panamera 4S Sport Turismo (971),2017,
+auto,Porsche,1,Panamera Diesel (970),2011,2016
+auto,Porsche,1,Panamera GTS (970),2011,2016
+auto,Porsche,1,Panamera GTS (971),2018,
+auto,Porsche,1,Panamera GTS Sport Turismo (971),2018,
+auto,Porsche,1,Panamera S (970),2009,2016
+auto,Porsche,1,Panamera S E-Hybrid (970),2013,2016
+auto,Porsche,1,Panamera S Hybrid (970),2011,2013
+auto,Porsche,1,Panamera Turbo (970),2009,2016
+auto,Porsche,1,Panamera Turbo (971),2016,2020
+auto,Porsche,1,Panamera Turbo E-Hybrid,2024,
+auto,Porsche,1,Panamera Turbo S (907),2011,2013
+auto,Porsche,1,Panamera Turbo S (970),2013,2016
+auto,Porsche,1,Panamera Turbo S (971),2020,
+auto,Porsche,1,Panamera Turbo S E-Hybrid (971),2017,2020
+auto,Porsche,1,Panamera Turbo S E-Hybrid Sport Turismo,2017,
+auto,Porsche,1,Panamera Turbo S Sport Turismo (971),2020,
+auto,Porsche,1,Panamera Turbo Sport Turismo (971),2017,
+auto,Porsche,1,Taycan,2022,
+auto,Porsche,1,Taycan 4S,2019,2019
+auto,Porsche,1,Taycan Cross Turismo,2022,
+auto,Porsche,1,Taycan Sport Turismo,2025,
+auto,Porsche,1,Taycan Turbo,2019,2019
+auto,Porsche,1,Taycan Turbo GT,2025,
+auto,Proton,0,Arena/Jumbuck,2002,2011
+auto,Proton,0,Ertiga,2016,
+auto,Proton,0,Exora,2009,2012
+auto,Proton,0,Gen-2,2004,2013
+auto,Proton,0,Inspira,2010,
+auto,Proton,0,Iriz,2014,2017
+auto,Proton,0,Perdana,2016,
+auto,Proton,0,Persona,2007,
+auto,Proton,0,Preve,2011,
+auto,Proton,0,Saga,2016,
+auto,Proton,0,Saga FLX,2011,2016
+auto,Proton,0,Satria Neo,2006,2015
+auto,Proton,0,Savvy,2005,2012
+auto,Proton,0,Suprima S,2013,
+auto,Proton,0,Waja/Impian,2001,2011
+auto,Qoros,0,3 City SUV,2015,
+auto,Qoros,0,3 Hatchbach,2014,
+auto,Qoros,0,3 Sedan,2013,
+auto,Qoros,0,5,2016,
+auto,RAM,0,1500 Crew Cab,2013,
+auto,RAM,0,1500 Quad Cab,2013,
+auto,RAM,0,1500 Regular Cab,2013,
+auto,RAM,0,1500 TRX,2020,
+auto,RAM,0,2500 Crew Cab,2013,
+auto,RAM,0,2500 Mega Cab,2013,
+auto,RAM,0,2500 Regular Cab,2013,
+auto,RAM,0,3500 Crew Cab,2016,
+auto,RAM,0,3500 Mega Cab,2013,
+auto,RAM,0,3500 Regular Cab,2013,
+auto,Renault,1,5 E-Tech,2025,
+auto,Renault,1,Alaskan,2016,
+auto,Renault,1,Arkana,2020,
+auto,Renault,1,Austral,2022,
+auto,Renault,1,Captur,2013,
+auto,Renault,1,Clio,1990,
+auto,Renault,1,Clio - 5 doors,2012,2016
+auto,Renault,1,Clio Estate,2009,2019
+auto,Renault,1,Clio Estate GT,2013,2016
+auto,Renault,1,Clio GT,2009,
+auto,Renault,1,Clio RS,2006,
+auto,Renault,1,Clio Symbol/Thalia,2000,2013
+auto,Renault,1,Espace,1985,
+auto,Renault,1,Fluence,2009,2016
+auto,Renault,1,Fluence ZE,2009,2014
+auto,Renault,1,Grand Kangoo,2024,
+auto,Renault,1,Grand Modus,2008,2012
+auto,Renault,1,Grand Scenic,2003,
+auto,Renault,1,K-ZE,2019,2019
+auto,Renault,1,Kadjar,2015,
+auto,Renault,1,Kangoo,1997,
+auto,Renault,1,Kardian,2024,
+auto,Renault,1,Kiger,2021,
+auto,Renault,1,Koleos,2007,2019
+auto,Renault,1,Kwid,2015,
+auto,Renault,1,Laguna,1994,2016
+auto,Renault,1,Laguna Coupe,2008,
+auto,Renault,1,Laguna Estate,1995,2016
+auto,Renault,1,Latitude,2010,
+auto,Renault,1,Logan,2014,
+auto,Renault,1,Megane,2006,
+auto,Renault,1,Megane Coupe,1996,2015
+auto,Renault,1,Megane Coupe - Cabrio,2003,
+auto,Renault,1,Megane E-Tech,2021,
+auto,Renault,1,Megane Estate,1999,
+auto,Renault,1,Megane Estate GT,2016,
+auto,Renault,1,Megane GT,2006,2015
+auto,Renault,1,Megane GT Coupe,2006,2008
+auto,Renault,1,Megane GT Hatchback,2013,2013
+auto,Renault,1,Megane R.S.,2020,2020
+auto,Renault,1,Megane RS,2004,
+auto,Renault,1,Megane RS Coupe,2004,2017
+auto,Renault,1,Megane Sedan,1996,
+auto,Renault,1,Modus,2005,2012
+auto,Renault,1,Mégane Hatch,2008,2008
+auto,Renault,1,Pulse,2011,2011
+auto,Renault,1,Rafale,2024,
+auto,Renault,1,Sandero GT Line,2012,
+auto,Renault,1,Scala,2012,2017
+auto,Renault,1,Scenic,1999,
+auto,Renault,1,Scenic E-Tech,2024,
+auto,Renault,1,Scenic XMOD,2013,
+auto,Renault,1,Symbioz,2025,
+auto,Renault,1,Talisman,2016,
+auto,Renault,1,Talisman Estate,2016,2019
+auto,Renault,1,Triber,2019,
+auto,Renault,1,Twingo,2007,
+auto,Renault,1,Twingo GT,2007,
+auto,Renault,1,Twingo R.S.,2011,2011
+auto,Renault,1,Twingo RS,2008,2011
+auto,Renault,1,Twizy,2012,
+auto,Renault,1,Vel Satis,2002,2009
+auto,Renault,1,Wind,2010,2013
+auto,Renault,1,ZOE,2013,
+auto,Rimac,0,Nevera,2021,
+auto,Rivian,0,R1S,2021,
+auto,Rivian,0,R1T,2021,
+auto,Rolls-Royce,1,Cullinan,2018,
+auto,Rolls-Royce,1,Dawn,2016,
+auto,Rolls-Royce,1,Ghost,2009,
+auto,Rolls-Royce,1,Ghost II,2014,2014
+auto,Rolls-Royce,1,Phantom,2003,2017
+auto,Rolls-Royce,1,Phantom Coupe,2008,2016
+auto,Rolls-Royce,1,Phantom Drophead Coupe,2007,2016
+auto,Rolls-Royce,1,Phantom EWB,2005,2009
+auto,Rolls-Royce,1,Spectre,2024,
+auto,Rolls-Royce,1,Wraith,2013,
+auto,Saab,0,9-3 Aero,2014,
+auto,Saab,0,9-3 Convertible,1998,2012
+auto,Saab,0,9-3 Sport Sedan,2003,2012
+auto,Saab,0,9-3 Sport Sedan Aero,2003,2008
+auto,Saab,0,9-3 SportCombi,2004,2012
+auto,Saab,0,9-3X,2009,2012
+auto,Saab,0,9-5,1997,2012
+auto,Saab,0,9-5 SportCombi,1998,2009
+auto,Saab,0,9-7X,2005,2009
+auto,Saab,0,Turbo X,2008,2012
+auto,Samsung,0,SM 5,2004,2010
+auto,Samsung,0,SM 7,2005,2011
+auto,Santana,0,300 - 350,2005,2011
+auto,Santana,0,PS 10 Pickup,2003,
+auto,Santana,0,PS 10 Shortline,2006,
+auto,Saturn,0,Astra (5 Doors),2008,2010
+auto,Saturn,0,Astra XR (3 Doors),2007,2010
+auto,Saturn,0,Aura,2006,2009
+auto,Saturn,0,Outlook,2006,2010
+auto,Saturn,0,Sky,2006,2009
+auto,Saturn,0,Vue,2001,2010
+auto,Scion,0,FR-S,2013,2016
+auto,Scion,0,iA,2016,2016
+auto,Scion,0,iM,2016,2017
+auto,Scion,0,iQ,2011,2016
+auto,Scion,0,tC,2003,2014
+auto,Scion,0,xB,2003,2015
+auto,Scion,0,xD,2007,2014
+auto,SEAT,1,Alhambra,1996,
+auto,SEAT,1,Altea,2004,
+auto,SEAT,1,Altea Freetrack,2007,2015
+auto,SEAT,1,Altea XL,2006,2015
+auto,SEAT,1,Arona,2017,
+auto,SEAT,1,Ateca,2016,
+auto,SEAT,1,Cordoba,1996,2009
+auto,SEAT,1,Exeo,2008,2013
+auto,SEAT,1,Exeo ST,2009,2009
+auto,SEAT,1,Ibiza,1993,
+auto,SEAT,1,Ibiza 5 doors,2017,
+auto,SEAT,1,Ibiza 5-doors,2017,2021
+auto,SEAT,1,Ibiza Bocanegra,2009,2017
+auto,SEAT,1,Ibiza Cupra,1996,2017
+auto,SEAT,1,Ibiza FR 5-doors,2009,2009
+auto,SEAT,1,Ibiza FR Sport Coupe (SC),2009,2017
+auto,SEAT,1,Ibiza SportCoupe (SC),2008,2017
+auto,SEAT,1,Ibiza ST,2010,2017
+auto,SEAT,1,Leon,2000,2012
+auto,SEAT,1,Leon Cupra,2006,
+auto,SEAT,1,Leon Cupra R,2002,
+auto,SEAT,1,Leon FR,2006,2012
+auto,SEAT,1,Leon Hatchback,2020,2020
+auto,SEAT,1,Leon SC 3-doors,2013,
+auto,SEAT,1,Leon Sportstourer,2020,2020
+auto,SEAT,1,Leon ST,2013,2013
+auto,SEAT,1,Leon ST Cupra,2015,2015
+auto,SEAT,1,Leon X-Perience,2014,
+auto,SEAT,1,Mii 3 doors,2011,2019
+auto,SEAT,1,Mii 5 doors,2012,2019
+auto,SEAT,1,Mii electric,2019,2019
+auto,SEAT,1,Tarraco,2018,
+auto,SEAT,1,Toledo,1991,2018
+auto,Smart,1,#5,2025,
+auto,Smart,1,1,2023,
+auto,Smart,1,Electric Drive,2012,
+auto,Smart,1,EQ ForFour,2019,2019
+auto,Smart,1,EQ fortwo Cabrio,2019,2019
+auto,Smart,1,forfour,2014,2019
+auto,Smart,1,forfour Electric Drive,2016,
+auto,Smart,1,ForTwo,2003,2014
+auto,Smart,1,fortwo,2014,2019
+auto,Smart,1,ForTwo Brabus,2003,2019
+auto,Smart,1,fortwo Brabus cabrio,2012,2012
+auto,Smart,1,ForTwo Cabrio,2004,2010
+auto,Smart,1,fortwo Cabrio,2010,2019
+auto,Smart,1,ForTwo Cabrio Brabus,2003,2012
+auto,Smart,1,fortwo Cabrio Electric Drive,2016,
+auto,Smart,1,fortwo Electric Drive,2016,2016
+auto,Spyker,0,C12 LaTurbie,2006,
+auto,Spyker,0,C8 Double 12 S,2002,
+auto,Spyker,0,C8 Laviolette,2001,
+auto,Spyker,0,C8 Preliator,2016,
+auto,Spyker,0,C8 Spyder,2000,
+auto,SsangYong (KGM),1,Actyon,2006,2011
+auto,SsangYong (KGM),1,Chairman,2004,2017
+auto,SsangYong (KGM),1,Korando,1997,
+auto,SsangYong (KGM),1,Korando C,2013,2017
+auto,SsangYong (KGM),1,Kyron,2004,2014
+auto,SsangYong (KGM),1,Musso,1998,
+auto,SsangYong (KGM),1,Rexton,2001,
+auto,SsangYong (KGM),1,Rodius,2004,2013
+auto,SsangYong (KGM),1,Tivoli,2015,
+auto,SsangYong (KGM),1,Tivoli XLV,2016,2016
+auto,Subaru,1,Ascent,2019,
+auto,Subaru,1,BRZ,2012,
+auto,Subaru,1,Crosstrek,2015,
+auto,Subaru,1,Crosstrek Wilderness,2024,
+auto,Subaru,1,Exiga,2008,
+auto,Subaru,1,Forester,1997,
+auto,Subaru,1,Impreza,2005,
+auto,Subaru,1,Impreza 4 doors,2012,2016
+auto,Subaru,1,Impreza 5 doors,2012,2020
+auto,Subaru,1,Impreza WRX STi,1998,2014
+auto,Subaru,1,Justy,2008,2016
+auto,Subaru,1,Legacy,1999,
+auto,Subaru,1,Legacy Sedan B4,2009,2014
+auto,Subaru,1,Legacy Wagon,1998,2014
+auto,Subaru,1,Levorg,2014,
+auto,Subaru,1,Liberty Sedan,2008,2015
+auto,Subaru,1,Outback,1999,
+auto,Subaru,1,Outback Wilderness,2024,
+auto,Subaru,1,R1,2005,2010
+auto,Subaru,1,R2,1969,2010
+auto,Subaru,1,Solterra,2021,
+auto,Subaru,1,Stella,2006,2011
+auto,Subaru,1,Trezia,2010,2014
+auto,Subaru,1,WRX,2015,2022
+auto,Subaru,1,WRX STI,2015,2015
+auto,Subaru,1,WRX STI S209,2019,2019
+auto,Subaru,1,XV,2012,2015
+auto,Suzuki,1,Across,2020,
+auto,Suzuki,1,Alto,2002,2013
+auto,Suzuki,1,APV,2004,
+auto,Suzuki,1,Baleno,2016,
+auto,Suzuki,1,Equator Crew Cab,2009,2012
+auto,Suzuki,1,Equator Extended Cab,2009,2012
+auto,Suzuki,1,Ertiga,2012,2012
+auto,Suzuki,1,Escudo / Vitara,2005,
+auto,Suzuki,1,Forenza Sedan,2004,2008
+auto,Suzuki,1,Forenza Wagon,2004,2008
+auto,Suzuki,1,Grand Vitara,2008,
+auto,Suzuki,1,Ignis,2003,
+auto,Suzuki,1,Jimny,2005,2018
+auto,Suzuki,1,Jimny 5 doors,2023,
+auto,Suzuki,1,Jimny Cabriolet,2005,2011
+auto,Suzuki,1,Jimny hard-top,2012,2012
+auto,Suzuki,1,Kizashi,2010,2010
+auto,Suzuki,1,S-Cross,2022,2022
+auto,Suzuki,1,Splash,2008,2014
+auto,Suzuki,1,Swace,2020,
+auto,Suzuki,1,Swift,1991,
+auto,Suzuki,1,Swift Sport,2017,
+auto,Suzuki,1,SX4,2006,2016
+auto,Suzuki,1,SX4 S-Cross,2016,
+auto,Suzuki,1,SX4 Sedan,2006,2014
+auto,Suzuki,1,Vitara,2014,
+auto,Suzuki,1,XL7,2007,2009
+auto,Tata,0,Altroz,2019,
+auto,Tata,0,Aria,2010,
+auto,Tata,0,Harrier,2018,
+auto,Tata,0,Indigo,2002,2009
+auto,Tata,0,Indigo Manza,2009,
+auto,Tata,0,Indigo SW,2004,
+auto,Tata,0,Nano,2008,
+auto,Tata,0,Safari,2005,2010
+auto,Tata,0,Safari Storme,2012,
+auto,Tata,0,Sumo,2008,
+auto,Tata,0,Telcoline Double Cab,1988,
+auto,Tesla,1,Cybertruck,2021,
+auto,Tesla,1,Model 3,2018,
+auto,Tesla,1,Model S,2012,
+auto,Tesla,1,Model X,2016,
+auto,Tesla,1,Model Y,2019,
+auto,Tesla,1,Roadster,2008,
+auto,Toyota,1,4Runner,1990,
+auto,Toyota,1,Agya,2012,
+auto,Toyota,1,Aqua,2021,
+auto,Toyota,1,Aurion,2006,2017
+auto,Toyota,1,AURIS,2018,
+auto,Toyota,1,Auris,2006,2015
+auto,Toyota,1,Auris Touring,2013,2015
+auto,Toyota,1,Avalon,2005,2019
+auto,Toyota,1,Avalon TRD,2019,
+auto,Toyota,1,Avensis,1997,
+auto,Toyota,1,Avensis Liftback,1997,2011
+auto,Toyota,1,Avensis Touring Sports,2015,2015
+auto,Toyota,1,Avensis Wagon,1997,2015
+auto,Toyota,1,Aygo,2014,
+auto,Toyota,1,Aygo 3 doors,2005,2014
+auto,Toyota,1,Aygo 5 doors,2005,2008
+auto,Toyota,1,Aygo X,2021,
+auto,Toyota,1,bZ4X,2021,
+auto,Toyota,1,C-HR,2016,
+auto,Toyota,1,Camry,1983,
+auto,Toyota,1,Camry Hybrid,2009,
+auto,Toyota,1,Camry Japan,2007,2011
+auto,Toyota,1,Camry Solara,2004,2009
+auto,Toyota,1,Camry TRD,2019,
+auto,Toyota,1,Camry XV50,2015,2015
+auto,Toyota,1,Century Sedan,2024,
+auto,Toyota,1,Century SUV,2024,
+auto,Toyota,1,Corolla,2007,
+auto,Toyota,1,Corolla (US),2002,2014
+auto,Toyota,1,Corolla Altis,2014,
+auto,Toyota,1,Corolla Cross,2020,
+auto,Toyota,1,Corolla Cross Hybrid,2023,
+auto,Toyota,1,Corolla Sedan (US),2020,2020
+auto,Toyota,1,Corolla Touring Sports,2019,
+auto,Toyota,1,Corolla US,2016,2018
+auto,Toyota,1,Corolla Verso,2002,2009
+auto,Toyota,1,Crown,1979,
+auto,Toyota,1,Crown Signia,2025,
+auto,Toyota,1,Estima / Previa,2007,
+auto,Toyota,1,Etios,2010,2010
+auto,Toyota,1,Etios Liva,2011,
+auto,Toyota,1,FJ Cruiser,2006,2016
+auto,Toyota,1,Fortuner,2011,
+auto,Toyota,1,GR 86,2021,
+auto,Toyota,1,GR Corolla,2022,
+auto,Toyota,1,GR Supra,2022,2022
+auto,Toyota,1,GR Yaris,2020,
+auto,Toyota,1,Grand Highlander,2024,
+auto,Toyota,1,GT 86,2016,
+auto,Toyota,1,GT86,2013,2013
+auto,Toyota,1,Harrier,2014,
+auto,Toyota,1,Highlander,2001,2020
+auto,Toyota,1,HiLux Double Cab,2011,2018
+auto,Toyota,1,Hilux Double Cab,2005,2020
+auto,Toyota,1,Hilux Extra Cab,2005,2015
+auto,Toyota,1,Hilux Single Cab,2005,2015
+auto,Toyota,1,iQ,2009,2009
+auto,Toyota,1,Land Cruiser,2020,
+auto,Toyota,1,Land Cruiser 120,2003,2009
+auto,Toyota,1,Land Cruiser 150,2009,2020
+auto,Toyota,1,Land Cruiser 200 / V8,2007,2015
+auto,Toyota,1,Land Cruiser 250,2025,
+auto,Toyota,1,Land Cruiser J200,2015,2015
+auto,Toyota,1,Matrix,2003,2009
+auto,Toyota,1,Mirai,2015,
+auto,Toyota,1,Prius,1997,
+auto,Toyota,1,Prius C,2012,2018
+auto,Toyota,1,Prius Prime,2016,2016
+auto,Toyota,1,Prius V,2016,2016
+auto,Toyota,1,Prius V/Prius+,2012,2012
+auto,Toyota,1,RAV4,2000,2018
+auto,Toyota,1,Rav4,2018,
+auto,Toyota,1,Rukus,2007,
+auto,Toyota,1,Sequoia,2000,
+auto,Toyota,1,Sequoia TRD Pro,2020,2020
+auto,Toyota,1,Sienna,1998,
+auto,Toyota,1,Solara Convertible,2004,2008
+auto,Toyota,1,Supra,1993,
+auto,Toyota,1,Tacoma,2005,
+auto,Toyota,1,Tacoma Access Cab,2011,2015
+auto,Toyota,1,Tacoma Double Cab,2011,2019
+auto,Toyota,1,Tundra,2018,
+auto,Toyota,1,Tundra Crew Cab,2013,2013
+auto,Toyota,1,Tundra Crewmax,2006,2013
+auto,Toyota,1,Tundra Double Cab,2006,2017
+auto,Toyota,1,Tundra Regular Cab,2006,2017
+auto,Toyota,1,Urban Cruiser,2009,2014
+auto,Toyota,1,Venza,2009,
+auto,Toyota,1,Verso,2009,2018
+auto,Toyota,1,Verso-S,2010,
+auto,Toyota,1,Vios,2013,
+auto,Toyota,1,Yaris,1999,
+auto,Toyota,1,Yaris Cross,2021,
+auto,Toyota,1,Yaris GRMN,2017,2020
+auto,Toyota,1,Yaris Hatchback,2013,
+auto,Toyota,1,Yaris Hatchback (US),2019,
+auto,Toyota,1,Yaris iA,2016,2018
+auto,Toyota,1,Yaris Sedan,2018,
+auto,Toyota,1,Yaris TS,2007,2010
+auto,TVR,1,Griffith,1992,
+auto,Vauxhall,0,Agila,2000,2015
+auto,Vauxhall,0,Antara,2007,2015
+auto,Vauxhall,0,Astra GSe,2023,
+auto,Vauxhall,0,Astra Hatchback,2009,2019
+auto,Vauxhall,0,Astra J GTC,2011,2011
+auto,Vauxhall,0,Astra Sports Tourer,2010,2022
+auto,Vauxhall,0,Astra Sports Tourer GSe,2022,2022
+auto,Vauxhall,0,Astra VXR,2005,2012
+auto,Vauxhall,0,Corsa,2001,
+auto,Vauxhall,0,Corsa 3 doors,2014,
+auto,Vauxhall,0,Corsa 5 doors,2014,2019
+auto,Vauxhall,0,Corsa VXR,2011,2013
+auto,Vauxhall,0,Crossland X,2017,2018
+auto,Vauxhall,0,Grandland,2022,
+auto,Vauxhall,0,Grandland GSe,2023,
+auto,Vauxhall,0,Insignia Country Tourer,2013,2013
+auto,Vauxhall,0,Insignia Hatchback,2008,2013
+auto,Vauxhall,0,Insignia Sedan,2008,2013
+auto,Vauxhall,0,Insignia Sports Tourer,2009,2013
+auto,Vauxhall,0,Insignia VXR Supersport Sedan,2012,
+auto,Vauxhall,0,Insignia VXR Supersport Touring Sports,2010,2019
+auto,Vauxhall,0,Meriva,2003,2017
+auto,Vauxhall,0,Meriva VXR,2003,2009
+auto,Vauxhall,0,Mokka,2012,2016
+auto,Vauxhall,0,Mokka X,2016,2019
+auto,Vauxhall,0,Signum,2005,2008
+auto,Vauxhall,0,Tigra Twin Top,2004,2009
+auto,Vauxhall,0,Vectra Estate,2005,2008
+auto,Vauxhall,0,Vectra Estate VXR,2005,2008
+auto,Vauxhall,0,Vectra Hatchback,2005,2008
+auto,Vauxhall,0,Vectra Saloon,2005,2008
+auto,Vauxhall,0,Vectra VXR,2005,2008
+auto,Vauxhall,0,Viva,2015,2019
+auto,Vauxhall,0,VXR8,2008,2013
+auto,Vauxhall,0,VXR8 GTS,2013,
+auto,Vauxhall,0,VXR8 GTS-R,2017,
+auto,Vauxhall,0,Zafira,2005,2011
+auto,Vauxhall,0,Zafira Tourer,2011,2018
+auto,Vauxhall,0,Zafira VXR,2005,2010
+auto,VinFast,0,VF 8,2022,
+auto,VinFast,0,VF 9,2022,
+auto,Volkswagen,1,Amarok,2017,
+auto,Volkswagen,1,Amarok Double Cab,2009,2016
+auto,Volkswagen,1,Amarok Single Cab,2011,2016
+auto,Volkswagen,1,Ameo,2016,2020
+auto,Volkswagen,1,Arteon,2017,
+auto,Volkswagen,1,Arteon R,2020,
+auto,Volkswagen,1,Arteon Shooting Brake,2020,
+auto,Volkswagen,1,Arteon Shooting Brake R,2020,
+auto,Volkswagen,1,Atlas,2017,
+auto,Volkswagen,1,Atlas Cross Sport,2024,
+auto,Volkswagen,1,Atlass Cross Sport,2019,2019
+auto,Volkswagen,1,Beetle,1946,2016
+auto,Volkswagen,1,Beetle Cabriolet,2013,2016
+auto,Volkswagen,1,Beetle GSR,2014,2014
+auto,Volkswagen,1,Bora (China),2008,
+auto,Volkswagen,1,Caddy,2005,
+auto,Volkswagen,1,CC,2012,2017
+auto,Volkswagen,1,Cross Up!,2016,2016
+auto,Volkswagen,1,Cross up!,2013,2016
+auto,Volkswagen,1,CrossGolf,2007,
+auto,Volkswagen,1,CrossPolo,2006,2010
+auto,Volkswagen,1,CrossTouran,2007,
+auto,Volkswagen,1,e-Golf,2014,
+auto,Volkswagen,1,e-UP!,2019,
+auto,Volkswagen,1,Eos,2006,2016
+auto,Volkswagen,1,Fox,2005,2009
+auto,Volkswagen,1,Gol,2008,
+auto,Volkswagen,1,Golf Alltrack,2020,
+auto,Volkswagen,1,Golf GTD,2009,
+auto,Volkswagen,1,Golf GTE,2021,2021
+auto,Volkswagen,1,Golf GTI,2008,
+auto,Volkswagen,1,Golf Plus,2005,2013
+auto,Volkswagen,1,Golf R,2022,
+auto,Volkswagen,1,Golf R Variant,2022,
+auto,Volkswagen,1,Golf Sportsvan,2014,
+auto,Volkswagen,1,Golf V,2003,2008
+auto,Volkswagen,1,Golf V GTI,2004,2008
+auto,Volkswagen,1,Golf V R32,2005,2008
+auto,Volkswagen,1,Golf V Variant/ Jetta Sportwagon,2007,2014
+auto,Volkswagen,1,Golf Variant,2020,2020
+auto,Volkswagen,1,Golf VI,2008,2012
+auto,Volkswagen,1,Golf VI Cabrio,2015,2016
+auto,Volkswagen,1,Golf VI Cabriolet,2011,2011
+auto,Volkswagen,1,Golf VI GTI Cabrio,2012,2015
+auto,Volkswagen,1,Golf VI R,2009,2013
+auto,Volkswagen,1,Golf VI R Cabrio,2013,2017
+auto,Volkswagen,1,Golf VI Variant,2009,2013
+auto,Volkswagen,1,Golf VII,2012,2019
+auto,Volkswagen,1,Golf VII Alltrack,2014,2020
+auto,Volkswagen,1,Golf VII GTD Variant,2015,
+auto,Volkswagen,1,Golf VII GTE,2014,2020
+auto,Volkswagen,1,Golf VII R,2013,2021
+auto,Volkswagen,1,Golf VII R -,2013,2013
+auto,Volkswagen,1,Golf VII R Variant,2015,2021
+auto,Volkswagen,1,Golf VII Variant,2013,2020
+auto,Volkswagen,1,ID Buzz LWB,2024,
+auto,Volkswagen,1,ID. Buzz,2023,
+auto,Volkswagen,1,ID.3,2020,
+auto,Volkswagen,1,ID.4,2020,
+auto,Volkswagen,1,ID.4 GTX,2021,
+auto,Volkswagen,1,ID.5,2021,
+auto,Volkswagen,1,ID.5 GTX,2021,
+auto,Volkswagen,1,ID.7,2024,
+auto,Volkswagen,1,ID.7 GTX,2024,
+auto,Volkswagen,1,ID.7 GTX Tourer,2025,
+auto,Volkswagen,1,Jetta,2005,
+auto,Volkswagen,1,Jetta GLI,2022,
+auto,Volkswagen,1,Lavida,2008,2012
+auto,Volkswagen,1,Multivan,2003,2022
+auto,Volkswagen,1,Multivan (T6),2015,2015
+auto,Volkswagen,1,Multivan Bulli (T6.1),2019,2019
+auto,Volkswagen,1,Nivus,2020,
+auto,Volkswagen,1,Passat,1981,
+auto,Volkswagen,1,Passat (US),2019,
+auto,Volkswagen,1,Passat Alltrack,2012,
+auto,Volkswagen,1,Passat CC,2009,2011
+auto,Volkswagen,1,Passat GTE,2015,
+auto,Volkswagen,1,Passat R36,2008,2010
+auto,Volkswagen,1,Passat R36 Variant,2008,2010
+auto,Volkswagen,1,Passat Sedan,2014,2014
+auto,Volkswagen,1,Passat US,2012,2019
+auto,Volkswagen,1,Passat Variant,1974,
+auto,Volkswagen,1,Passat Variant GTE,2015,
+auto,Volkswagen,1,Phaeton,2002,2016
+auto,Volkswagen,1,Phaeton Long,2004,2009
+auto,Volkswagen,1,Polo,1975,
+auto,Volkswagen,1,Polo BlueGT,2013,
+auto,Volkswagen,1,Polo GTI,2005,2022
+auto,Volkswagen,1,Polo Sedan,2010,
+auto,Volkswagen,1,Routan,2008,2013
+auto,Volkswagen,1,Scirocco,1977,
+auto,Volkswagen,1,Scirocco R,2014,
+auto,Volkswagen,1,Sharan,1996,
+auto,Volkswagen,1,T-Cross,2019,2019
+auto,Volkswagen,1,T-Roc,2017,2022
+auto,Volkswagen,1,T-Roc Cabriolet,2020,2022
+auto,Volkswagen,1,T-Roc R,2019,2022
+auto,Volkswagen,1,Taigo,2021,
+auto,Volkswagen,1,Taos,2025,
+auto,Volkswagen,1,Tiguan,2008,
+auto,Volkswagen,1,Tiguan Allspace,2017,
+auto,Volkswagen,1,Tiguan R,2020,
+auto,Volkswagen,1,Touareg,2002,
+auto,Volkswagen,1,Touareg R,2020,
+auto,Volkswagen,1,Touran,2003,
+auto,Volkswagen,1,Transporter Kombi (T6),2015,
+auto,Volkswagen,1,up! 3 doors,2012,
+auto,Volkswagen,1,up! 5 doors,2012,
+auto,Volkswagen,1,up! GTI,2018,
+auto,Volkswagen,1,Vento,2010,
+auto,Volkswagen,1,XL1,2013,2016
+auto,Volvo,1,C30,2006,2013
+auto,Volvo,1,C40 Recharge,2021,
+auto,Volvo,1,C70,2005,2013
+auto,Volvo,1,EM90,2024,
+auto,Volvo,1,EX30,2025,
+auto,Volvo,1,EX90,2022,
+auto,Volvo,1,S40,1996,2012
+auto,Volvo,1,S60,2000,
+auto,Volvo,1,S60 Cross Country,2015,2018
+auto,Volvo,1,S60 Polestar,2014,
+auto,Volvo,1,S80,1998,2016
+auto,Volvo,1,S90,1997,
+auto,Volvo,1,V40,1996,2019
+auto,Volvo,1,V40 Cross Country,2012,2019
+auto,Volvo,1,V50,2004,2011
+auto,Volvo,1,V60,2010,
+auto,Volvo,1,V60 Cross Country,2015,
+auto,Volvo,1,V60 Polestar,2013,
+auto,Volvo,1,V70,1997,2016
+auto,Volvo,1,V90,1997,
+auto,Volvo,1,V90 Cross Country,2016,
+auto,Volvo,1,XC40,2017,
+auto,Volvo,1,XC40 Recharge,2020,
+auto,Volvo,1,XC60,2008,
+auto,Volvo,1,XC60 Polestar,2018,2021
+auto,Volvo,1,XC70,2004,2016
+auto,Volvo,1,XC90,2002,2020
+auto,Wiesmann,0,GT MF4,2003,2010
+auto,Wiesmann,0,GT MF4-CS,2013,
+auto,Wiesmann,0,GT MF5,2008,
+auto,Wiesmann,0,MF4,2010,2010
+auto,Wiesmann,0,MF4 Roadster,2009,
+auto,Wiesmann,0,MF4-S,2010,
+auto,Wiesmann,0,MF4-S Roadster,2010,2010
+auto,Wiesmann,0,MF5 Roadster,2009,
+auto,Xpeng,0,G3,2019,2019
+auto,Xpeng,0,G3i,2021,2021
+auto,Xpeng,0,G6,2024,
+auto,Xpeng,0,G9,2022,2022
+auto,Xpeng,0,P5,2021,2021
+auto,Xpeng,0,P7,2021,2021
+auto,Zenvo,0,Aurora Agil,2026,
+auto,Zenvo,0,Aurora Tur,2026,
+auto,Zenvo,0,ST1,2009,2017
+auto,Zenvo,0,TS1,2017,
+auto,Zenvo,0,TSR-S,2018,
+auto,Škoda,1,Citigo 3 doors,2011,
+auto,Škoda,1,Citigo 5 doors,2012,2017
+auto,Škoda,1,Citigo-e IV,2019,
+auto,Škoda,1,Enyaq Coupe iV,2022,
+auto,Škoda,1,Enyaq Coupe RS iV,2022,
+auto,Škoda,1,Enyaq iV,2020,
+auto,Škoda,1,Fabia,2007,
+auto,Škoda,1,Fabia Combi,2000,
+auto,Škoda,1,Fabia Combi RS,2010,2014
+auto,Škoda,1,Fabia RS hatchback,2010,2010
+auto,Škoda,1,Kamiq,2019,
+auto,Škoda,1,Karoq,2017,
+auto,Škoda,1,Kodiaq,2016,
+auto,Škoda,1,Kodiaq GT (China),2018,
+auto,Škoda,1,Kodiaq RS,2018,2018
+auto,Škoda,1,Kushaq,2021,
+auto,Škoda,1,Octavia,2008,
+auto,Škoda,1,Octavia Combi,2008,
+auto,Škoda,1,Octavia Combi 4x4,2009,2017
+auto,Škoda,1,Octavia Combi RS,2014,2017
+auto,Škoda,1,Octavia hatchback,2013,2013
+auto,Škoda,1,Octavia II,2004,2008
+auto,Škoda,1,Octavia II Combi,2004,2008
+auto,Škoda,1,Octavia II Combi RS,2005,2008
+auto,Škoda,1,Octavia II RS,2005,2008
+auto,Škoda,1,Octavia RS,2001,2019
+auto,Škoda,1,Octavia RS IV,2019,
+auto,Škoda,1,Octavia Scout,2006,
+auto,Škoda,1,Rapid,2012,
+auto,Škoda,1,Rapid (non-EUROPE),2011,
+auto,Škoda,1,Rapid Spaceback,2013,
+auto,Škoda,1,Roomster,2006,2010
+auto,Škoda,1,Scala,2019,
+auto,Škoda,1,Slavia,2021,
+auto,Škoda,1,Superb,2002,2020
+auto,Škoda,1,Superb Combi,2009,2015
+auto,Škoda,1,Superb Combi / Scout,2015,2019
+auto,Škoda,1,Superb Scout,2020,2020
+auto,Škoda,1,Yeti,2009,2017
+moto,Aprilia,1,RS 457,,
+moto,Aprilia,1,RS 660,,
+moto,Aprilia,1,Tuono 660,,
+moto,Aprilia,1,Tuareg 660,,
+moto,Aprilia,1,RSV4,,
+moto,Aprilia,1,Tuono V4,,
+moto,Aprilia,1,SR GT,,
+moto,Aprilia,1,SX 125,,
+moto,Aprilia,1,RS 125,,
+moto,Benelli,1,TRK 502,,
+moto,Benelli,1,TRK 702,,
+moto,Benelli,1,Leoncino 500,,
+moto,Benelli,1,BN 125,,
+moto,Benelli,1,TNT 125,,
+moto,BMW Motorrad,1,R 1300 GS,,
+moto,BMW Motorrad,1,R 1250 GS,,
+moto,BMW Motorrad,1,F 900 R,,
+moto,BMW Motorrad,1,F 900 XR,,
+moto,BMW Motorrad,1,S 1000 RR,,
+moto,BMW Motorrad,1,G 310 R,,
+moto,BMW Motorrad,1,C 400 X,,
+moto,BMW Motorrad,1,CE 04,,
+moto,Ducati,1,Monster,,
+moto,Ducati,1,Multistrada V4,,
+moto,Ducati,1,Scrambler,,
+moto,Ducati,1,Panigale V4,,
+moto,Ducati,1,Panigale V2,,
+moto,Ducati,1,Streetfighter V4,,
+moto,Ducati,1,DesertX,,
+moto,Ducati,1,Hypermotard,,
+moto,Harley-Davidson,1,Sportster S,,
+moto,Harley-Davidson,1,Nightster,,
+moto,Harley-Davidson,1,Street Glide,,
+moto,Harley-Davidson,1,Fat Boy,,
+moto,Harley-Davidson,1,Pan America,,
+moto,Honda,1,SH 125,,
+moto,Honda,1,SH 150,,
+moto,Honda,1,SH 350,,
+moto,Honda,1,X-ADV,,
+moto,Honda,1,Forza 350,,
+moto,Honda,1,Transalp XL750,,
+moto,Honda,1,Africa Twin,,
+moto,Honda,1,CB 500 Hornet,,
+moto,Honda,1,CB 750 Hornet,,
+moto,Honda,1,NC 750 X,,
+moto,Honda,1,CB 650 R,,
+moto,Honda,1,PCX 125,,
+moto,Husqvarna,1,Svartpilen 401,,
+moto,Husqvarna,1,Vitpilen 401,,
+moto,Husqvarna,1,Norden 901,,
+moto,Kawasaki,1,Z650,,
+moto,Kawasaki,1,Z900,,
+moto,Kawasaki,1,Ninja 650,,
+moto,Kawasaki,1,Versys 650,,
+moto,Kawasaki,1,Z500,,
+moto,Kawasaki,1,Eliminator,,
+moto,KTM,1,390 Duke,,
+moto,KTM,1,790 Duke,,
+moto,KTM,1,890 Adventure,,
+moto,KTM,1,1290 Super Duke R,,
+moto,KTM,1,125 Duke,,
+moto,Kymco,1,Agility 125,,
+moto,Kymco,1,People S 125,,
+moto,Kymco,1,X-Town,,
+moto,Kymco,1,AK 550,,
+moto,Kymco,1,DTX 360,,
+moto,Moto Guzzi,1,V7,,
+moto,Moto Guzzi,1,V85 TT,,
+moto,Moto Guzzi,1,V100 Mandello,,
+moto,Moto Guzzi,1,Stelvio,,
+moto,MV Agusta,1,Brutale,,
+moto,MV Agusta,1,Dragster,,
+moto,MV Agusta,1,Superveloce,,
+moto,Piaggio,1,Beverly 300,,
+moto,Piaggio,1,Beverly 400,,
+moto,Piaggio,1,Liberty 125,,
+moto,Piaggio,1,Medley 125,,
+moto,Piaggio,1,MP3 300,,
+moto,Piaggio,1,MP3 530,,
+moto,Piaggio,1,Zip,,
+moto,Royal Enfield,1,Classic 350,,
+moto,Royal Enfield,1,Himalayan 450,,
+moto,Royal Enfield,1,Interceptor 650,,
+moto,Royal Enfield,1,Hunter 350,,
+moto,Suzuki,1,V-Strom 800DE,,
+moto,Suzuki,1,GSX-8S,,
+moto,Suzuki,1,GSX-S1000,,
+moto,Suzuki,1,Burgman 400,,
+moto,Suzuki,1,Burgman 125,,
+moto,SYM,1,Symphony 125,,
+moto,SYM,1,Jet X 125,,
+moto,SYM,1,Maxsym TL 508,,
+moto,Triumph,1,Trident 660,,
+moto,Triumph,1,Tiger 900,,
+moto,Triumph,1,Street Triple,,
+moto,Triumph,1,Speed 400,,
+moto,Triumph,1,Bonneville T120,,
+moto,Vespa,1,Primavera 50,,
+moto,Vespa,1,Primavera 125,,
+moto,Vespa,1,GTS 300,,
+moto,Vespa,1,Sprint 125,,
+moto,Yamaha,1,TMAX,,
+moto,Yamaha,1,XMAX 125,,
+moto,Yamaha,1,XMAX 300,,
+moto,Yamaha,1,NMAX 125,,
+moto,Yamaha,1,MT-07,,
+moto,Yamaha,1,MT-09,,
+moto,Yamaha,1,Tracer 9,,
+moto,Yamaha,1,Ténéré 700,,
+moto,Yamaha,1,R7,,
+moto,Yamaha,1,Tricity 300,,
+moto,Voge,1,Valico 525DSX,,
+moto,Voge,1,300 Rally,,
+moto,CFMOTO,1,450 MT,,
+moto,CFMOTO,1,700 CL-X,,
+moto,CFMOTO,1,800 MT,,
+moto,Zontes,1,350 T,,
+moto,Zontes,1,125 G1,,
+moto,Peugeot Motocycles,1,Tweet 125,,
+moto,Peugeot Motocycles,1,Pulsion 125,,
+moto,Peugeot Motocycles,1,Django 125,,
+moto,Niu,1,MQi GT,,
+moto,Niu,1,NQi GT,,

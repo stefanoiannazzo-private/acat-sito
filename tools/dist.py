@@ -5,7 +5,7 @@ import hashlib, os, re, shutil
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(ROOT)
-PAGES = ["index.html", "chi-siamo.html", "servizi.html", "contatti.html", "privacy.html", "cookie.html", "credits.html", "assicurazione-auto-moto.html", "assicurazione-casa-famiglia.html", "assicurazione-vita-impresa.html", "passaggio-di-proprieta.html", "immatricolazioni.html", "patenti.html"]
+PAGES = ["index.html", "chi-siamo.html", "servizi.html", "contatti.html", "privacy.html", "cookie.html", "credits.html", "assicurazione-auto-moto.html", "assicurazione-casa-famiglia.html", "assicurazione-vita-impresa.html", "passaggio-di-proprieta.html", "immatricolazioni.html", "patenti.html", "preventivo-rc-auto.html"]
 EXTRA_ROOT = ["preventivo.php"]
 EXTRA = ["favicon.svg", "share.jpg", "robots.txt", ".htaccess", "preventivo.php", "sitemap.php",
          "vendor/fonts/fonts.css", "vendor/fonts/instrument-sans-latin.woff2", "vendor/fonts/instrument-serif-latin.woff2",
@@ -13,6 +13,14 @@ EXTRA = ["favicon.svg", "share.jpg", "robots.txt", ".htaccess", "preventivo.php"
          "vendor/gsap/gsap.min.js", "vendor/gsap/ScrollTrigger.min.js",
          "assets/moments/lib.js", "assets/moments/moments.js"]
 EXTRA += [f"assets/moments/{m}/moment.{e}" for m in ("photo-chapters", "picture-develops", "pinned-chapters", "word-highlight") for e in ("css", "js")]
+# preventivatore: codice PHP, pannello admin e API (mai la configurazione locale con le password)
+for _d in ("app", "admin", "api"):
+    for _root, _dirs, _files in os.walk(_d):
+        for _f in _files:
+            _p = os.path.join(_root, _f)
+            if _p != os.path.join("app", "config.php") and not _f.endswith((".pyc", ".DS_Store")):
+                EXTRA.append(_p)
+EXTRA.append("assets/preventivo.js")
 
 refs = set()
 for p in PAGES:

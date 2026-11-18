@@ -179,6 +179,7 @@ def nav(current):
               <a href="assicurazione-auto-moto.html">{li_ic("car-front")}<b>Auto e moto</b><span>RC, furto, incendio, cristalli</span></a>
               <a href="assicurazione-casa-famiglia.html">{li_ic("house")}<b>Casa e famiglia</b><span>Abitazione e responsabilità civile</span></a>
               <a href="assicurazione-vita-impresa.html">{li_ic("heart-handshake")}<b>Vita e impresa</b><span>Risparmio, infortuni, attività</span></a>
+              <a href="preventivo-rc-auto.html">{li_ic("calendar-check")}<b>Calcola la RC online</b><span>Stima in un minuto</span></a>
             </div>
             <div class="menu-col span-3">
               <p class="t-label">Pratiche auto</p>
@@ -661,6 +662,7 @@ PRIVACY = f'''
       <h2>2. Quali dati raccogliamo</h2>
       <p><strong>Dati di navigazione.</strong> Il server che ospita il sito registra in automatico alcune informazioni tecniche (indirizzo IP, data e ora della visita, pagina richiesta, tipo di browser). Servono a far funzionare il sito e a proteggerlo da abusi e non vengono usate per identificarti.</p>
       <p><strong>Dati che ci invii.</strong> Se compili il modulo "Richiedi un preventivo" raccogliamo nome e cognome, indirizzo email, la polizza o la pratica che ti interessa e, se lo indichi, il comune di residenza. Ti chiediamo di non inserire nel modulo dati sanitari o altri dati particolari.</p>
+      <p><strong>Preventivatore RC auto e moto.</strong> Per calcolare la stima usiamo il comune di residenza, la data di nascita del contraente, il veicolo e le garanzie scelte. Finché premi solo "Calcola la stima" questi dati servono al calcolo e non vengono conservati. Se chiedi il preventivo definitivo registriamo anche nome, email, telefono (facoltativo) e le eventuali note, insieme alla stima calcolata, per ricontattarti.</p>
 
       <h2>3. Perché li usiamo e su quale base</h2>
       <ul>
@@ -671,7 +673,7 @@ PRIVACY = f'''
       <p>Non usiamo i dati del sito per pubblicità, profilazione o decisioni automatizzate e non li vendiamo a nessuno. Se dalla richiesta nasce un contratto assicurativo o una pratica, riceverai in agenzia l'informativa specifica prevista per quel servizio.</p>
 
       <h2>4. Per quanto tempo li conserviamo</h2>
-      <p>Conserviamo le richieste inviate dal modulo per il tempo necessario a gestirle e comunque non oltre 12 mesi dall'ultimo contatto, salvo che nasca un rapporto contrattuale o che la legge imponga tempi diversi. I dati di navigazione sono conservati dal fornitore di hosting per i tempi tecnici previsti dal servizio.</p>
+      <p>Conserviamo le richieste inviate dal modulo e dal preventivatore per il tempo necessario a gestirle e comunque non oltre 12 mesi dall'ultimo contatto, salvo che nasca un rapporto contrattuale o che la legge imponga tempi diversi. I dati di navigazione sono conservati dal fornitore di hosting per i tempi tecnici previsti dal servizio.</p>
 
       <h2>5. Chi può vederli</h2>
       <p>I dati sono trattati dal personale dell'agenzia autorizzato e dai fornitori che ci aiutano a far funzionare il sito e la posta elettronica, come il fornitore di hosting, nominati responsabili del trattamento. Le compagnie assicurative ricevono i tuoi dati solo se serve per prepararti un preventivo o un contratto che hai chiesto. I dati restano nell'Unione Europea.</p>
@@ -698,6 +700,7 @@ COOKIE = f'''
       <p>Il sito usa soltanto uno strumento tecnico:</p>
       <ul>
         <li><strong>acat-tr</strong> (sessionStorage): ricorda per un istante che stai passando da una pagina all'altra, così da mostrare l'animazione di passaggio. Viene cancellato subito dopo e comunque alla chiusura della scheda. Non contiene dati personali.</li>
+        <li><strong>acat_admin</strong> (cookie tecnico di sessione): usato solo nell'area riservata al personale dell'agenzia per mantenere l'accesso. Scade alla chiusura del browser. I visitatori del sito non lo ricevono.</li>
       </ul>
       <p>Il server di hosting può impostare cookie tecnici necessari al funzionamento e alla sicurezza del servizio.</p>
 
@@ -879,7 +882,7 @@ def svc_page(c):
         for o in SVC if o["slug"] != c["slug"])
     body = hero(c["h1"], c["lead"],
                 u(hp, ha, sizes="100vw", lazy=False, pos=hpos),
-                f'<a class="btn btn--secondary" href="{TEL}">Chiama il {PHONE}</a>', float_card=False, kicker=c["group"])
+                (f'<a class="btn btn--secondary" href="preventivo-rc-auto.html">Calcola la stima online</a>' if c["slug"] == "assicurazione-auto-moto" else f'<a class="btn btn--secondary" href="{TEL}">Chiama il {PHONE}</a>'), float_card=False, kicker=c["group"])
     body += f'''
   <section class="section svc-sec" id="what" aria-labelledby="what-h">
     <div class="wrap grid grid--top">
@@ -927,3 +930,99 @@ def svc_page(c):
 
 for _c in SVC:
     svc_page(_c)
+
+
+# ---------------------------------------------------------------- PREVENTIVATORE RC AUTO
+pv_body = hero("Calcola la tua RC auto e moto",
+               "Una stima in un minuto: comune di residenza, data di nascita e veicolo. Poi, se vuoi, ti richiamiamo con il preventivo definitivo confrontando più compagnie.",
+               u("1687856265836", "Un'auto su una strada di campagna con le colline sullo sfondo", sizes="100vw", lazy=False, pos="50% 55%"),
+               f'<a class="btn btn--secondary" href="{TEL}">Preferisci chiamare? {PHONE}</a>', float_card=False, kicker="Preventivo online")
+pv_body = pv_body.replace(f'<a class="btn btn--primary" href="{CTA_HREF}">{CTA}{ARROW}</a>', f'<a class="btn btn--primary" href="#calcolo">Inizia la stima{ARROW}</a>', 1)
+pv_body += f'''
+  <section class="section svc-sec pv-sec" id="calcolo" aria-labelledby="pv-h">
+    <div class="wrap grid grid--top">
+      <div class="span-7">
+        <div class="section-head"><h2 id="pv-h">La tua stima</h2><p>Tutti i campi servono per il calcolo. Nessun dato viene salvato finché non chiedi di essere ricontattato.</p></div>
+        <p class="pv-off" hidden role="status"></p>
+        <form class="pv" id="pv" novalidate>
+          <fieldset class="pv-step">
+            <legend><span class="pv-step__n">1</span>Chi è il contraente</legend>
+            <div class="pv-field pv-combo">
+              <label for="pv-comune">Comune di residenza</label>
+              <input id="pv-comune" type="text" autocomplete="off" placeholder="Scrivi almeno 2 lettere, es. Giaveno" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="pv-comuni" required>
+              <ul id="pv-comuni" role="listbox" hidden></ul>
+              <input type="hidden" name="comune_id" id="pv-comune-id">
+            </div>
+            <div class="pv-field">
+              <label for="pv-nascita">Data di nascita</label>
+              <input id="pv-nascita" name="nascita" type="date" required min="1910-01-01">
+            </div>
+          </fieldset>
+          <fieldset class="pv-step">
+            <legend><span class="pv-step__n">2</span>Il veicolo</legend>
+            <div class="pv-toggle" role="radiogroup" aria-label="Tipo di veicolo">
+              <label><input type="radio" name="tipo" value="auto" checked>{IC("car-front", "pv-ic")} Auto</label>
+              <label><input type="radio" name="tipo" value="moto">{IC("bike", "pv-ic")} Moto e scooter</label>
+            </div>
+            <div class="pv-row">
+              <div class="pv-field"><label for="pv-marca">Marca</label><select id="pv-marca" required><option value="">Caricamento…</option></select></div>
+              <div class="pv-field"><label for="pv-modello">Modello</label><select id="pv-modello" required disabled><option value="">Scegli prima la marca</option></select></div>
+            </div>
+          </fieldset>
+          <fieldset class="pv-step">
+            <legend><span class="pv-step__n">3</span>Le garanzie</legend>
+            <p class="pv-hint">La responsabilità civile è obbligatoria ed è sempre inclusa. Aggiungi le garanzie che ti interessano.</p>
+            <div class="pv-garanzie" id="pv-garanzie"></div>
+          </fieldset>
+          <fieldset class="pv-step pv-contatti" id="pv-contatti" hidden>
+            <legend><span class="pv-step__n">4</span>I tuoi contatti</legend>
+            <p class="pv-hint" id="pv-contatti-hint">Ti mandiamo il preventivo definitivo, confrontando più compagnie.</p>
+            <div class="pv-row">
+              <div class="pv-field"><label for="pv-nome">Nome e cognome</label><input id="pv-nome" autocomplete="name"></div>
+              <div class="pv-field"><label for="pv-email">Email</label><input id="pv-email" type="email" autocomplete="email"></div>
+            </div>
+            <div class="pv-row">
+              <div class="pv-field"><label for="pv-tel">Telefono <span class="pv-opt">(facoltativo)</span></label><input id="pv-tel" type="tel" autocomplete="tel"></div>
+              <div class="pv-field"><label for="pv-note">Note <span class="pv-opt">(facoltative)</span></label><input id="pv-note" placeholder="Es. classe di merito, scadenza attuale"></div>
+            </div>
+            <div class="hp" aria-hidden="true"><label>Sito web <input id="pv-sito" tabindex="-1" autocomplete="off"></label></div>
+            <label class="pv-check"><input type="checkbox" id="pv-consenso"> Ho letto l'<a class="link" href="privacy.html" target="_blank">informativa privacy</a> e acconsento al trattamento dei miei dati per ricevere il preventivo.</label>
+          </fieldset>
+          <p class="pv-err" id="pv-err" role="alert" hidden></p>
+          <button class="btn btn--primary pv-submit" type="submit" id="pv-submit">Calcola la stima{ARROW}</button>
+        </form>
+      </div>
+      <aside class="pv-out span-4 start-9" id="pv-out" aria-live="polite">
+        <div class="pv-out__empty">
+          {li_ic("shield-check")}
+          <h3>Il risultato compare qui</h3>
+          <p>Compila i tre passaggi e premi "Calcola la stima".</p>
+          <ul class="pv-out__points"><li>{li_ic("clock")}<span>Meno di un minuto</span></li><li>{li_ic("umbrella")}<span>Più compagnie a confronto in agenzia</span></li><li>{li_ic("badge-check")}<span>Nessun impegno</span></li></ul>
+        </div>
+        <div class="pv-out__res" hidden>
+          <p class="pv-out__label">Stima annuale indicativa</p>
+          <p class="pv-out__tot" id="pv-tot"></p>
+          <p class="pv-out__meta" id="pv-meta"></p>
+          <ul class="pv-out__rows" id="pv-righe"></ul>
+          <p class="pv-out__note" id="pv-avviso"></p>
+          <button class="btn btn--primary" type="button" id="pv-richiedi">Richiedi il preventivo definitivo{ARROW}</button>
+        </div>
+        <div class="pv-out__ok" hidden>
+          {li_ic("badge-check")}
+          <h3>Richiesta inviata</h3>
+          <p id="pv-ok-txt">Ti ricontattiamo al più presto con il preventivo definitivo. Se hai fretta chiamaci al <a class="link" href="{TEL}">{PHONE}</a>.</p>
+        </div>
+      </aside>
+    </div>
+  </section>
+'''
+page("preventivo-rc-auto.html",
+     head("Preventivo RC auto e moto online a Giaveno | ACAT Servizi",
+          "Calcola una stima della tua RC auto o moto con ACAT Servizi a Giaveno: comune, età e veicolo. Poi il preventivo definitivo confrontando più compagnie.",
+          "word-highlight"),
+     "servizi", DEAL, pv_body,
+     footer("Preferisci parlarne di persona?", HOURS + ", in Via Coazze.",
+            u("1733522688659", "Una strada a tornanti in una valle alpina in autunno", sizes="(max-width: 639px) 160vw, 100vw", cls="")))
+# lo script del preventivatore solo in questa pagina
+_p = open("preventivo-rc-auto.html").read()
+open("preventivo-rc-auto.html", "w").write(_p.replace('<script src="assets/fx.js"></script>', '<script src="assets/fx.js"></script>\n<script src="assets/preventivo.js" defer></script>', 1))

@@ -34,3 +34,12 @@ Poi **Actions > Pubblica sul server > Run workflow** per la prima pubblicazione.
 - Privacy e Cookie (`privacy.html`, `cookie.html`) sono un modello standard: da far verificare a un consulente privacy.
 - SSL attivo: il redirect a https è già acceso in `.htaccess`.
 - Foto: ora sono stand-in da Unsplash e Wikimedia (crediti in `credits.html`).
+
+## Preventivatore RC auto e moto
+- Pagina pubblica: `preventivo-rc-auto.html` (script `assets/preventivo.js`), che chiama le API in `api/`.
+- Pannello: `/admin/` (pagine in `admin/`). Il **primo accesso** crea l'amministratore e chiede la password del database (secret `DB_PASS`).
+- Codice condiviso in `app/` (bloccato dal web): calcolo in `app/lib/Calcolo.php`, tabelle del pannello in `app/lib/Tabelle.php`.
+- Database: le modifiche sono in `app/sql/NNN_*.sql|php` e vengono applicate da sole alla prima apertura del pannello.
+- Configurazione: `site/app/config.php` viene creato dal workflow con i secrets `DB_*`. Non va mai nel repository.
+- Test: `composer install && vendor/bin/phpunit`.
+- Dati iniziali: comuni dall'elenco ISTAT (via github.com/matteocontrini/comuni-json); marche e modelli auto ricavati da github.com/ilyasozkurt/automobile-models-and-specs (solo nomi e anni) più alcune marche recenti; moto: elenco di partenza delle marche e dei modelli più diffusi. Da completare dal pannello. Tariffe, coefficienti e fasce d'età sono valori di esempio.

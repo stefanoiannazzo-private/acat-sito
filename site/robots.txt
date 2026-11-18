@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /
+Disallow: /admin/
+Disallow: /api/
 
 # La sitemap è su https://<dominio>/sitemap.xml (generata da sitemap.php)

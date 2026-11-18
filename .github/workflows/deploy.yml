@@ -1,14 +1,14 @@
-# Pubblica la cartella site/ sull'hosting via FTP a ogni push su main che la modifica.
-# Credenziali: GitHub > Settings > Secrets and variables > Actions
-#   secrets:   FTP_SERVER, FTP_USERNAME, FTP_PASSWORD
-#   variabile (facoltativa): FTP_DIR  cartella del sito sul server, es. "/" o "/www.tuodominio.it/"
-#   variabile (facoltativa): FTP_PROTOCOL  "ftps" (consigliato) oppure "ftp"
+# Verifica il codice e pubblica la cartella site/ sull'hosting via FTP a ogni push su main.
+# Secrets (GitHub > Settings > Secrets and variables > Actions):
+#   FTP_SERVER, FTP_USERNAME, FTP_PASSWORD   accesso FTP all'hosting
+#   DB_HOST, DB_NAME, DB_USER, DB_PASS       database MySQL del preventivatore (scritti in site/app/config.php, mai nel repository)
+# Variabili facoltative: FTP_DIR (cartella del sito sul server), FTP_PROTOCOL ("ftps" o "ftp")
 name: Pubblica sul server
 
 on:
   push:
     branches: [main]
-    paths: ["site/**"]
+    paths: ["site/**", "tests/**", "composer.json", "phpunit.xml", ".github/workflows/deploy.yml"]
   workflow_dispatch:
 
 concurrency:
@@ -19,6 +19,16 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
+
+      - name: Controllo della sintassi PHP
+        run: find site -name '*.php' -print0 | xargs -0 -n1 php -l > /dev/null
+
+      - name: Test del motore di calcolo
+        run: |
+          composer install --no-interaction --no-progress --quiet
+          vendor/bin/phpunit --bootstrap site/app/bootstrap.php tests
+
       - name: Controlla che le credenziali FTP ci siano
         id: check
         env:
@@ -31,8 +41,21 @@ jobs:
             echo "ready=true" >> "$GITHUB_OUTPUT"
           fi
 
-      - uses: actions/checkout@v4
+      - name: Crea la configurazione del database
         if: steps.check.outputs.ready == 'true'
+        env:
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_NAME: ${{ secrets.DB_NAME }}
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASS: ${{ secrets.DB_PASS }}
+        run: |
+          php -r '
+            foreach (["DB_HOST","DB_NAME","DB_USER","DB_PASS"] as $k) if (getenv($k) === false || getenv($k) === "") { fwrite(STDERR, "Manca il secret $k\n"); exit(1); }
+            $c = ["db" => ["host" => getenv("DB_HOST"), "name" => getenv("DB_NAME"), "user" => getenv("DB_USER"), "pass" => getenv("DB_PASS")],
+                  "salt" => hash("sha256", "acat|" . getenv("DB_PASS")), "env" => "produzione"];
+            file_put_contents("site/app/config.php", "<?php\n// Creato dalla pubblicazione automatica: non modificare.\nreturn " . var_export($c, true) . ";\n");
+          '
+          php -l site/app/config.php > /dev/null
 
       - name: Carica site/ via FTP
         if: steps.check.outputs.ready == 'true'
