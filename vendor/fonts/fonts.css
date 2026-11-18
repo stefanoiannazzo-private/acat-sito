@@ -1,0 +1,5 @@
+/* Font ospitati sul sito (nessuna richiesta a Google). Licenza SIL Open Font License: vedi OFL-*.txt */
+@font-face { font-family: 'Instrument Sans'; font-style: normal; font-weight: 400 600; font-stretch: 75% 100%; font-display: swap;
+  src: url(instrument-sans-latin.woff2) format('woff2'); }
+@font-face { font-family: 'Instrument Serif'; font-style: normal; font-weight: 400; font-display: swap;
+  src: url(instrument-serif-latin.woff2) format('woff2'); }

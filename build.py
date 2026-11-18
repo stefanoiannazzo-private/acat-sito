@@ -255,9 +255,8 @@ def footer(close_h, close_line, close_img):
         <div class="span-2 footer__col"><h3>Orari</h3><ul><li><a href="contatti.html#visit">Lun 15:30–19</a></li><li><a href="contatti.html#visit">Mar–ven 9–12, 15:30–19</a></li></ul></div>
       </div>
       <div class="footer__legal">
-        <span>&copy; 2026 ACAT Servizi</span>
-        <div class="socials"></div>
-        <a class="credits" href="credits.html">Fotografie via Unsplash e Wikimedia Commons</a>
+        <span>&copy; 2026 ACAT SERVIZI SRLS · Via Coazze 35, 10094 Giaveno (TO) · P. IVA 12789310013</span>
+        <nav class="footer__legal-links" aria-label="Note legali"><a href="privacy.html">Privacy</a><a href="cookie.html">Cookie</a><a class="credits" href="credits.html">Crediti foto</a></nav>
       </div>
     </div>
   </div>
@@ -585,7 +584,7 @@ cont_body = hero(
             <p class="field__error" id="f-town-err" hidden>Scrivi il comune in cui vivi.</p></div>
           <div class="btn-row"><button class="btn btn--primary" type="submit">{CTA}</button></div>
           <p class="form__status" role="status" data-form-status></p>
-          <p class="t-small muted">Ti rispondiamo negli orari d'agenzia.</p>
+          <p class="t-small muted">Ti rispondiamo negli orari d'agenzia. Usiamo i tuoi dati solo per rispondere alla richiesta: leggi l'<a class="link" href="privacy.html">informativa privacy</a>.</p>
         </form>
       </div>
       <figure class="frame frame--photo span-12 booking__pano">{u("1733522688659", "Una strada a tornanti in una valle alpina in autunno", sizes="(max-width: 639px) 200vw, (max-width: 1023px) 160vw, 100vw", pos="50% 55%")}</figure>
@@ -628,5 +627,98 @@ page("contatti.html",
      "contatti", DEAL + "\n     moments: pinned-chapters in #steps", cont_body,
      footer("Passa a trovarci in Via Coazze", HOURS + ".",
             u("1560518883", "Una piccola casa di legno con un mazzo di chiavi su un tavolo", sizes="(max-width: 639px) 160vw, 100vw", cls="")))
+
+
+# ---------------------------------------------------------------- PAGINE LEGALI
+TITOLARE = "ACAT SERVIZI SRLS"
+SEDE = "Via Coazze 35, 10094 Giaveno (TO)"
+PIVA = "12789310013"
+AGG = "18 novembre 2026"
+
+
+def legal_page(name, title, h1, lead, body_html, desc):
+    body = hero(h1, lead,
+                wk("f1549890", "Una via del centro di Giaveno con la torre antica e la fontana", lazy=False, pos="30% 50%"),
+                '<a class="btn btn--secondary" href="index.html">Torna alla home</a>', float_card=False, kicker="Note legali")
+    body = body.replace('class="hero hero--cover"', 'class="hero hero--cover hero--compact"')
+    body += f'''
+  <section class="section fx-sec legal" aria-label="{h1}">
+    <div class="wrap"><div class="legal__body">
+      <p class="legal__updated">Ultimo aggiornamento: {AGG}</p>
+{body_html}
+    </div></div>
+  </section>
+'''
+    page(name, head(title, desc, "word-highlight"), "", DEAL, body,
+         footer("Un preventivo senza impegno", HOURS + ", in Via Coazze.",
+                u("1560518883", "Una piccola casa di legno con un mazzo di chiavi su un tavolo", sizes="(max-width: 639px) 160vw, 100vw", cls="")))
+
+
+PRIVACY = f'''
+      <h2>1. Chi tratta i tuoi dati</h2>
+      <p>Il titolare del trattamento è <strong>{TITOLARE}</strong>, con sede in {SEDE}, P. IVA {PIVA}. Puoi contattarci al telefono <a class="link" href="{TEL}">{PHONE}</a>, in agenzia negli orari di apertura o con il modulo della pagina <a class="link" href="contatti.html#booking">Contatti</a>.</p>
+
+      <h2>2. Quali dati raccogliamo</h2>
+      <p><strong>Dati di navigazione.</strong> Il server che ospita il sito registra in automatico alcune informazioni tecniche (indirizzo IP, data e ora della visita, pagina richiesta, tipo di browser). Servono a far funzionare il sito e a proteggerlo da abusi e non vengono usate per identificarti.</p>
+      <p><strong>Dati che ci invii.</strong> Se compili il modulo "Richiedi un preventivo" raccogliamo nome e cognome, indirizzo email, la polizza o la pratica che ti interessa e, se lo indichi, il comune di residenza. Ti chiediamo di non inserire nel modulo dati sanitari o altri dati particolari.</p>
+
+      <h2>3. Perché li usiamo e su quale base</h2>
+      <ul>
+        <li>Rispondere alla tua richiesta e prepararti un preventivo: misure precontrattuali richieste da te (art. 6, par. 1, lett. b del Regolamento UE 2016/679, "GDPR").</li>
+        <li>Garantire la sicurezza del sito e prevenire abusi: legittimo interesse del titolare (art. 6, par. 1, lett. f GDPR).</li>
+        <li>Adempiere a obblighi di legge, se necessario (art. 6, par. 1, lett. c GDPR).</li>
+      </ul>
+      <p>Non usiamo i dati del sito per pubblicità, profilazione o decisioni automatizzate e non li vendiamo a nessuno. Se dalla richiesta nasce un contratto assicurativo o una pratica, riceverai in agenzia l'informativa specifica prevista per quel servizio.</p>
+
+      <h2>4. Per quanto tempo li conserviamo</h2>
+      <p>Conserviamo le richieste inviate dal modulo per il tempo necessario a gestirle e comunque non oltre 12 mesi dall'ultimo contatto, salvo che nasca un rapporto contrattuale o che la legge imponga tempi diversi. I dati di navigazione sono conservati dal fornitore di hosting per i tempi tecnici previsti dal servizio.</p>
+
+      <h2>5. Chi può vederli</h2>
+      <p>I dati sono trattati dal personale dell'agenzia autorizzato e dai fornitori che ci aiutano a far funzionare il sito e la posta elettronica, come il fornitore di hosting, nominati responsabili del trattamento. Le compagnie assicurative ricevono i tuoi dati solo se serve per prepararti un preventivo o un contratto che hai chiesto. I dati restano nell'Unione Europea.</p>
+
+      <h2>6. Servizi esterni collegati</h2>
+      <p>Il sito contiene semplici link alla prenotazione online (Reservio) e alla mappa (OpenStreetMap). Questi servizi si attivano solo se fai clic e trattano i dati secondo le loro informative.</p>
+
+      <h2>7. I tuoi diritti</h2>
+      <p>Puoi chiedere in ogni momento di accedere ai tuoi dati, correggerli, cancellarli, limitarne il trattamento, opporti al trattamento basato sul legittimo interesse e ricevere i dati in un formato leggibile (artt. 15–22 GDPR). Per farlo contattaci con i recapiti indicati al punto 1. Se ritieni che il trattamento violi il GDPR puoi presentare un reclamo al Garante per la protezione dei dati personali (<a class="link" href="https://www.garanteprivacy.it">garanteprivacy.it</a>).</p>
+
+      <h2>8. È obbligatorio darci i dati?</h2>
+      <p>No, ma senza nome, email e oggetto della richiesta non possiamo risponderti tramite il modulo. In alternativa puoi chiamarci o passare in agenzia.</p>
+
+      <h2>9. Modifiche</h2>
+      <p>Possiamo aggiornare questa informativa. La data dell'ultima modifica è indicata in cima alla pagina.</p>
+'''
+
+COOKIE = f'''
+      <h2>1. Cosa sono i cookie</h2>
+      <p>I cookie sono piccoli file che un sito salva nel browser. Strumenti simili, come la memoria di sessione del browser ("sessionStorage"), funzionano in modo analogo.</p>
+
+      <h2>2. Cosa usa questo sito</h2>
+      <p>Questo sito <strong>non usa cookie di profilazione, di statistica o di terze parti</strong>. Font, animazioni e immagini sono ospitati sul sito stesso: aprendo le pagine non vengono contattati servizi esterni.</p>
+      <p>Il sito usa soltanto uno strumento tecnico:</p>
+      <ul>
+        <li><strong>acat-tr</strong> (sessionStorage): ricorda per un istante che stai passando da una pagina all'altra, così da mostrare l'animazione di passaggio. Viene cancellato subito dopo e comunque alla chiusura della scheda. Non contiene dati personali.</li>
+      </ul>
+      <p>Il server di hosting può impostare cookie tecnici necessari al funzionamento e alla sicurezza del servizio.</p>
+
+      <h2>3. Serve il consenso?</h2>
+      <p>No. Per gli strumenti tecnici strettamente necessari la legge non richiede il consenso (art. 122 del Codice privacy e Linee guida del Garante del 10 giugno 2021), per questo il sito non mostra un banner. Se in futuro aggiungeremo strumenti di statistica o di marketing, ti chiederemo prima il consenso e aggiorneremo questa pagina.</p>
+
+      <h2>4. Link esterni</h2>
+      <p>I link alla prenotazione online (Reservio) e alla mappa (OpenStreetMap) aprono siti di terzi, che usano i propri cookie secondo le loro informative.</p>
+
+      <h2>5. Come gestire i cookie dal browser</h2>
+      <p>Puoi cancellare o bloccare cookie e dati dei siti dalle impostazioni del tuo browser. Bloccare gli strumenti tecnici di questo sito non ne impedisce l'uso: si perde solo l'animazione di passaggio tra le pagine.</p>
+
+      <h2>6. Titolare</h2>
+      <p>{TITOLARE}, {SEDE}, P. IVA {PIVA}. Per i dettagli sul trattamento dei dati leggi l'<a class="link" href="privacy.html">informativa privacy</a>.</p>
+'''
+
+legal_page("privacy.html", "Privacy policy: ACAT Servizi, Giaveno", "Privacy policy",
+           "Come ACAT SERVIZI SRLS tratta i dati di chi visita il sito e ci scrive dal modulo dei preventivi.",
+           PRIVACY, "Informativa privacy del sito di ACAT SERVIZI SRLS, agenzia di assicurazioni e pratiche auto in Via Coazze 35 a Giaveno.")
+legal_page("cookie.html", "Cookie policy: ACAT Servizi, Giaveno", "Cookie policy",
+           "Questo sito usa solo strumenti tecnici: niente profilazione, niente statistiche, niente banner.",
+           COOKIE, "Cookie policy del sito di ACAT SERVIZI SRLS: solo strumenti tecnici, nessun cookie di profilazione o di terze parti.")
 
 print("ok")

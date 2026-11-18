@@ -8,6 +8,8 @@ Sito statico di 4 pagine per ACAT Servizi, agenzia di assicurazioni e pratiche a
 - `tools/dist.py` — copia in `site/` le pagine e i soli file che usano.
 - `assets/site.css`, `assets/fx.js` — stile e animazioni del sito (hero, icone, effetti allo scroll, transizione tra pagine).
 - `assets/system.*`, `assets/motion/`, `assets/moments/` — dal kit taste-skill (licenza MIT, vedi `assets/LICENSE-taste-skill.txt`).
+- `vendor/` — font (SIL OFL) e GSAP (licenza standard GreenSock) ospitati sul sito: in `site/` le pagine non chiamano servizi esterni.
+- `sitemap.php` — genera `/sitemap.xml` con il dominio su cui gira il sito.
 - `PLAN.md` — scelte di progetto, fonti dei dati, voce dei testi.
 
 ## Modificare il sito
@@ -28,6 +30,7 @@ Poi **Actions > Pubblica sul server > Run workflow** per la prima pubblicazione.
 ## Da completare prima della messa online
 - Email da pubblicare; in `preventivo.php` impostare `DESTINATARIO` con la casella che riceve i preventivi (poi `python3 tools/dist.py`).
 - Nel pannello Aruba lasciare **disattivato** "Limita accesso FTP" (o consentire gli IP di GitHub), altrimenti la pubblicazione automatica non si collega.
-- Ragione sociale, partita IVA, numero di iscrizione RUI; pagine Privacy e Cookie.
+- Numero di iscrizione al RUI da aggiungere nel footer (obbligatorio per gli intermediari assicurativi).
+- Privacy e Cookie (`privacy.html`, `cookie.html`) sono un modello standard: da far verificare a un consulente privacy.
 - Dopo l'attivazione dell'SSL: togliere i `#` dal redirect https in `.htaccess`.
 - Foto: ora sono stand-in da Unsplash e Wikimedia (crediti in `credits.html`).

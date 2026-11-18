@@ -258,3 +258,16 @@ html.fx-still .fx-w__in, html.fx-still .fx-mega__row { transform: none !importan
 
 /* modulo: campo trappola anti-spam, invisibile alle persone */
 .hp { position: absolute !important; left: -9999px !important; width: 1px; height: 1px; overflow: hidden; }
+
+/* pagine legali */
+main > .hero--compact { height: auto !important; min-height: clamp(380px, 52svh, 560px) !important; }
+.legal__body { max-width: 760px; }
+.legal__updated { font-size: var(--t-small); color: var(--muted); margin-bottom: var(--s-6); }
+.legal__body h2 { font-size: var(--t-h3); margin: var(--s-8) 0 var(--s-4); }
+.legal__body p, .legal__body li { line-height: 1.65; }
+.legal__body p + p { margin-top: var(--s-4); }
+.legal__body ul { margin: var(--s-4) 0; padding-left: 1.2em; display: grid; gap: var(--s-3); }
+.legal__body .link, .form .link { text-decoration: underline; }
+.footer__legal { flex-wrap: wrap; gap: var(--s-4); }
+.footer__legal-links { display: flex; gap: var(--s-5); flex-wrap: wrap; }
+.legal__body ul { list-style: disc; }
