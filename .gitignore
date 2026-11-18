@@ -1,0 +1,6 @@
+cand/
+shots/
+.taste-skill/
+__pycache__/
+*.zip
+.DS_Store
