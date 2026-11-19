@@ -111,9 +111,13 @@ function pagina_inizio(string $titolo, string $sezione = ''): void
 </nav>
 <main class="main">
 <?php endif; ?>
-<?php foreach ($_SESSION['flash'] ?? [] as [$t, $m]): ?>
-  <div class="flash flash--<?= e($t) ?>" role="status"><?= e($m) ?></div>
-<?php endforeach; unset($_SESSION['flash']);
+<?php if (!empty($_SESSION['flash'])): ?>
+  <div class="avvisi" aria-live="polite">
+  <?php foreach ($_SESSION['flash'] as [$t, $m]): ?>
+    <div class="flash flash--<?= e($t) ?> avviso" role="<?= $t === 'errore' ? 'alert' : 'status' ?>"><span><?= e($m) ?></span><button type="button" class="avviso__chiudi" aria-label="Chiudi">×</button></div>
+  <?php endforeach; ?>
+  </div>
+<?php endif; unset($_SESSION['flash']);
 }
 
 function pagina_fine(): void

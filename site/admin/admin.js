@@ -259,3 +259,12 @@ document.addEventListener('DOMContentLoaded', () => {
   };
   document.querySelectorAll('[data-correzione]').forEach((tr) => { mostra(tr); tr.querySelector('[name$="[tipo]"]').addEventListener('change', () => mostra(tr)); });
 });
+
+/* avvisi di esito: si chiudono con la ×; quelli di conferma spariscono da soli dopo qualche secondo, gli errori restano */
+document.addEventListener('DOMContentLoaded', () => {
+  const chiudi = (a) => { a.classList.add('esce'); setTimeout(() => { a.remove(); }, 300); };
+  document.querySelectorAll('.avviso').forEach((a) => {
+    a.querySelector('.avviso__chiudi')?.addEventListener('click', () => chiudi(a));
+    if (!a.classList.contains('flash--errore')) setTimeout(() => chiudi(a), 6000);
+  });
+});

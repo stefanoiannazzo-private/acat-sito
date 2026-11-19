@@ -236,3 +236,16 @@ label small, .field small, .campo small, .hint { color: var(--ink); }
 .table--correzioni .cond { display: block; }
 .table--correzioni .cond[hidden] { display: none; }
 .table--garanzie .nuova { display: block; margin-bottom: 6px; font-size: 13px; }
+
+/* esito del salvataggio: sempre visibile in cima allo schermo, da qualsiasi punto della pagina */
+.avvisi { position: fixed; top: 66px; left: 50%; transform: translateX(-50%); z-index: 50; width: min(640px, calc(100vw - 32px)); display: grid; gap: 8px; pointer-events: none; }
+.avviso { pointer-events: auto; display: flex; align-items: flex-start; gap: 12px; margin: 0; padding: 12px 14px 12px 16px; border: 1px solid rgb(14 35 64 / .08);
+  box-shadow: 0 10px 30px rgb(14 35 64 / .16); font-weight: 500; animation: avviso-in .25s ease-out; }
+.avviso span { flex: 1; }
+.avviso.flash--ok { border-left: 4px solid var(--ok); }
+.avviso.flash--errore { border-left: 4px solid var(--accent); }
+.avviso__chiudi { background: none; border: 0; font-size: 20px; line-height: 1; cursor: pointer; color: inherit; opacity: .6; padding: 0 2px; }
+.avviso__chiudi:hover { opacity: 1; }
+.avviso.esce { opacity: 0; transform: translateY(-6px); transition: opacity .3s, transform .3s; }
+@keyframes avviso-in { from { opacity: 0; transform: translateY(-8px); } }
+@media (prefers-reduced-motion: reduce) { .avviso { animation: none; } .avviso.esce { transition: none; } }
