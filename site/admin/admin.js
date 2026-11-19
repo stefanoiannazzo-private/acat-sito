@@ -125,3 +125,60 @@ document.addEventListener('input', (e) => {
   (f.closest('label, .field, .campo, td') || f.parentElement).querySelector(':scope > .obbligo')?.remove();
 });
 document.addEventListener('change', (e) => e.target.dispatchEvent?.(new Event('input', { bubbles: true })));
+
+/* preventivo: garanzie della compagnia mentre si scrive, importo proposto, controllo dei doppioni immediato */
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.getElementById('defin');
+  const datiEl = document.getElementById('garanzie-dati');
+  if (!form || !datiEl) return;
+  const dati = JSON.parse(datiEl.textContent);
+  const nuova = form.querySelector('[data-garanzie]'), imp = form.querySelector('[name="nuova_importo"]');
+  const comp = form.querySelector('[name="compagnia"]'), list = document.getElementById(nuova.getAttribute('list'));
+  const norm = (t) => t.trim().toLowerCase().replace(/\s+/g, ' ');
+  const num = (t) => parseFloat(String(t).replace(/\./g, '').replace(',', '.'));
+  const elenco = () => {
+    const c = norm(comp.value);
+    if (dati.prodotto.length && (!c || c === norm(dati.prodotto_compagnia || ''))) return dati.prodotto;
+    return dati.compagnie[c] || [];
+  };
+  const riempi = () => {
+    list.innerHTML = '';
+    const presenti = new Set(campi().filter((f) => f !== nuova).map((f) => norm(f.value)));
+    for (const g of elenco()) { if (presenti.has(norm(g.nome))) continue; const o = document.createElement('option'); o.value = g.nome; list.append(o); }
+  };
+  const campi = () => [...form.querySelectorAll('[name^="riga_nome"], [name="nuova_nome"]')].filter((f) => {
+    const t = f.closest('tr')?.querySelector('[name^="riga_togli"]');
+    return !(t && t.checked);
+  });
+  const segna = (f, msg) => {
+    const box = f.closest('td');
+    let m = box.querySelector(':scope > .obbligo');
+    f.setCustomValidity(msg || '');
+    f.classList.toggle('is-invalid', !!msg);
+    if (msg) { if (!m) { m = document.createElement('small'); m.className = 'obbligo'; box.append(m); } m.textContent = msg; }
+    else m?.remove();
+  };
+  const controlla = () => {
+    const visti = new Set();
+    form.querySelectorAll('[name^="riga_nome"], [name="nuova_nome"]').forEach((f) => segna(f, ''));
+    for (const f of campi()) {
+      const k = norm(f.value);
+      if (!k) continue;
+      if (visti.has(k)) segna(f, 'Garanzia già presente nel preventivo'); else visti.add(k);
+    }
+  };
+  nuova.addEventListener('focus', riempi);
+  comp.addEventListener('input', riempi);
+  nuova.addEventListener('input', () => {
+    const g = elenco().find((x) => norm(x.nome) === norm(nuova.value));
+    if (g && !imp.value) {
+      let v = null;
+      if (g.tipo === 'fisso') v = g.valore;
+      else if (g.tipo === 'perc_rc') { const rc = num(form.querySelector('[name="riga_importo[0]"]')?.value || ''); if (!isNaN(rc)) v = rc * g.valore / 100; }
+      if (v !== null) imp.value = v.toFixed(2).replace('.', ',');
+    }
+  });
+  form.addEventListener('input', (e) => { if (e.target.matches('[name^="riga_nome"], [name="nuova_nome"]')) controlla(); });
+  form.addEventListener('change', (e) => { if (e.target.matches('[name^="riga_togli"]')) controlla(); });
+  riempi(); controlla();
+});

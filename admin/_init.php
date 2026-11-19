@@ -198,3 +198,26 @@ function tabella_confronto(array $d, ?int $preventivoId = null, ?int $scelto = n
   </tbody></table>
 <?php }
 
+/**
+ * Garanzie proponibili nel preventivo: quelle del prodotto del preventivo e, per ogni compagnia,
+ * quelle dei suoi prodotti dell'area Auto (se in agenzia si cambia compagnia, l'elenco segue).
+ */
+function garanzie_per_preventivo(array $p): array
+{
+    $auto = Categorie::perChiave('auto');
+    $rows = db()->query("SELECT g.nome, g.tipo_calcolo, g.valore, g.prodotto_id, c.nome AS compagnia
+        FROM garanzie g JOIN prodotti pr ON pr.id = g.prodotto_id JOIN compagnie c ON c.id = pr.compagnia_id
+        LEFT JOIN categorie k ON k.id = pr.categoria_id
+        WHERE g.attivo = 1 AND g.principale = 0 AND pr.attivo = 1" . ($auto ? ' AND (pr.categoria_id IS NULL OR COALESCE(k.parent_id, k.id) = ' . (int)$auto . ')' : '') . '
+        ORDER BY g.ordine, g.nome')->fetchAll();
+    $out = ['prodotto' => [], 'prodotto_compagnia' => null, 'compagnie' => []];
+    foreach ($rows as $r) {
+        $v = ['nome' => $r['nome'], 'tipo' => $r['tipo_calcolo'], 'valore' => (float)$r['valore']];
+        if ($p['prodotto_id'] !== null && (int)$r['prodotto_id'] === (int)$p['prodotto_id']) { $out['prodotto'][] = $v; $out['prodotto_compagnia'] = $r['compagnia']; }
+        $k = mb_strtolower(trim($r['compagnia']));
+        $out['compagnie'][$k][mb_strtolower($r['nome'])] ??= $v;
+    }
+    foreach ($out['compagnie'] as $k => $l) $out['compagnie'][$k] = array_values($l);
+    return $out;
+}
+

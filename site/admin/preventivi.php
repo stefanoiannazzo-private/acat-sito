@@ -58,6 +58,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($imp === null || $imp < 0) $err[] = 'Indica l\'importo della voce aggiunta.';
             else { $righe[] = ['nome' => $nuova, 'importo' => round($imp, 2)]; $tot += $imp; }
         }
+        // la stessa garanzia non può comparire due volte
+        $visti = [];
+        foreach ($righe as $r) {
+            $k = preg_replace('/\s+/u', ' ', mb_strtolower(trim($r['nome'])));
+            if (isset($visti[$k])) $err[] = 'Garanzia già presente nel preventivo: "' . $r['nome'] . '".';
+            $visti[$k] = true;
+        }
         $decorrenza = trim((string)($_POST['decorrenza'] ?? '')) ?: null;
         $valido = trim((string)($_POST['valido_fino'] ?? '')) ?: null;
         foreach (['decorrenza' => $decorrenza, 'valido_fino' => $valido] as $k => $d) if ($d && !DateTimeImmutable::createFromFormat('!Y-m-d', $d)) $err[] = 'Data non valida.';
@@ -175,8 +182,9 @@ if (isset($_GET['id'])):
           <td><input name="riga_importo[<?= $i ?>]" value="<?= $r['importo'] === null ? '' : e(number_format((float)$r['importo'], 2, ',', '')) ?>" inputmode="decimal" class="right" aria-label="Importo"><?php if ($i === 0): ?><small class="hint">Vuoto = su richiesta</small><?php endif; ?></td>
           <td><?php if ($i > 0): ?><label class="check" title="Togli questa voce"><input type="checkbox" name="riga_togli[<?= $i ?>]" value="1"> togli</label><?php endif; ?></td></tr>
         <?php endforeach; ?>
-          <tr><td><input name="nuova_nome" aria-label="Nuova voce"><small class="hint">Aggiungi una voce, es. Assistenza stradale</small></td><td><input name="nuova_importo" inputmode="decimal" class="right" aria-label="Importo nuova voce"><small class="hint">Importo in €</small></td><td></td></tr>
+          <tr><td><input name="nuova_nome" aria-label="Nuova voce" list="garanzie-list" autocomplete="off" data-garanzie><datalist id="garanzie-list"></datalist><small class="hint">Scrivi le prime lettere e scegli una garanzia della compagnia, oppure una voce libera</small></td><td><input name="nuova_importo" inputmode="decimal" class="right" aria-label="Importo nuova voce"><small class="hint">Importo in €</small></td><td></td></tr>
         </tbody></table>
+        <script type="application/json" id="garanzie-dati"><?= json_encode(garanzie_per_preventivo($p), JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP) ?></script>
         <p class="muted">Totale attuale: <b><?= euro(EmailPreventivo::totale($p)) ?></b> · si ricalcola al salvataggio.</p>
         <div class="form--grid2">
           <label>Compagnia<input name="compagnia" maxlength="80" value="<?= e((string)$p['compagnia']) ?>"><small class="hint">Es. Allianz</small></label>
