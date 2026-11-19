@@ -9,6 +9,8 @@ set_exception_handler(function (Throwable $e): void {
     error_log('[preventivatore] ' . $e->getMessage());
     json_out(['ok' => false, 'errore' => 'Servizio momentaneamente non disponibile. Riprova più tardi o chiamaci.'], 503);
 });
+// dopo una pubblicazione il database si aggiorna anche dalle pagine pubbliche, senza aspettare il pannello o il cron
+Migrazioni::esegui(db());
 
 /** Corpo JSON della richiesta, solo POST dallo stesso sito */
 function input_json(): array {
