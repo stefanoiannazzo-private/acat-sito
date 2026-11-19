@@ -183,16 +183,17 @@ function tabella_confronto(array $d, ?int $preventivoId = null, ?int $scelto = n
     $c = $d['confronto'] ?? null;
     if (!$c) return; ?>
   <h3>Confronto fra i prodotti</h3>
-  <table class="table table--small table--confronto"><thead><tr><th>Compagnia e prodotto</th><th class="right">Annuo</th><th class="right">Rata</th><?= $preventivoId ? '<th></th>' : '' ?></tr></thead><tbody>
+  <table class="table table--small table--confronto"><thead><tr><th>Compagnia e prodotto</th><th class="right">Annuo</th><th class="right">Rata</th></tr></thead><tbody>
   <?php foreach ($c['validi'] as $i => $v): ?>
     <tr<?= ($scelto ?? ($d['prodotto_id'] ?? 0)) === $v['prodotto_id'] ? ' class="tot"' : '' ?>><td><?= e($v['compagnia'] . ' – ' . $v['prodotto']) ?><?= $i === 0 ? ' <span class="tag tag--ok">migliore</span>' : '' ?>
       <?php $note = array_merge($v['correzioni'] ?? [], array_map(fn($s) => $s['nome'], $v['sconti'] ?? []), $v['limite'] ? [ucfirst($v['limite'])] : [], $v['su_richiesta'] ? ['alcune voci su richiesta'] : []); ?>
       <?php if ($note): ?><br><small class="muted"><?= e(implode(' · ', $note)) ?></small><?php endif; ?></td>
       <td class="right nowrap"><?= euro($v['annuo']) ?></td><td class="right nowrap"><?= $v['rate'] > 1 ? $v['rate'] . ' × ' . euro($v['rata']) . '<br><small class="muted">' . e($v['frazionamento']) . '</small>' : '<span class="muted">unica annuale</span>' ?></td>
-      <?php if ($preventivoId): ?><td class="azione"><form method="post"><?= Auth::campoCsrf() ?><input type="hidden" name="id" value="<?= $preventivoId ?>"><input type="hidden" name="prodotto_id" value="<?= (int)$v['prodotto_id'] ?>"><button class="btn btn--ghost btn--small" name="azione" value="usa_proposta">Usa questa proposta</button></form></td><?php endif; ?></tr>
+    </tr>
+      <?php if ($preventivoId): ?><tr class="riga-azione"><td colspan="3"><form method="post"><?= Auth::campoCsrf() ?><input type="hidden" name="id" value="<?= $preventivoId ?>"><input type="hidden" name="prodotto_id" value="<?= (int)$v['prodotto_id'] ?>"><button class="btn btn--rosso" name="azione" value="usa_proposta">Usa questa proposta</button></form></td></tr><?php endif; ?>
   <?php endforeach; ?>
   <?php foreach ($c['esclusi'] as $x): ?>
-    <tr class="muted"><td><?= e($x['compagnia'] . ' – ' . $x['prodotto']) ?><br><small><?= e($x['motivo']) ?></small></td><td class="right">–</td><td class="right">–</td><?= $preventivoId ? '<td></td>' : '' ?></tr>
+    <tr class="muted"><td><?= e($x['compagnia'] . ' – ' . $x['prodotto']) ?><br><small><?= e($x['motivo']) ?></small></td><td class="right">–</td><td class="right">–</td></tr>
   <?php endforeach; ?>
   </tbody></table>
 <?php }

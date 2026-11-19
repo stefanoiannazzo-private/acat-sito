@@ -218,3 +218,8 @@ label small, .field small, .campo small, .hint { color: var(--ink); }
 .pop__box li { display: flex; flex-direction: column; }
 .pop__box li span { color: var(--muted); font-size: 12.5px; }
 @media (min-width: 1000px) { .tablewrap:has(.pop) { overflow: visible; } }
+
+/* confronto: pulsante sotto le tre colonne, al centro; rosso, in hover bianco */
+.table--confronto tr:has(+ .riga-azione) td { border-bottom: 0; }
+.table--confronto .riga-azione td { text-align: center; padding: 4px 0 16px; }
+.btn--rosso:hover { filter: none; background: #fff; color: var(--accent); }
