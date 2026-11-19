@@ -296,3 +296,16 @@ document.addEventListener('DOMContentLoaded', () => {
   form.addEventListener('input', pianifica);
   form.addEventListener('submit', (e) => { if (pronto()) { e.preventDefault(); ultimo = ''; calcola(); } });
 });
+
+/* prodotto: i campi solo per l'auto (es. veicoli assicurati) compaiono solo se la classificazione è nell'area Auto */
+document.addEventListener('DOMContentLoaded', () => {
+  const sel = document.querySelector('[data-classificazione]');
+  if (!sel) return;
+  const aggiorna = () => {
+    const o = sel.selectedOptions[0];
+    const area = o && o.parentElement.tagName === 'OPTGROUP' ? o.parentElement.label : '';
+    document.querySelectorAll('[data-solo-auto]').forEach((x) => { x.hidden = area !== 'Auto'; });
+  };
+  sel.addEventListener('change', aggiorna);
+  aggiorna();
+});

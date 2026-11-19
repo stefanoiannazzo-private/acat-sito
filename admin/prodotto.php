@@ -259,9 +259,9 @@ e, se servono, <b>4.</b> promozioni e <b>5.</b> prezzi diversi per età, zona o 
     <div class="form--grid2">
       <label>Compagnia<select name="compagnia_id" required><option value="">Scegli…</option><?php foreach ($compagnie as $k => $v): ?><option value="<?= (int)$k ?>"<?= (int)$f['compagnia_id'] === (int)$k ? ' selected' : '' ?>><?= e($v) ?></option><?php endforeach; ?></select></label>
       <label>Nome del prodotto<input name="nome" maxlength="120" required value="<?= e($f['nome']) ?>"></label>
-      <label>Classificazione<select name="categoria_id" required><option value="">Scegli…</option><?= Categorie::opzioni($f['categoria_id'] !== null ? (int)$f['categoria_id'] : null) ?></select></label>
+      <label>Classificazione<select name="categoria_id" required data-classificazione><option value="">Scegli…</option><?= Categorie::opzioni($f['categoria_id'] !== null ? (int)$f['categoria_id'] : null) ?></select></label>
       <label>Descrizione<input name="descrizione" maxlength="255" value="<?= e((string)$f['descrizione']) ?>"></label>
-      <label>Veicoli assicurati<select name="veicoli"><?php foreach (VEICOLI as $k => $l): ?><option value="<?= $k ?>"<?= $f['veicoli'] === $k ? ' selected' : '' ?>><?= e($l) ?></option><?php endforeach; ?></select><small>Solo per i prodotti auto.</small></label>
+      <label data-solo-auto>Veicoli assicurati<select name="veicoli"><?php foreach (VEICOLI as $k => $l): ?><option value="<?= $k ?>"<?= $f['veicoli'] === $k ? ' selected' : '' ?>><?= e($l) ?></option><?php endforeach; ?></select></label>
       <div></div>
       <label>Premio minimo annuo (€)<input name="premio_minimo" inputmode="decimal" value="<?= e(nd($f['premio_minimo'])) ?>"><small class="hint">Vuoto = nessun minimo</small></label>
       <label>Premio massimo annuo (€)<input name="premio_massimo" inputmode="decimal" value="<?= e(nd($f['premio_massimo'])) ?>"><small class="hint">Vuoto = nessun massimo</small></label>
