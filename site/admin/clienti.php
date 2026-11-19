@@ -89,7 +89,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 Auth::log('crea', 'clienti', $id);
             }
             // "Associa": la persona viene legata all'azienda scelta nel modulo
-            if ($tipo === 'persona' && ($az_id = (int)($_POST['associa_azienda'] ?? 0))) Clienti::lega($id, $az_id, $t('associa_ruolo', 80));
+            // aziende associate: il modulo della persona le elenca tutte, quindi le allineo (stessa tabella vista dalla scheda dell'azienda)
+            if ($tipo === 'persona' && isset($_POST['legami_modulo'])) {
+                $voglio = [];
+                foreach ((array)($_POST['legami'] ?? []) as $r) {
+                    $aid = (int)($r['azienda'] ?? 0);
+                    if ($aid) $voglio[$aid] = trim(mb_substr((string)($r['ruolo'] ?? ''), 0, 80)) ?: null;
+                }
+                $st = db()->prepare('DELETE FROM clienti_legami WHERE persona_id = ?' . ($voglio ? ' AND azienda_id NOT IN (' . implode(',', array_keys($voglio)) . ')' : ''));
+                $st->execute([$id]);
+                foreach ($voglio as $aid => $ruolo) Clienti::lega($id, $aid, $ruolo);
+            }
             flash('ok', $tipo === 'azienda' ? 'Azienda salvata.' : 'Cliente salvato.');
             vai('clienti.php?id=' . $id);
         }
@@ -166,7 +176,9 @@ if (isset($form) || isset($_GET['nuovo']) || ($id && isset($_GET['modifica']))):
     $fid = (int)($form['id'] ?? 0);
     $az = $form['tipo'] === 'azienda';
     $aziende = $az ? [] : db()->query("SELECT id, nome FROM clienti WHERE tipo = 'azienda' ORDER BY nome")->fetchAll(PDO::FETCH_KEY_PAIR);
-    $giaLegate = $fid && !$az ? array_column(Clienti::legami($fid, 'persona'), 'id') : [];
+    // aziende già associate (o quelle appena scelte, se il modulo torna con un errore)
+    if (isset($_POST['legami_modulo'])) $legamiForm = array_values(array_filter(array_map(fn($r) => ['id' => (int)($r['azienda'] ?? 0), 'ruolo' => (string)($r['ruolo'] ?? '')], (array)($_POST['legami'] ?? [])), fn($r) => $r['id'] > 0));
+    else $legamiForm = $fid && !$az ? Clienti::legami($fid, 'persona') : [];
     $f = fn(string $k) => e((string)($form[$k] ?? '')); ?>
   <p class="crumbs"><a href="clienti.php<?= $fid ? '?id=' . $fid : '' ?>">← <?= $fid ? 'Scheda' : 'Clienti' ?></a></p>
   <h1><?= $fid ? ($az ? 'Modifica azienda' : 'Modifica persona') : ($az ? 'Nuova azienda' : 'Nuova persona') ?></h1>
@@ -198,10 +210,17 @@ if (isset($form) || isset($_GET['nuovo']) || ($id && isset($_GET['modifica']))):
       <input type="hidden" name="comune_id" value="<?= (int)($form['comune_id'] ?? 0) ?: '' ?>"><datalist id="comuni-list"></datalist><small class="hint">Scrivi almeno 2 lettere e scegli dall'elenco</small>
     </label>
     <label>Indirizzo<input name="indirizzo" maxlength="190" value="<?= $f('indirizzo') ?>"></label>
-    <label>Associa a un'azienda<select name="associa_azienda"><option value="">Nessuna<?= $giaLegate ? ' (già associata: gestisci dalla scheda)' : '' ?></option>
-      <?php foreach ($aziende as $k => $n): if (in_array($k, $giaLegate)) continue; ?><option value="<?= (int)$k ?>"><?= e($n) ?></option><?php endforeach; ?></select>
-      <?php if (!$aziende): ?><small>Nessuna azienda in anagrafica: <a href="clienti.php?nuovo=azienda">creane una</a>.</small><?php endif; ?></label>
-    <label>Ruolo nell'azienda<input name="associa_ruolo" maxlength="80"><small class="hint">Es. legale rappresentante, dipendente</small></label>
+    <fieldset class="full legami-form"><legend>Aziende associate</legend><input type="hidden" name="legami_modulo" value="1">
+    <?php foreach (array_merge($legamiForm, [['id' => 0, 'ruolo' => '']]) as $i => $l): ?>
+      <div class="form--grid2">
+        <label><?= $l['id'] ? 'Azienda' : ($legamiForm ? 'Associa un\'altra azienda' : 'Associa a un\'azienda') ?><select name="legami[<?= $i ?>][azienda]"><option value=""><?= $l['id'] ? 'Nessuna (togli l\'associazione)' : 'Nessuna' ?></option>
+          <?php foreach ($aziende as $k => $n): ?><option value="<?= (int)$k ?>"<?= (int)$k === (int)$l['id'] ? ' selected' : '' ?>><?= e($n) ?></option><?php endforeach; ?></select>
+          <?php if (!$aziende): ?><small class="hint">Nessuna azienda in anagrafica: <a href="clienti.php?nuovo=azienda">creane una</a>.</small><?php endif; ?></label>
+        <label>Ruolo nell'azienda<input name="legami[<?= $i ?>][ruolo]" maxlength="80" value="<?= e((string)$l['ruolo']) ?>"><small class="hint">Es. legale rappresentante, dipendente</small></label>
+      </div>
+    <?php endforeach; ?>
+    <small class="hint">Le associazioni valgono in entrambe le schede: le vedi anche nell'anagrafica dell'azienda.</small>
+    </fieldset>
     <?php endif; ?>
     <label>Stato<select name="stato_id"><?php foreach ($stati as $s): if (!$s['attivo'] && (int)$s['id'] !== (int)$form['stato_id']) continue; ?><option value="<?= (int)$s['id'] ?>"<?= (int)$s['id'] === (int)$form['stato_id'] ? ' selected' : '' ?>><?= e($s['nome']) ?></option><?php endforeach; ?></select></label>
     <label class="full">Note interne<textarea name="note" rows="4"><?= $f('note') ?></textarea></label>
