@@ -15,6 +15,11 @@ final class EmailPreventivo
 
     public static function sitoUrl(): string
     {
+        if (empty($_SERVER['HTTP_HOST'])) {
+            // da riga di comando (cron): l'indirizzo salvato dall'ultimo accesso al pannello
+            $u = (string)impostazione('sito_url', '');
+            if ($u !== '') return rtrim($u, '/');
+        }
         $h = preg_replace('/[^a-z0-9.:-]/i', '', $_SERVER['HTTP_HOST'] ?? 'localhost');
         $https = (($_SERVER['HTTPS'] ?? '') !== '' && $_SERVER['HTTPS'] !== 'off') || ($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '') === 'https' || !str_contains($h, 'localhost') && !str_starts_with($h, '127.');
         return ($https ? 'https://' : 'http://') . $h;
@@ -120,5 +125,26 @@ final class EmailPreventivo
             . '<p style="margin:20px 0 0;"><a href="' . $e($link) . '" style="display:inline-block;padding:12px 18px;background:#b3302a;color:#fff;text-decoration:none;border-radius:8px;font-weight:bold;">Apri nel pannello</a></p>'
             . '</td></tr></table></td></tr></table></body></html>';
         return ['oggetto' => $titolo, 'html' => $html, 'testo' => $testo];
+    }
+
+    /** Avviso di scadenza: stesso stile delle altre email, testo scelto in Impostazioni */
+    public static function avvisoScadenza(string $oggetto, string $testo, string $link, string $etichetta, bool $perAgenzia): array
+    {
+        $e = fn($s) => htmlspecialchars((string)$s, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+        $base = self::sitoUrl();
+        $font = "font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;";
+        $html = '<!doctype html><html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>' . $e($oggetto) . '</title></head>'
+. '<body style="margin:0;padding:0;background:#eef2f7;' . $font . '"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#eef2f7;"><tr><td align="center" style="padding:24px 12px;">'
+. '<table role="presentation" width="600" cellpadding="0" cellspacing="0" style="width:100%;max-width:600px;background:#ffffff;border-radius:14px;overflow:hidden;">'
+. '<tr><td style="padding:24px 32px 18px;border-bottom:1px solid #e3e8ef;"><img src="' . $e($base) . '/assets/email/logo-acat.png" width="150" height="32" alt="ACAT Servizi" style="display:block;border:0;"></td></tr>'
+. '<tr><td style="padding:28px 32px 8px;' . $font . '"><p style="margin:0 0 8px;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:#b3302a;font-weight:bold;">' . ($perAgenzia ? 'Scadenzario polizze' : 'Promemoria scadenza') . '</p>'
+. '<h1 style="margin:0 0 16px;font-size:22px;line-height:1.3;color:#0e2340;font-weight:normal;font-family:Georgia,\'Times New Roman\',serif;">' . $e($oggetto) . '</h1>'
+. '<p style="margin:0;font-size:15px;line-height:1.65;color:#33415a;">' . nl2br($e($testo)) . '</p></td></tr>'
+. '<tr><td style="padding:24px 32px 32px;"><table role="presentation" cellpadding="0" cellspacing="0"><tr><td style="border-radius:8px;background:#b3302a;"><a href="' . $e($link) . '" style="display:inline-block;padding:13px 20px;font-size:15px;font-weight:bold;color:#ffffff;text-decoration:none;' . $font . '">' . $e($etichetta) . '</a></td></tr></table></td></tr>'
+. '<tr><td style="padding:18px 32px;background:#0e2340;' . $font . '"><p style="margin:0;font-size:13px;line-height:1.7;color:#c9d3e2;"><b style="color:#ffffff;">ACAT Servizi</b> · ' . self::INDIRIZZO . ' · Tel. ' . self::TELEFONO . '<br>' . self::ORARI . '</p>'
+. ($perAgenzia ? '' : '<p style="margin:8px 0 0;font-size:11px;color:#8d9ab0;">' . self::SOCIETA . ' · <a href="' . $e($base) . '/privacy.html" style="color:#8d9ab0;">Privacy</a> · Ricevi questa email perché sei nostro cliente.</p>') . '</td></tr>'
+. '</table></td></tr></table></body></html>';
+        $plain = $testo . "\n\n" . $etichetta . ': ' . $link . "\n\nACAT Servizi · " . self::INDIRIZZO . ' · Tel. ' . self::TELEFONO . "\n";
+        return ['oggetto' => $oggetto, 'html' => $html, 'testo' => $plain];
     }
 }

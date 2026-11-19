@@ -16,6 +16,7 @@ EXTRA += [f"assets/moments/{m}/moment.{e}" for m in ("photo-chapters", "picture-
 # preventivatore: codice PHP, pannello admin e API (mai la configurazione locale con le password)
 for _d in ("app", "admin", "api"):
     for _root, _dirs, _files in os.walk(_d):
+        _dirs[:] = [x for x in _dirs if x != "vendor"]  # le librerie le installa la pubblicazione automatica
         for _f in _files:
             _p = os.path.join(_root, _f)
             if _p != os.path.join("app", "config.php") and not _f.endswith((".pyc", ".DS_Store")):

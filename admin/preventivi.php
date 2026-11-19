@@ -171,6 +171,7 @@ if (isset($_GET['id'])):
         <div class="actions actions--wrap">
           <button class="btn btn--ghost" name="azione" value="salva">Salva</button>
           <a class="btn btn--ghost" href="anteprima.php?id=<?= (int)$p['id'] ?>" target="_blank" rel="noopener">Anteprima email ↗</a>
+          <?php if ($p['cliente_id'] && in_array($p['stato'], ['accettato', 'chiuso'], true)): ?><a class="btn btn--ghost" href="polizze.php?nuovo=1&amp;preventivo=<?= (int)$p['id'] ?>">Registra la polizza stipulata</a><?php endif; ?>
           <button class="btn" name="azione" value="invia" data-conferma-btn="Salvare e inviare il preventivo a <?= e((string)$emailCliente) ?>?"<?= $emailCliente ? '' : ' disabled' ?>><?= $p['inviato_il'] ? 'Salva e invia di nuovo' : 'Salva e invia al cliente' ?></button>
         </div>
         <?php if (!Mailer::configurato()): ?><p class="flash flash--info">La casella di posta per l'invio non è ancora collegata: le email partono dalla funzione di base dell'hosting e potrebbero finire nello spam. Vedi <a href="impostazioni.php">Impostazioni</a>.</p><?php endif; ?>

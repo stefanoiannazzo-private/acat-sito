@@ -10,6 +10,9 @@ header('Cache-Control: no-store');
 header('X-Robots-Tag: noindex, nofollow');
 
 Migrazioni::esegui(db());
+if (impostazione('sito_url', '') !== EmailPreventivo::sitoUrl()) {
+    db()->prepare("INSERT INTO impostazioni (chiave, valore, descrizione) VALUES ('sito_url', ?, 'Indirizzo del sito (usato nelle email inviate dal cron)') ON DUPLICATE KEY UPDATE valore = VALUES(valore)")->execute([EmailPreventivo::sitoUrl()]);
+}
 Auth::avvia();
 Auth::verificaCsrf();
 
@@ -23,6 +26,40 @@ function stato_preventivo(string $s): string
     return '<span class="tag tag--' . e($s) . '">' . e(STATI_PREVENTIVO[$s] ?? $s) . '</span>';
 }
 
+/** Elenco documenti con scarica / apri / elimina */
+function docs_tabella(array $docs, ?int $polizza = null): void
+{
+    if (!$docs) { echo '<p class="muted">Nessun documento.</p>'; return; }
+    echo '<div class="tablewrap"><table class="table table--small"><tbody>';
+    foreach ($docs as $d) {
+        $vedi = in_array($d['mime'], ['application/pdf', 'image/jpeg', 'image/png'], true);
+        echo '<tr><td><a href="documenti.php?id=' . (int)$d['id'] . '">' . e($d['nome']) . '</a>'
+            . ($d['descrizione'] ? '<br><small class="muted">' . e($d['descrizione']) . '</small>' : '')
+            . (!$polizza && !empty($d['polizza_id']) ? '<br><small><a href="polizze.php?id=' . (int)$d['polizza_id'] . '">collegato a una polizza</a></small>' : '') . '</td>'
+            . '<td class="muted">' . e(Documenti::mb((int)$d['dimensione'])) . '<br>' . e(data_it($d['creato_il'], false)) . '</td>'
+            . '<td class="right nowrap">' . ($vedi ? '<a href="documenti.php?id=' . (int)$d['id'] . '&amp;vedi=1" target="_blank" rel="noopener">Apri</a> · ' : '')
+            . '<a href="documenti.php?id=' . (int)$d['id'] . '">Scarica</a> · '
+            . '<form method="post" action="documenti.php" class="inline" data-conferma="Eliminare il documento ' . e($d['nome']) . '?">' . Auth::campoCsrf()
+            . '<input type="hidden" name="azione" value="elimina"><input type="hidden" name="id" value="' . (int)$d['id'] . '">' . ($polizza ? '<input type="hidden" name="polizza" value="' . $polizza . '">' : '')
+            . '<button class="linkbtn">Elimina</button></form></td></tr>';
+    }
+    echo '</tbody></table></div>';
+}
+
+/** Modulo di caricamento; con $conLettura propone di leggere il contratto e compilare la polizza */
+function docs_form(int $cliente, ?int $polizza = null, bool $conLettura = true): void
+{
+    $max = Documenti::maxByte();
+    echo '<form method="post" action="documenti.php" enctype="multipart/form-data" class="form upload">' . Auth::campoCsrf()
+        . '<input type="hidden" name="azione" value="carica"><input type="hidden" name="cliente_id" value="' . $cliente . '">'
+        . ($polizza ? '<input type="hidden" name="polizza_id" value="' . $polizza . '">' : '')
+        . '<input type="hidden" name="MAX_FILE_SIZE" value="' . $max . '">'
+        . '<label>Carica un documento<input type="file" name="file" required accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" data-max="' . $max . '"><small>PDF, Word, JPG o PNG · massimo ' . e(Documenti::mb($max)) . '</small></label>'
+        . '<label>Descrizione (facoltativa)<input name="descrizione" maxlength="190" placeholder="Es. Contratto firmato, libretto, carta d\'identità"></label>'
+        . ($conLettura ? '<label class="check"><input type="checkbox" name="leggi" value="1"> È un contratto: leggi le date e ' . ($polizza ? 'proponile per questa polizza' : 'compila una nuova polizza') . ' (PDF digitali e Word)</label>' : '')
+        . '<div class="actions"><button class="btn btn--ghost">Carica</button></div></form>';
+}
+
 function flash(string $tipo, string $msg): void { $_SESSION['flash'][] = [$tipo, $msg]; }
 
 function vai(string $url): never { header('Location: ' . $url); exit; }
@@ -34,6 +71,9 @@ function pagina_inizio(string $titolo, string $sezione = ''): void
         'index' => ['index.php', 'Riepilogo'],
         'clienti' => ['clienti.php', 'Clienti'],
         'preventivi' => ['preventivi.php', 'Preventivi'],
+        'polizze' => ['polizze.php', 'Scadenziario polizze'],
+        'compagnie' => ['tabella.php?t=compagnie', 'Compagnie'],
+        'prodotti' => ['tabella.php?t=prodotti', 'Prodotti'],
         'prova' => ['prova.php', 'Prova calcolo'],
         'garanzie' => ['tabella.php?t=garanzie', 'Garanzie'],
         'fasce_eta' => ['tabella.php?t=fasce_eta', 'Fasce d\'età'],

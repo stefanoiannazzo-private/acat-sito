@@ -52,3 +52,8 @@ function data_it(?string $utc, bool $ora = true): string {
     $d = new DateTimeImmutable($utc, new DateTimeZone('UTC'));
     return $d->setTimezone(new DateTimeZone('Europe/Rome'))->format($ora ? 'd/m/Y H:i' : 'd/m/Y');
 }
+
+/** Chiave segreta per chiamare il cron degli avvisi */
+function chiave_cron(): string {
+    return substr(hash_hmac('sha256', 'cron-avvisi', (string)(config()['salt'] ?? '')), 0, 32);
+}

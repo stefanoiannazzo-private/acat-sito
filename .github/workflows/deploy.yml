@@ -30,6 +30,9 @@ jobs:
           composer install --no-interaction --no-progress --quiet
           vendor/bin/phpunit --bootstrap site/app/bootstrap.php tests
 
+      - name: Librerie del pannello (lettura dei PDF)
+        run: composer install --no-dev --no-interaction --no-progress --quiet --optimize-autoloader -d site/app
+
       - name: Controlla che le credenziali FTP ci siano
         id: check
         env:

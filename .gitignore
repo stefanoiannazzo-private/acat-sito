@@ -7,3 +7,5 @@ app/config.php
 cand/
 shots/
 vendor/
+archivio/
+app/vendor/

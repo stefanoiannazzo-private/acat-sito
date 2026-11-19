@@ -22,6 +22,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         vai('clienti.php?id=' . $id);
     }
     if ($az === 'elimina' && $id) {
+        $st = db()->prepare('SELECT id FROM documenti WHERE cliente_id = ?'); $st->execute([$id]);
+        foreach ($st->fetchAll(PDO::FETCH_COLUMN) as $did) Documenti::elimina((int)$did);
         db()->prepare('DELETE FROM clienti WHERE id = ?')->execute([$id]);
         Auth::log('elimina', 'clienti', $id, 'con i suoi preventivi');
         flash('ok', 'Cliente eliminato insieme ai suoi preventivi.');
@@ -181,9 +183,43 @@ elseif ($id):
       <?php endif; ?>
     </section>
   </div>
-  <form method="post" class="danger" data-conferma="Eliminare il cliente e TUTTI i suoi preventivi? L'operazione non si può annullare.">
+  <?php
+    $st = db()->prepare('SELECT p.*, co.nome AS compagnia, pr.nome AS prodotto FROM polizze p JOIN compagnie co ON co.id = p.compagnia_id LEFT JOIN prodotti pr ON pr.id = p.prodotto_id
+        WHERE p.cliente_id = ? ORDER BY (p.stato = \'attiva\') DESC, p.scadenza');
+    $st->execute([$id]);
+    $pol = $st->fetchAll();
+    $st = db()->prepare('SELECT * FROM documenti WHERE cliente_id = ? ORDER BY id DESC');
+    $st->execute([$id]);
+    $docs = $st->fetchAll();
+    $oggi = date('Y-m-d'); ?>
+  <section class="box" id="polizze">
+    <div class="head"><h2>Polizze <span class="muted">(<?= count(array_filter($pol, fn($x) => $x['stato'] === 'attiva')) ?> attive, <?= count($pol) ?> in tutto)</span></h2>
+      <div class="head__actions"><a class="btn" href="polizze.php?nuovo=1&amp;cliente=<?= $id ?>">+ Nuova polizza</a></div></div>
+    <?php if (!$pol): ?><p class="muted">Nessuna polizza registrata. Aggiungila a mano oppure carica il contratto qui sotto spuntando "È un contratto": compilo io le date.</p><?php else: ?>
+    <div class="tablewrap"><table class="table">
+      <thead><tr><th>Compagnia e prodotto</th><th>Numero / oggetto</th><th>Frazionamento</th><th>Stipula</th><th>Scadenza annualità</th><th>Prossima scadenza</th><th>Avviso cliente</th><th>Stato</th></tr></thead><tbody>
+      <?php foreach ($pol as $x):
+          $pr = $x['stato'] === 'attiva' ? Scadenze::prossima($x['scadenza'], $x['frazionamento']) : null; ?>
+        <tr<?= $x['stato'] !== 'attiva' ? ' class="off"' : '' ?>><td><a href="polizze.php?id=<?= (int)$x['id'] ?>"><b><?= e($x['compagnia']) ?></b></a><br><small class="muted"><?= e($x['prodotto'] ?: '–') ?></small></td>
+        <td><?= e($x['numero'] ?: '–') ?><br><small class="muted"><?= e((string)$x['oggetto']) ?></small></td>
+        <td><?= e(Scadenze::NOMI[$x['frazionamento']]) ?></td>
+        <td><?= $x['data_stipula'] ? date('d/m/Y', strtotime($x['data_stipula'])) : '–' ?></td>
+        <td><?= date('d/m/Y', strtotime($x['scadenza'])) ?></td>
+        <td><?= $pr ? '<b>' . date('d/m/Y', strtotime($pr['data'])) . '</b><br><small class="muted">' . ($pr['evento'] === 'rata' ? 'rata' : 'annualità') . '</small>' : ($x['stato'] === 'attiva' ? '<span class="err">da rinnovare</span>' : '–') ?></td>
+        <td><?= $x['avvisa_cliente'] ? 'Sì' : 'No' ?></td>
+        <td><span class="tag tag--pol-<?= e($x['stato']) ?>"><?= e(Scadenze::STATI[$x['stato']]) ?></span></td></tr>
+      <?php endforeach; ?>
+      </tbody></table></div>
+    <?php endif; ?>
+  </section>
+  <section class="box" id="documenti">
+    <h2>Documenti <span class="muted">(<?= count($docs) ?>)</span></h2>
+    <?php docs_tabella($docs); ?>
+    <?php docs_form($id); ?>
+  </section>
+  <form method="post" class="danger" data-conferma="Eliminare il cliente e TUTTI i suoi preventivi, polizze e documenti? L'operazione non si può annullare.">
     <?= Auth::campoCsrf() ?><input type="hidden" name="azione" value="elimina"><input type="hidden" name="id" value="<?= $id ?>">
-    <button class="btn btn--danger">Elimina cliente e preventivi</button>
+    <button class="btn btn--danger">Elimina cliente, preventivi, polizze e documenti</button>
     <small>Usalo per le richieste di cancellazione dei dati (diritto all'oblio).</small>
   </form>
 <?php
@@ -192,7 +228,8 @@ else:
     $per = 50; $pag = max(1, (int)($_GET['p'] ?? 1));
     $st = db()->prepare("SELECT COUNT(*) FROM clienti c WHERE $where"); $st->execute($par); $tot = (int)$st->fetchColumn();
     $st = db()->prepare("SELECT c.id, c.nome, c.email, c.telefono, c.stato_id, c.origine, c.aggiornato_il, CONCAT(co.nome, ' (', co.sigla, ')') AS comune,
-        (SELECT COUNT(*) FROM preventivi p WHERE p.cliente_id = c.id) AS n_prev
+        (SELECT COUNT(*) FROM preventivi p WHERE p.cliente_id = c.id) AS n_prev,
+        (SELECT COUNT(*) FROM polizze po WHERE po.cliente_id = c.id AND po.stato = 'attiva') AS n_pol
         FROM clienti c LEFT JOIN comuni co ON co.id = c.comune_id WHERE $where ORDER BY c.aggiornato_il DESC LIMIT $per OFFSET " . (($pag - 1) * $per));
     $st->execute($par);
     $conta = db()->query('SELECT stato_id, COUNT(*) FROM clienti GROUP BY stato_id')->fetchAll(PDO::FETCH_KEY_PAIR); ?>
@@ -211,14 +248,14 @@ else:
     <button class="btn btn--ghost">Cerca</button>
   </form>
   <div class="tablewrap"><table class="table">
-    <thead><tr><th>Cliente</th><th>Contatti</th><th>Comune</th><th>Stato</th><th class="right">Preventivi</th><th>Aggiornato</th></tr></thead>
+    <thead><tr><th>Cliente</th><th>Contatti</th><th>Comune</th><th>Stato</th><th class="right">Preventivi</th><th class="right">Polizze attive</th><th>Aggiornato</th></tr></thead>
     <tbody>
     <?php foreach ($st as $c): ?>
       <tr><td><a href="?id=<?= (int)$c['id'] ?>"><b><?= e($c['nome']) ?></b></a><?= $c['origine'] === 'sito' ? ' <small class="muted">dal sito</small>' : '' ?></td>
       <td><?= e($c['email'] ?: '') ?><br><small class="muted"><?= e($c['telefono'] ?: '') ?></small></td>
-      <td><?= e($c['comune'] ?: '–') ?></td><td><?= $tag($c['stato_id']) ?></td><td class="right"><?= (int)$c['n_prev'] ?></td><td><?= e(data_it($c['aggiornato_il'], false)) ?></td></tr>
+      <td><?= e($c['comune'] ?: '–') ?></td><td><?= $tag($c['stato_id']) ?></td><td class="right"><?= (int)$c['n_prev'] ?></td><td class="right"><?= (int)$c['n_pol'] ?></td><td><?= e(data_it($c['aggiornato_il'], false)) ?></td></tr>
     <?php endforeach; ?>
-    <?php if (!$tot): ?><tr><td colspan="6" class="muted">Nessun cliente.</td></tr><?php endif; ?>
+    <?php if (!$tot): ?><tr><td colspan="7" class="muted">Nessun cliente.</td></tr><?php endif; ?>
     </tbody></table></div>
   <?= paginazione($tot, $pag, $per, $qs) ?>
 <?php endif;

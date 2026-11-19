@@ -11,6 +11,7 @@ spl_autoload_register(function (string $c): void {
     if (is_file($f)) require $f;
 });
 require APP_DIR . '/lib/helpers.php';
+if (is_file(APP_DIR . '/vendor/autoload.php')) require APP_DIR . '/vendor/autoload.php';
 
 function config(): array {
     static $c = null;

@@ -25,7 +25,7 @@ function filtri_sql(array $def, array $src, array &$par): string
         $v = (string)($src['f_' . $f] ?? '');
         if ($v === '') continue;
         $w[] = "t.$f = ?";
-        $par[] = $f === 'attivo' || $f === 'marca_id' ? (int)$v : $v;
+        $par[] = in_array($f, ['attivo', 'marca_id', 'compagnia_id'], true) ? (int)$v : $v;
     }
     return implode(' AND ', $w);
 }
@@ -39,6 +39,10 @@ function stato_filtri(array $def, array $src): array
 function marche_opzioni(): array
 {
     return db()->query("SELECT id, CONCAT(nome, IF(tipo_veicolo = 'moto', ' (moto)', '')) AS n FROM marche ORDER BY tipo_veicolo, nome")->fetchAll(PDO::FETCH_KEY_PAIR);
+}
+function compagnie_opzioni(): array
+{
+    return db()->query('SELECT id, nome FROM compagnie ORDER BY nome')->fetchAll(PDO::FETCH_KEY_PAIR);
 }
 function valore_lista(array $c, $v): string
 {
@@ -166,6 +170,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     ON DUPLICATE KEY UPDATE coefficiente = COALESCE(VALUES(coefficiente), coefficiente), attivo = COALESCE(?, attivo)')
                     ->execute([$row['nome'], $tipo, $co, $att, $att]);
                 $n++;
+            } elseif ($t === 'prodotti') {
+                $comp = trim((string)($row['compagnia'] ?? $row['compagnia_nome'] ?? ''));
+                $nome = trim((string)($row['nome'] ?? ''));
+                if ($comp === '' || $nome === '') { $saltate++; continue; }
+                $cid = db()->prepare('SELECT id FROM compagnie WHERE nome = ?'); $cid->execute([$comp]);
+                $cid = (int)$cid->fetchColumn();
+                if (!$cid) { db()->prepare('INSERT INTO compagnie (nome) VALUES (?)')->execute([$comp]); $cid = (int)db()->lastInsertId(); }
+                $ramo = array_key_exists($row['ramo'] ?? '', Tabelle::RAMI) ? $row['ramo'] : (array_search($row['ramo'] ?? '', Tabelle::RAMI, true) ?: 'altro');
+                db()->prepare('INSERT INTO prodotti (compagnia_id, nome, ramo, descrizione, attivo) VALUES (?, ?, ?, ?, COALESCE(?, 1))
+                    ON DUPLICATE KEY UPDATE ramo = VALUES(ramo), descrizione = COALESCE(VALUES(descrizione), descrizione), attivo = COALESCE(?, attivo)')
+                    ->execute([$cid, $nome, $ramo, ($row['descrizione'] ?? '') ?: null, $att, $att]);
+                $n++;
             } elseif ($t === 'modelli') {
                 $marca = $row['marca'] ?? $row['marca_nome'] ?? '';
                 if ($marca === '' || empty($row['nome'] ?? $row['modello'] ?? '')) { $saltate++; continue; }
@@ -201,10 +217,11 @@ if (isset($_GET['esporta']) && !empty($def['csv'])) {
     header('Content-Disposition: attachment; filename="' . $t . '-' . date('Y-m-d') . '.csv"');
     $out = fopen('php://output', 'w');
     fwrite($out, "\xEF\xBB\xBF");
-    $cols = array_merge(array_keys($campi), $t === 'modelli' ? ['marca'] : []);
+    $cols = array_merge(array_keys($campi), $t === 'modelli' ? ['marca'] : [], $t === 'prodotti' ? ['compagnia'] : []);
     fputcsv($out, $cols, ';', '"', '');
     while ($r = $st->fetch()) {
         if ($t === 'modelli') $r['marca'] = preg_replace('/ \(moto\)$/', '', (string)$r['marca_nome']);
+        if ($t === 'prodotti') $r['compagnia'] = $r['compagnia_nome'];
         fputcsv($out, array_map(fn($c) => is_numeric($r[$c] ?? null) && str_contains((string)$r[$c], '.') ? str_replace('.', ',', (string)$r[$c]) : $r[$c], $cols), ';', '"', '');
     }
     exit;
@@ -219,7 +236,8 @@ pagina_inizio($def['titolo'], $t);
 
 if ($importa && !empty($def['csv'])):
     $esempio = ['comuni' => "codice_istat;coefficiente;attivo\n001120;1,15;1", 'marche' => "nome;tipo_veicolo;coefficiente;attivo\nFiat;auto;1;1",
-        'modelli' => "marca;tipo_veicolo;nome;anno_inizio;anno_fine;coefficiente;valore_indicativo;attivo\nFiat;auto;Panda;2012;;1,05;14000;1"][$t]; ?>
+        'modelli' => "marca;tipo_veicolo;nome;anno_inizio;anno_fine;coefficiente;valore_indicativo;attivo\nFiat;auto;Panda;2012;;1,05;14000;1",
+        'prodotti' => "compagnia;nome;ramo;descrizione;attivo\nAllianz;Allianz Ultra Casa;casa;Casa e famiglia;1"][$t]; ?>
   <h1>Importa <?= e(mb_strtolower($def['titolo'])) ?> da CSV</h1>
   <p>File CSV con separatore <code>;</code> o <code>,</code> e la prima riga di intestazione. Le colonne mancanti non vengono toccate. Il modo più semplice: <a href="?<?= e(http_build_query(['t' => $t, 'esporta' => 1])) ?>">esporta il CSV</a>, modificalo in Excel e reimportalo.</p>
   <?php if ($t === 'comuni'): ?><p>Per i comuni si aggiornano coefficiente e stato, cercando il comune per codice ISTAT.</p><?php else: ?><p>Gli elementi nuovi vengono aggiunti, quelli già presenti (stesso nome) aggiornati.</p><?php endif; ?>
@@ -262,6 +280,10 @@ elseif ($id !== null || $nuovo || isset($errori)):
         <label for="<?= $aid ?>"><?= e($c['label']) ?><?= !empty($c['obbl']) ? ' *' : '' ?></label>
         <?php if ($c['tipo'] === 'scelta'): ?>
           <select id="<?= $aid ?>" name="<?= e($k) ?>"><?php foreach ($c['opzioni'] as $ov => $ol): ?><option value="<?= e($ov) ?>"<?= (string)$v === (string)$ov ? ' selected' : '' ?>><?= e($ol) ?></option><?php endforeach; ?></select>
+        <?php elseif ($c['tipo'] === 'compagnia'): ?>
+          <select id="<?= $aid ?>" name="<?= e($k) ?>"><option value="">Scegli…</option><?php foreach (compagnie_opzioni() as $ov => $ol): ?><option value="<?= (int)$ov ?>"<?= (int)$v === (int)$ov ? ' selected' : '' ?>><?= e($ol) ?></option><?php endforeach; ?></select>
+        <?php elseif ($c['tipo'] === 'testo_lungo'): ?>
+          <textarea id="<?= $aid ?>" name="<?= e($k) ?>" rows="4"><?= e((string)$v) ?></textarea>
         <?php elseif ($c['tipo'] === 'marca'): ?>
           <select id="<?= $aid ?>" name="<?= e($k) ?>"><option value="">Scegli…</option><?php foreach (marche_opzioni() as $ov => $ol): ?><option value="<?= (int)$ov ?>"<?= (int)$v === (int)$ov ? ' selected' : '' ?>><?= e($ol) ?></option><?php endforeach; ?></select>
         <?php else:
@@ -309,6 +331,8 @@ else:
         $cur = $filtri['f_' . $f] ?? '';
         if ($f === 'attivo'): ?>
           <select name="f_attivo" aria-label="Stato"><option value="">Tutti</option><option value="1"<?= $cur === '1' ? ' selected' : '' ?>>Solo attivi</option><option value="0"<?= $cur === '0' ? ' selected' : '' ?>>Solo non attivi</option></select>
+        <?php elseif ($f === 'compagnia_id'): ?>
+          <select name="f_compagnia_id" aria-label="Compagnia"><option value="">Tutte le compagnie</option><?php foreach (compagnie_opzioni() as $ov => $ol): ?><option value="<?= (int)$ov ?>"<?= $cur === (string)$ov ? ' selected' : '' ?>><?= e($ol) ?></option><?php endforeach; ?></select>
         <?php elseif ($f === 'marca_id'): ?>
           <select name="f_marca_id" aria-label="Marca"><option value="">Tutte le marche</option><?php foreach (marche_opzioni() as $ov => $ol): ?><option value="<?= (int)$ov ?>"<?= $cur === (string)$ov ? ' selected' : '' ?>><?= e($ol) ?></option><?php endforeach; ?></select>
         <?php elseif (($campi[$f]['tipo'] ?? '') === 'scelta'): ?>

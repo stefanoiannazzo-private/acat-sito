@@ -55,3 +55,12 @@ Poi **Actions > Pubblica sul server > Run workflow** per la prima pubblicazione.
 2. GitHub > Settings > Secrets and variables > Actions: aggiungi `SMTP_USER` (l'indirizzo completo della casella) e `SMTP_PASS` (la sua password).
 3. Rilancia la pubblicazione (Actions > Pubblica sul server > Run workflow). In Impostazioni del pannello compare "Casella collegata" e si può inviare un'email di prova.
 Senza questi secrets le email partono con la funzione `mail()` dell'hosting, meno affidabile.
+
+## Polizze, scadenze e documenti
+- **Compagnie** e **Prodotti** (catalogo per compagnia) si gestiscono dal pannello; le 5 compagnie partner sono già inserite.
+- Nella scheda del cliente: elenco delle polizze (compagnia, prodotto, numero, frazionamento, stipula, scadenza dell'annualità, prossima scadenza calcolata, avviso al cliente sì/no, stato) e documenti.
+- **Scadenziario polizze**: tutte le polizze attive in ordine di prossima scadenza (rata o annualità).
+- Calcoli in `app/lib/Scadenze.php`: le rate dividono l'annualità (semestrale, trimestrale, mensile) e terminano alla scadenza.
+- **Avvisi**: `app/lib/Avvisi.php`, chiamato ogni ora da `api/cron.php?k=<chiave>` (chiave e indirizzo in Impostazioni) e, come riserva, all'apertura del pannello. Un avviso per polizza/scadenza/destinatario, mai due volte.
+- **Documenti**: salvati in `archivio/` sul server (chiusa al web, nomi casuali), scaricabili solo dal pannello. PDF, doc, docx, jpg, png; limite in Impostazioni.
+- **Lettura dei contratti**: `app/lib/LettoreContratti.php` propone date, frazionamento, numero, compagnia, premio e targa da PDF digitali e .docx (libreria smalot/pdfparser, installata dal workflow in `site/app/vendor`). Le scansioni non sono leggibili.

@@ -7,6 +7,10 @@ declare(strict_types=1);
  */
 final class Tabelle
 {
+    public const RAMI = ['rc_auto' => 'RC auto e moto', 'auto_cvt' => 'Auto: furto, incendio, kasko', 'casa' => 'Casa', 'famiglia' => 'Famiglia e RC privata',
+        'infortuni' => 'Infortuni', 'salute' => 'Salute', 'vita' => 'Vita', 'risparmio' => 'Risparmio e previdenza', 'impresa' => 'Impresa e negozi',
+        'professionisti' => 'Professionisti', 'viaggi' => 'Viaggi', 'altro' => 'Altro'];
+
     public static function tutte(): array
     {
         return [
@@ -24,6 +28,42 @@ final class Tabelle
                     'applica_coefficienti' => ['label' => 'Applica i coefficienti di comune e veicolo', 'breve' => 'Coefficienti', 'tipo' => 'bool', 'aiuto' => 'Solo per gli importi fissi. L\'RC li applica sempre.'],
                     'ordine' => ['label' => 'Ordine', 'tipo' => 'intero', 'min' => 0, 'max_val' => 9999, 'predefinito' => 100],
                     'attivo' => ['label' => 'Attiva', 'tipo' => 'bool', 'predefinito' => 1],
+                ],
+            ],
+            'compagnie' => [
+                'titolo' => 'Compagnie', 'singolare' => 'compagnia', 'ordine' => 'nome',
+                'ricerca' => ['nome', 'codice_agenzia'], 'filtri' => ['attivo'],
+                'lista' => ['nome', 'n_prodotti', 'n_polizze', 'telefono', 'attivo'], 'csv' => false,
+                'calcolati' => [
+                    'n_prodotti' => ['label' => 'Prodotti', 'sql' => '(SELECT COUNT(*) FROM prodotti pr WHERE pr.compagnia_id = t.id)'],
+                    'n_polizze' => ['label' => 'Polizze attive', 'sql' => "(SELECT COUNT(*) FROM polizze po WHERE po.compagnia_id = t.id AND po.stato = 'attiva')"],
+                ],
+                'intro' => 'Le compagnie con cui lavori. Una compagnia con prodotti o polizze collegate non si può eliminare: disattivala.',
+                'campi' => [
+                    'nome' => ['label' => 'Nome', 'tipo' => 'testo', 'obbl' => true, 'max' => 80],
+                    'portale_url' => ['label' => 'Indirizzo del portale', 'tipo' => 'testo', 'max' => 255, 'pattern' => '#^https?://\S+$#', 'aiuto' => 'Es. https://portale.compagnia.it: compare come collegamento nelle polizze'],
+                    'codice_agenzia' => ['label' => 'Codice agenzia / intermediario', 'tipo' => 'testo', 'max' => 60],
+                    'telefono' => ['label' => 'Telefono assistenza', 'tipo' => 'testo', 'max' => 40],
+                    'email' => ['label' => 'Email di riferimento', 'tipo' => 'testo', 'max' => 190],
+                    'note' => ['label' => 'Note', 'tipo' => 'testo_lungo'],
+                    'attivo' => ['label' => 'Attiva', 'tipo' => 'bool', 'predefinito' => 1],
+                ],
+            ],
+            'prodotti' => [
+                'titolo' => 'Prodotti', 'singolare' => 'prodotto', 'ordine' => 'compagnia_nome, nome',
+                'ricerca' => ['nome', 'descrizione'], 'filtri' => ['compagnia_id', 'ramo', 'attivo'],
+                'lista' => ['compagnia_nome', 'nome', 'ramo', 'n_polizze', 'attivo'], 'csv' => true,
+                'calcolati' => [
+                    'compagnia_nome' => ['label' => 'Compagnia', 'sql' => '(SELECT c.nome FROM compagnie c WHERE c.id = t.compagnia_id)'],
+                    'n_polizze' => ['label' => 'Polizze attive', 'sql' => "(SELECT COUNT(*) FROM polizze po WHERE po.prodotto_id = t.id AND po.stato = 'attiva')"],
+                ],
+                'intro' => 'Il catalogo di ogni compagnia. Nella polizza di un cliente scegli prima la compagnia, poi uno dei suoi prodotti.',
+                'campi' => [
+                    'compagnia_id' => ['label' => 'Compagnia', 'tipo' => 'compagnia', 'obbl' => true],
+                    'nome' => ['label' => 'Nome del prodotto', 'tipo' => 'testo', 'obbl' => true, 'max' => 120],
+                    'ramo' => ['label' => 'Ramo', 'tipo' => 'scelta', 'obbl' => true, 'opzioni' => self::RAMI],
+                    'descrizione' => ['label' => 'Descrizione', 'tipo' => 'testo', 'max' => 255],
+                    'attivo' => ['label' => 'Attivo', 'tipo' => 'bool', 'predefinito' => 1],
                 ],
             ],
             'stati_cliente' => [
@@ -133,7 +173,12 @@ final class Tabelle
                     $v[$k] = $n;
                     break;
                 case 'marca':
+                case 'compagnia':
                     $v[$k] = (int)$raw ?: null;
+                    break;
+                case 'testo_lungo':
+                    $s = trim((string)$raw);
+                    $v[$k] = $s === '' ? null : mb_substr($s, 0, 5000);
                     break;
                 case 'scelta':
                     $raw = (string)$raw;

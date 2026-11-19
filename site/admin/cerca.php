@@ -14,4 +14,9 @@ if (($_GET['cosa'] ?? '') === 'modelli') {
     $st->execute([(int)($_GET['marca'] ?? 0)]);
     json_out(['ok' => true, 'r' => $st->fetchAll()]);
 }
+if (($_GET['cosa'] ?? '') === 'prodotti') {
+    $st = db()->prepare('SELECT id, nome AS n FROM prodotti WHERE compagnia_id = ? AND attivo = 1 ORDER BY nome');
+    $st->execute([(int)($_GET['compagnia'] ?? 0)]);
+    json_out(['ok' => true, 'r' => $st->fetchAll()]);
+}
 json_out(['ok' => false], 400);

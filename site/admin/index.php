@@ -12,6 +12,14 @@ $rc = db()->query('SELECT valore FROM garanzie WHERE principale = 1')->fetchColu
 $ultimi = db()->query('SELECT p.id, p.creato_il, COALESCE(c.nome, p.nome) AS nome, p.veicolo, p.comune_nome, COALESCE(p.totale_definitivo, p.totale) AS totale, p.stato FROM preventivi p LEFT JOIN clienti c ON c.id = p.cliente_id ORDER BY p.id DESC LIMIT 8')->fetchAll();
 $log = db()->query('SELECT creato_il, utente, azione, tabella, record_id FROM log_modifiche ORDER BY id DESC LIMIT 8')->fetchAll();
 $attivo = impostazione('preventivatore_attivo', '1') === '1';
+Avvisi::riserva();
+$scad = [];
+foreach (db()->query("SELECT p.id, p.cliente_id, p.scadenza, p.frazionamento, c.nome AS cliente, co.nome AS compagnia, pr.nome AS prodotto FROM polizze p JOIN clienti c ON c.id = p.cliente_id JOIN compagnie co ON co.id = p.compagnia_id LEFT JOIN prodotti pr ON pr.id = p.prodotto_id WHERE p.stato = 'attiva' AND p.scadenza <= CURDATE() + INTERVAL 13 MONTH") as $x) {
+    $pr = Scadenze::prossima($x['scadenza'], $x['frazionamento']);
+    $x['prossima'] = $pr['data'] ?? $x['scadenza']; $x['evento'] = $pr['evento'] ?? 'da_rinnovare';
+    if ($x['prossima'] <= date('Y-m-d', strtotime('+30 days'))) $scad[] = $x;
+}
+usort($scad, fn($a, $b) => $a['prossima'] <=> $b['prossima']);
 pagina_inizio('Riepilogo', 'index');
 ?>
 <h1>Ciao <?= e(explode(' ', $u['nome'])[0]) ?></h1>
@@ -22,8 +30,20 @@ pagina_inizio('Riepilogo', 'index');
   <a class="card" href="preventivi.php?stato=nuovo"><span class="card__n"><?= $nuovi ?></span><span>preventivi da lavorare</span></a>
   <a class="card" href="clienti.php?stato=<?= Clienti::stato('nuovo') ?>"><span class="card__n"><?= $clientiNuovi ?></span><span>nuovi contatti da richiamare</span></a>
   <a class="card" href="preventivi.php?stato=accettato"><span class="card__n"><?= $accettati ?></span><span>preventivi accettati</span></a>
-  <a class="card" href="prova.php"><span class="card__n">Prova</span><span>calcola una stima di prova</span></a>
+  <a class="card" href="polizze.php?entro=30"><span class="card__n"><?= count($scad) ?></span><span>scadenze di polizze nei prossimi 30 giorni</span></a>
 </div>
+<?php if ($scad): ?>
+<section>
+  <h2>Polizze in scadenza nei prossimi 30 giorni</h2>
+  <div class="tablewrap"><table class="table"><tbody>
+  <?php foreach (array_slice($scad, 0, 10) as $x): ?>
+    <tr><td><b><?= date('d/m/Y', strtotime($x['prossima'])) ?></b><br><small class="muted"><?= $x['evento'] === 'rata' ? 'rata' : ($x['evento'] === 'annualita' ? 'annualità' : 'da rinnovare') ?></small></td>
+    <td><a href="clienti.php?id=<?= (int)$x['cliente_id'] ?>"><?= e($x['cliente']) ?></a></td><td><a href="polizze.php?id=<?= (int)$x['id'] ?>"><?= e($x['prodotto'] ?: 'Polizza') ?></a> · <?= e($x['compagnia']) ?></td></tr>
+  <?php endforeach; ?>
+  </tbody></table></div>
+  <?php if (count($scad) > 10): ?><p><a href="polizze.php?entro=30">Vedi tutte le <?= count($scad) ?> scadenze</a></p><?php endif; ?>
+</section>
+<?php endif; ?>
 <div class="cols">
   <section>
     <h2>Ultimi preventivi</h2>
