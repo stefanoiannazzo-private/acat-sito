@@ -38,8 +38,8 @@ pagina_inizio('Nuovo preventivo', 'clienti');
 <form method="post" class="form form--narrow">
   <?= Auth::campoCsrf() ?><input type="hidden" name="cliente" value="<?= $cid ?>">
   <label>Comune di residenza
-    <input name="comune" list="comuni-list" value="<?= e($in['comune']) ?>" autocomplete="off" data-cerca-comuni required placeholder="Scrivi almeno 2 lettere">
-    <input type="hidden" name="comune_id" value="<?= $in['comune_id'] ?: '' ?>"><datalist id="comuni-list"></datalist>
+    <input name="comune" list="comuni-list" value="<?= e($in['comune']) ?>" autocomplete="off" data-cerca-comuni required>
+    <input type="hidden" name="comune_id" value="<?= $in['comune_id'] ?: '' ?>"><datalist id="comuni-list"></datalist><small class="hint">Scrivi almeno 2 lettere e scegli dall'elenco</small>
   </label>
   <label>Data di nascita del contraente<input type="date" name="nascita" value="<?= e($in['nascita']) ?>" required></label>
   <label>Marca<select name="marca_id" data-marca required><option value="">Scegli…</option><?php foreach ($marche as $k => $v): ?><option value="<?= (int)$k ?>"<?= $in['marca_id'] === (int)$k ? ' selected' : '' ?>><?= e($v) ?></option><?php endforeach; ?></select></label>

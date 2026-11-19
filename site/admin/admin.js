@@ -104,3 +104,24 @@ document.addEventListener('DOMContentLoaded', () => {
     i.reportValidity();
   }));
 });
+
+/* campi obbligatori: avviso rosso sotto il campo invece del fumetto del browser */
+document.addEventListener('invalid', (e) => {
+  const f = e.target;
+  if (!(f instanceof HTMLElement) || !f.form) return;
+  e.preventDefault();
+  f.classList.add('is-invalid');
+  const box = f.closest('label, .field, .campo, td') || f.parentElement;
+  let m = box.querySelector(':scope > .obbligo');
+  if (!m) { m = document.createElement('small'); m.className = 'obbligo'; box.append(m); }
+  m.textContent = f.validity.valueMissing ? 'Campo obbligatorio' : (f.validationMessage || 'Valore non valido');
+  const primo = f.form.querySelector('.is-invalid');
+  if (primo === f) f.focus();
+}, true);
+document.addEventListener('input', (e) => {
+  const f = e.target;
+  if (!f.classList?.contains('is-invalid') || !f.checkValidity()) return;
+  f.classList.remove('is-invalid');
+  (f.closest('label, .field, .campo, td') || f.parentElement).querySelector(':scope > .obbligo')?.remove();
+});
+document.addEventListener('change', (e) => e.target.dispatchEvent?.(new Event('input', { bubbles: true })));

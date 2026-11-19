@@ -167,3 +167,24 @@ details.sede { border: 1px solid #e3e8ef; border-radius: 8px; padding: 10px 12px
 details.sede summary { cursor: pointer; }
 details.sede form { margin-top: 12px; }
 .form--grid h2.full { margin: 12px 0 0; font-size: 18px; }
+
+/* --- aiuti sotto i campi (mai dentro), avvisi in rosso solo per i campi obbligatori --- */
+label small, .field small, .campo small, .hint { color: var(--ink); }
+.hint { display: block; margin-top: 4px; font-size: 12.5px; font-weight: 400; line-height: 1.35; }
+.campo { display: inline-flex; flex-direction: column; }
+.filters { align-items: flex-start; }
+.obbligo { display: block; margin-top: 4px; font-size: 12.5px; font-weight: 500; color: var(--accent); }
+.is-invalid { border-color: var(--accent) !important; box-shadow: 0 0 0 3px rgb(179 48 42 / .12); }
+
+/* --- link-pulsante (parola sottolineata): più spessi --- */
+.main a:not([class]), .linkbtn { font-weight: 600; text-underline-offset: 3px; }
+.main .chips a, .main .pager a { font-weight: 500; }
+
+/* --- pulsante blu: come il principale, sfondo blu; in hover bianco --- */
+:root { --blu: #1f4e8c; }
+.btn--blu { background: var(--blu); border-color: var(--blu); color: #fff; }
+.btn--blu:hover { filter: none; background: #fff; color: var(--blu); }
+
+/* --- tabelle compatte dentro un riquadro (documenti, legami): respiro dal bordo --- */
+.tablewrap .table--small td { padding: 14px 20px; vertical-align: middle; }
+.tablewrap .table--small td.right.nowrap a, .tablewrap .table--small td.right.nowrap .linkbtn { margin: 0 2px; }

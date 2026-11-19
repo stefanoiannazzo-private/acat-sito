@@ -181,9 +181,9 @@ if (isset($form) || isset($_GET['nuovo']) || ($id && isset($_GET['modifica']))):
     <label>Email<input type="email" name="email" maxlength="190" value="<?= $f('email') ?>"></label>
     <label>Telefono<input type="tel" name="telefono" maxlength="40" value="<?= $f('telefono') ?>"></label>
     <h2 class="full">Sede legale</h2>
-    <label class="full">Indirizzo<input name="indirizzo" maxlength="190" value="<?= $f('indirizzo') ?>" placeholder="Via e numero civico"></label>
+    <label class="full">Indirizzo<input name="indirizzo" maxlength="190" value="<?= $f('indirizzo') ?>"><small class="hint">Via e numero civico</small></label>
     <label>Città<input name="citta" maxlength="100" value="<?= $f('citta') ?>"></label>
-    <label>Provincia<input name="provincia" maxlength="60" value="<?= $f('provincia') ?>" placeholder="Es. TO"></label>
+    <label>Provincia<input name="provincia" maxlength="60" value="<?= $f('provincia') ?>"><small class="hint">Sigla, es. TO</small></label>
     <label>CAP<input name="cap" maxlength="10" value="<?= $f('cap') ?>" inputmode="numeric"></label>
     <label>Nazione<input name="nazione" maxlength="60" value="<?= $f('nazione') ?>"></label>
     <?php else: ?>
@@ -194,14 +194,14 @@ if (isset($form) || isset($_GET['nuovo']) || ($id && isset($_GET['modifica']))):
     <label>Codice fiscale<input name="codice_fiscale" maxlength="16" value="<?= $f('codice_fiscale') ?>"></label>
     <label>Data di nascita<input type="date" name="data_nascita" value="<?= $f('data_nascita') ?>"></label>
     <label>Comune di residenza
-      <input name="comune" list="comuni-list" value="<?= e($comuneTxt) ?>" autocomplete="off" data-cerca-comuni placeholder="Scrivi almeno 2 lettere">
-      <input type="hidden" name="comune_id" value="<?= (int)($form['comune_id'] ?? 0) ?: '' ?>"><datalist id="comuni-list"></datalist>
+      <input name="comune" list="comuni-list" value="<?= e($comuneTxt) ?>" autocomplete="off" data-cerca-comuni>
+      <input type="hidden" name="comune_id" value="<?= (int)($form['comune_id'] ?? 0) ?: '' ?>"><datalist id="comuni-list"></datalist><small class="hint">Scrivi almeno 2 lettere e scegli dall'elenco</small>
     </label>
     <label>Indirizzo<input name="indirizzo" maxlength="190" value="<?= $f('indirizzo') ?>"></label>
     <label>Associa a un'azienda<select name="associa_azienda"><option value="">Nessuna<?= $giaLegate ? ' (già associata: gestisci dalla scheda)' : '' ?></option>
       <?php foreach ($aziende as $k => $n): if (in_array($k, $giaLegate)) continue; ?><option value="<?= (int)$k ?>"><?= e($n) ?></option><?php endforeach; ?></select>
       <?php if (!$aziende): ?><small>Nessuna azienda in anagrafica: <a href="clienti.php?nuovo=azienda">creane una</a>.</small><?php endif; ?></label>
-    <label>Ruolo nell'azienda<input name="associa_ruolo" maxlength="80" placeholder="Es. Legale rappresentante, dipendente"></label>
+    <label>Ruolo nell'azienda<input name="associa_ruolo" maxlength="80"><small class="hint">Es. legale rappresentante, dipendente</small></label>
     <?php endif; ?>
     <label>Stato<select name="stato_id"><?php foreach ($stati as $s): if (!$s['attivo'] && (int)$s['id'] !== (int)$form['stato_id']) continue; ?><option value="<?= (int)$s['id'] ?>"<?= (int)$s['id'] === (int)$form['stato_id'] ? ' selected' : '' ?>><?= e($s['nome']) ?></option><?php endforeach; ?></select></label>
     <label class="full">Note interne<textarea name="note" rows="4"><?= $f('note') ?></textarea></label>
@@ -297,13 +297,13 @@ elseif ($id):
     <form method="post" class="form form--inline" autocomplete="off">
       <?= Auth::campoCsrf() ?><input type="hidden" name="azione" value="lega"><input type="hidden" name="id" value="<?= $id ?>">
       <?php if ($c['tipo'] === 'azienda'): ?>
-        <label>Associa una persona<input list="lista-persone" data-cerca-clienti="persona" data-campo="altro_id" placeholder="Scrivi nome, email o codice fiscale"><datalist id="lista-persone"></datalist><input type="hidden" name="altro_id"></label>
+        <label>Associa una persona<input list="lista-persone" data-cerca-clienti="persona" data-campo="altro_id"><datalist id="lista-persone"></datalist><input type="hidden" name="altro_id"><small class="hint">Scrivi nome, email o codice fiscale e scegli dall'elenco</small></label>
       <?php else:
         $aziende = db()->query("SELECT id, nome FROM clienti WHERE tipo = 'azienda' ORDER BY nome")->fetchAll(PDO::FETCH_KEY_PAIR);
         $gia = array_column($legami, 'id'); ?>
         <label>Associa a un'azienda<select name="altro_id" required><option value="">Scegli…</option><?php foreach ($aziende as $k => $n): if (in_array($k, $gia)) continue; ?><option value="<?= (int)$k ?>"><?= e($n) ?></option><?php endforeach; ?></select></label>
       <?php endif; ?>
-      <label>Ruolo<input name="ruolo" maxlength="80" placeholder="Es. Legale rappresentante"></label>
+      <label>Ruolo<input name="ruolo" maxlength="80"><small class="hint">Es. legale rappresentante</small></label>
       <button class="btn btn--ghost">Associa</button>
     </form>
     <p class="muted"><?= $c['tipo'] === 'azienda' ? '<a href="clienti.php?nuovo=persona">+ Nuova persona</a> (poi associala da qui o dal suo modulo)' : '<a href="clienti.php?nuovo=azienda">+ Nuova azienda</a>' ?></p>
@@ -317,7 +317,7 @@ elseif ($id):
         <summary><?= $sd['id'] ? '<b>' . e($sd['nome']) . '</b> <span class="muted">' . e(implode(', ', array_filter([$sd['indirizzo'], trim($sd['cap'] . ' ' . $sd['citta'] . ($sd['provincia'] ? ' (' . $sd['provincia'] . ')' : ''))]))) . '</span>' : '+ Aggiungi una sede' ?></summary>
         <form method="post" class="form form--grid2">
           <?= Auth::campoCsrf() ?><input type="hidden" name="azione" value="sede"><input type="hidden" name="id" value="<?= $id ?>"><input type="hidden" name="sede_id" value="<?= (int)$sd['id'] ?>">
-          <label>Nome della sede *<input name="nome" maxlength="120" required value="<?= e($sd['nome']) ?>" placeholder="Es. Magazzino, Filiale di Torino"></label>
+          <label>Nome della sede *<input name="nome" maxlength="120" required value="<?= e($sd['nome']) ?>"><small class="hint">Es. magazzino, filiale di Torino</small></label>
           <label>Telefono<input name="telefono" maxlength="40" value="<?= e((string)$sd['telefono']) ?>"></label>
           <label>Indirizzo<input name="indirizzo" maxlength="190" value="<?= e((string)$sd['indirizzo']) ?>"></label>
           <label>Città<input name="citta" maxlength="100" value="<?= e((string)$sd['citta']) ?>"></label>
@@ -380,7 +380,7 @@ else:
     $conta = db()->query('SELECT stato_id, COUNT(*) FROM clienti GROUP BY stato_id')->fetchAll(PDO::FETCH_KEY_PAIR); ?>
   <div class="head">
     <h1>Clienti <span class="muted">(<?= $tot ?>)</span></h1>
-    <div class="head__actions"><a class="btn btn--ghost" href="?<?= e(http_build_query($qs + ['esporta' => 1])) ?>">Esporta CSV</a><a class="btn btn--ghost" href="?nuovo=azienda">+ Nuova azienda</a><a class="btn" href="?nuovo=persona">+ Nuova persona</a></div>
+    <div class="head__actions"><a class="btn btn--ghost" href="?<?= e(http_build_query($qs + ['esporta' => 1])) ?>">Esporta CSV</a><a class="btn btn--blu" href="?nuovo=azienda">+ Nuova azienda</a><a class="btn" href="?nuovo=persona">+ Nuova persona</a></div>
   </div>
   <p class="intro">Chi chiede un preventivo dal sito entra qui in automatico (stessa email = stesso cliente). Puoi aggiungere clienti a mano e fare i preventivi dal pannello.</p>
   <?php $ct = db()->query('SELECT tipo, COUNT(*) FROM clienti GROUP BY tipo')->fetchAll(PDO::FETCH_KEY_PAIR); ?>
@@ -395,7 +395,7 @@ else:
   </nav>
   <form method="get" class="filters">
     <?php if ($fs): ?><input type="hidden" name="stato" value="<?= $fs ?>"><?php endif; ?><?php if ($ft): ?><input type="hidden" name="tipo" value="<?= e($ft) ?>"><?php endif; ?>
-    <input type="search" name="q" placeholder="Nome, ragione sociale, email, telefono, codice fiscale, P. IVA…" value="<?= e($q) ?>" aria-label="Cerca">
+    <span class="campo"><input type="search" name="q" value="<?= e($q) ?>" aria-label="Cerca"><small class="hint">Nome, ragione sociale, email, telefono, codice fiscale o P. IVA</small></span>
     <button class="btn btn--ghost">Cerca</button>
   </form>
   <div class="tablewrap"><table class="table">

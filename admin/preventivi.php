@@ -172,19 +172,19 @@ if (isset($_GET['id'])):
         <table class="table table--edit"><thead><tr><th>Voce</th><th class="right">Importo annuo (€)</th><th></th></tr></thead><tbody>
         <?php foreach ($righe as $i => $r): ?>
           <tr><td><input name="riga_nome[<?= $i ?>]" value="<?= e($r['nome']) ?>" aria-label="Voce"></td>
-          <td><input name="riga_importo[<?= $i ?>]" value="<?= $r['importo'] === null ? '' : e(number_format((float)$r['importo'], 2, ',', '')) ?>" inputmode="decimal" class="right" aria-label="Importo" placeholder="su richiesta"></td>
+          <td><input name="riga_importo[<?= $i ?>]" value="<?= $r['importo'] === null ? '' : e(number_format((float)$r['importo'], 2, ',', '')) ?>" inputmode="decimal" class="right" aria-label="Importo"><?php if ($i === 0): ?><small class="hint">Vuoto = su richiesta</small><?php endif; ?></td>
           <td><?php if ($i > 0): ?><label class="check" title="Togli questa voce"><input type="checkbox" name="riga_togli[<?= $i ?>]" value="1"> togli</label><?php endif; ?></td></tr>
         <?php endforeach; ?>
-          <tr><td><input name="nuova_nome" placeholder="Aggiungi una voce (es. Assistenza stradale)" aria-label="Nuova voce"></td><td><input name="nuova_importo" inputmode="decimal" class="right" placeholder="0,00" aria-label="Importo nuova voce"></td><td></td></tr>
+          <tr><td><input name="nuova_nome" aria-label="Nuova voce"><small class="hint">Aggiungi una voce, es. Assistenza stradale</small></td><td><input name="nuova_importo" inputmode="decimal" class="right" aria-label="Importo nuova voce"><small class="hint">Importo in €</small></td><td></td></tr>
         </tbody></table>
         <p class="muted">Totale attuale: <b><?= euro(EmailPreventivo::totale($p)) ?></b> · si ricalcola al salvataggio.</p>
         <div class="form--grid2">
-          <label>Compagnia<input name="compagnia" maxlength="80" value="<?= e((string)$p['compagnia']) ?>" placeholder="Es. Allianz"></label>
+          <label>Compagnia<input name="compagnia" maxlength="80" value="<?= e((string)$p['compagnia']) ?>"><small class="hint">Es. Allianz</small></label>
           <label>Stato<select name="stato"><?php foreach (STATI_PREVENTIVO as $k => $l): ?><option value="<?= $k ?>"<?= $p['stato'] === $k ? ' selected' : '' ?>><?= e($l) ?></option><?php endforeach; ?></select></label>
           <label>Decorrenza<input type="date" name="decorrenza" value="<?= e((string)$p['decorrenza']) ?>"></label>
           <label>Valido fino al<input type="date" name="valido_fino" value="<?= e((string)($p['valido_fino'] ?: $validoDefault)) ?>"></label>
         </div>
-        <label>Messaggio al cliente<textarea name="messaggio" rows="4" placeholder="<?= e((string)impostazione('messaggio_preventivo', '')) ?>"><?= e((string)$p['messaggio']) ?></textarea><small>Vuoto = messaggio standard (lo cambi in Impostazioni).</small></label>
+        <label>Messaggio al cliente<textarea name="messaggio" rows="4"><?= e((string)$p['messaggio']) ?></textarea><small>Vuoto = messaggio standard (lo cambi in Impostazioni).</small></label>
         <div class="actions actions--wrap">
           <button class="btn btn--ghost" name="azione" value="salva">Salva</button>
           <a class="btn btn--ghost" href="anteprima.php?id=<?= (int)$p['id'] ?>" target="_blank" rel="noopener">Anteprima email ↗</a>
@@ -217,7 +217,7 @@ else:
   </nav>
   <form method="get" class="filters">
     <?php if ($fs !== ''): ?><input type="hidden" name="stato" value="<?= e($fs) ?>"><?php endif; ?>
-    <input type="search" name="q" placeholder="Cliente, email, veicolo, comune…" value="<?= e($q) ?>" aria-label="Cerca">
+    <span class="campo"><input type="search" name="q" value="<?= e($q) ?>" aria-label="Cerca"><small class="hint">Cliente, email, veicolo o comune</small></span>
     <select name="origine" aria-label="Origine"><option value="">Sito e agenzia</option><option value="sito"<?= ($_GET['origine'] ?? '') === 'sito' ? ' selected' : '' ?>>Solo dal sito</option><option value="backoffice"<?= ($_GET['origine'] ?? '') === 'backoffice' ? ' selected' : '' ?>>Solo in agenzia</option></select>
     <button class="btn btn--ghost">Filtra</button>
   </form>

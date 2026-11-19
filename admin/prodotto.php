@@ -244,8 +244,8 @@ I coefficienti comuni (comune, marca, modello, fasce d'età) valgono per tutti i
       <label>Descrizione<input name="descrizione" maxlength="255" value="<?= e((string)$f['descrizione']) ?>"></label>
       <label>Veicoli assicurati<select name="veicoli"><?php foreach (VEICOLI as $k => $l): ?><option value="<?= $k ?>"<?= $f['veicoli'] === $k ? ' selected' : '' ?>><?= e($l) ?></option><?php endforeach; ?></select><small>Solo per i prodotti auto.</small></label>
       <div></div>
-      <label>Premio minimo annuo (€)<input name="premio_minimo" inputmode="decimal" value="<?= e(nd($f['premio_minimo'])) ?>" placeholder="nessuno"></label>
-      <label>Premio massimo annuo (€)<input name="premio_massimo" inputmode="decimal" value="<?= e(nd($f['premio_massimo'])) ?>" placeholder="nessuno"></label>
+      <label>Premio minimo annuo (€)<input name="premio_minimo" inputmode="decimal" value="<?= e(nd($f['premio_minimo'])) ?>"><small class="hint">Vuoto = nessun minimo</small></label>
+      <label>Premio massimo annuo (€)<input name="premio_massimo" inputmode="decimal" value="<?= e(nd($f['premio_massimo'])) ?>"><small class="hint">Vuoto = nessun massimo</small></label>
     </div>
     <label class="check"><input type="checkbox" name="attivo" value="1"<?= $f['attivo'] ? ' checked' : '' ?>> Attivo</label>
     <label class="check"><input type="checkbox" name="preventivabile" value="1"<?= $f['preventivabile'] ? ' checked' : '' ?><?= $p ? '' : ' disabled' ?>> Preventivabile online: entra nel calcolo del sito e del pannello <?= $p ? '' : '<small>(attivalo dopo aver inserito le garanzie)</small>' ?></label>
@@ -276,8 +276,8 @@ I coefficienti comuni (comune, marca, modello, fasce d'età) valgono per tutti i
     $righe[] = ['id' => -2, 'codice' => '', 'nome' => '', 'descrizione' => '', 'principale' => 0, 'tipo_calcolo' => 'fisso', 'valore' => '', 'applica_coefficienti' => 0, 'ordine' => 100, 'attivo' => 1];
     foreach ($righe as $g): $k = (int)$g['id']; $rc = (int)$g['principale'] === 1; $n = "g[$k]"; ?>
       <tr<?= $k === -2 ? ' class="row-new"' : '' ?>>
-        <td><input name="<?= $n ?>[codice]" value="<?= e($g['codice']) ?>" maxlength="30" size="10" <?= $k === -2 ? 'placeholder="NUOVA"' : '' ?> aria-label="Codice"></td>
-        <td><input name="<?= $n ?>[nome]" value="<?= e($g['nome']) ?>" maxlength="80" aria-label="Nome" <?= $k === -2 ? 'placeholder="Aggiungi una garanzia"' : '' ?>><input name="<?= $n ?>[descrizione]" value="<?= e((string)$g['descrizione']) ?>" maxlength="255" placeholder="Descrizione per il cliente" aria-label="Descrizione" class="sub"></td>
+        <td><input name="<?= $n ?>[codice]" value="<?= e($g['codice']) ?>" maxlength="30" size="10" aria-label="Codice"><?= $k === -2 ? '<small class="hint">Codice, es. ASSISTENZA</small>' : '' ?></td>
+        <td><input name="<?= $n ?>[nome]" value="<?= e($g['nome']) ?>" maxlength="80" aria-label="Nome"><?= $k === -2 ? '<small class="hint">Nome della nuova garanzia</small>' : '' ?><input name="<?= $n ?>[descrizione]" value="<?= e((string)$g['descrizione']) ?>" maxlength="255" aria-label="Descrizione" class="sub"><small class="hint">Descrizione per il cliente</small></td>
         <td><?php if ($rc): ?>Premio base (€)<?php else: ?><select name="<?= $n ?>[tipo_calcolo]" aria-label="Calcolo"><?php foreach (CALCOLI as $ck => $cl): ?><option value="<?= $ck ?>"<?= $g['tipo_calcolo'] === $ck ? ' selected' : '' ?>><?= e($cl) ?></option><?php endforeach; ?></select><?php endif; ?></td>
         <td><input name="<?= $n ?>[valore]" value="<?= e(nd((string)$g['valore'])) ?>" inputmode="decimal" class="right" size="8" aria-label="Valore"></td>
         <td><?= $rc ? 'sempre' : '<input type="checkbox" name="' . $n . '[coeff]" value="1"' . ((int)$g['applica_coefficienti'] ? ' checked' : '') . ' aria-label="Applica i coefficienti" title="Solo per gli importi fissi">' ?></td>
@@ -329,7 +329,7 @@ I coefficienti comuni (comune, marca, modello, fasce d'età) valgono per tutti i
     <?php foreach (array_merge($promo, [['id' => 0, 'nome' => '', 'tipo' => 'percentuale', 'valore' => '', 'dal' => null, 'al' => null, 'attivo' => 1]]) as $r): $k = (int)$r['id']; $n = "pr[$k]";
         $inCorso = $k && $r['attivo'] && (!$r['dal'] || $r['dal'] <= $oggi) && (!$r['al'] || $r['al'] >= $oggi); ?>
       <tr<?= $k ? '' : ' class="row-new"' ?>>
-        <td><input name="<?= $n ?>[nome]" value="<?= e($r['nome']) ?>" maxlength="120" aria-label="Nome" <?= $k ? '' : 'placeholder="Aggiungi una promozione"' ?>><?= $inCorso ? ' <span class="tag tag--ok">in corso</span>' : '' ?></td>
+        <td><input name="<?= $n ?>[nome]" value="<?= e($r['nome']) ?>" maxlength="120" aria-label="Nome"><?= $k ? '' : '<small class="hint">Nome della nuova promozione</small>' ?><?= $inCorso ? ' <span class="tag tag--ok">in corso</span>' : '' ?></td>
         <td><select name="<?= $n ?>[tipo]" aria-label="Tipo"><option value="percentuale"<?= $r['tipo'] === 'percentuale' ? ' selected' : '' ?>>%</option><option value="importo"<?= $r['tipo'] === 'importo' ? ' selected' : '' ?>>€</option></select></td>
         <td><input name="<?= $n ?>[valore]" value="<?= e(nd((string)$r['valore'])) ?>" inputmode="decimal" class="right" size="6" aria-label="Valore"></td>
         <td><input type="date" name="<?= $n ?>[dal]" value="<?= e((string)$r['dal']) ?>" aria-label="Dal"></td>

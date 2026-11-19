@@ -346,7 +346,7 @@ else:
   <?php if (!empty($def['intro'])): ?><p class="intro"><?= e($def['intro']) ?></p><?php endif; ?>
   <form method="get" class="filters">
     <input type="hidden" name="t" value="<?= e($t) ?>">
-    <input type="search" name="q" placeholder="Cerca…" value="<?= e($filtri['q'] ?? '') ?>" aria-label="Cerca">
+    <span class="campo"><input type="search" name="q" value="<?= e($filtri['q'] ?? '') ?>" aria-label="Cerca"><small class="hint">Cerca nella tabella</small></span>
     <?php foreach ($def['filtri'] as $f):
         $cur = $filtri['f_' . $f] ?? '';
         if ($f === 'attivo'): ?>
@@ -386,7 +386,7 @@ else:
     <form method="post" class="form form--inline" data-conferma="Applicare la modifica a <?= $tot ?> elementi?">
       <?= Auth::campoCsrf() ?><input type="hidden" name="azione" value="massivo">
       <?php foreach ($filtri as $k => $v) if ($k !== 't') echo '<input type="hidden" name="' . e($k) . '" value="' . e($v) . '">'; ?>
-      <label>Nuovo coefficiente<input name="m_coefficiente" inputmode="decimal" placeholder="es. 1,10"></label>
+      <label>Nuovo coefficiente<input name="m_coefficiente" inputmode="decimal"><small class="hint">Es. 1,10 = +10%</small></label>
       <label>Stato<select name="m_attivo"><option value="">Non cambiare</option><option value="1">Attiva tutti</option><option value="0">Disattiva tutti</option></select></label>
       <button class="btn">Applica</button>
     </form>

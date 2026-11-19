@@ -55,7 +55,7 @@ function docs_form(int $cliente, ?int $polizza = null, bool $conLettura = true):
         . ($polizza ? '<input type="hidden" name="polizza_id" value="' . $polizza . '">' : '')
         . '<input type="hidden" name="MAX_FILE_SIZE" value="' . $max . '">'
         . '<label>Carica un documento<input type="file" name="file" required accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" data-max="' . $max . '"><small>PDF, Word, JPG o PNG · massimo ' . e(Documenti::mb($max)) . '</small></label>'
-        . '<label>Descrizione (facoltativa)<input name="descrizione" maxlength="190" placeholder="Es. Contratto firmato, libretto, carta d\'identità"></label>'
+        . '<label>Descrizione (facoltativa)<input name="descrizione" maxlength="190"><small class="hint">Es. contratto firmato, libretto, carta d\'identità</small></label>'
         . ($conLettura ? '<label class="check"><input type="checkbox" name="leggi" value="1"> È un contratto: leggi le date e ' . ($polizza ? 'proponile per questa polizza' : 'compila una nuova polizza') . ' (PDF digitali e Word)</label>' : '')
         . '<div class="actions"><button class="btn btn--ghost">Carica</button></div></form>';
 }
