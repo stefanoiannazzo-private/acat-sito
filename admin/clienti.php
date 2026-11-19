@@ -4,6 +4,19 @@ declare(strict_types=1);
 require __DIR__ . '/_init.php';
 $me = Auth::richiedi();
 
+/** Sotto il nome: l'unico legame per esteso, oppure "Associati: N" con l'elenco al passaggio del mouse */
+function legati_cella(array $c): string
+{
+    if (!$c['legati']) return '';
+    $l = array_map(fn($r) => array_pad(explode("\t", $r, 3), 3, ''), explode("\n", (string)$c['legati']));
+    $az = $c['tipo'] === 'azienda';
+    $link = fn($x) => '<a href="clienti.php?id=' . (int)$x[0] . '">' . e($x[1]) . '</a>';
+    if (count($l) === 1) return '<br><small class="muted">' . ($az ? 'Associato: ' : 'Azienda: ') . $link($l[0]) . '</small>';
+    $voci = implode('', array_map(fn($x) => '<li>' . $link($x) . ($x[2] !== '' ? '<span>' . e($x[2]) . '</span>' : '') . '</li>', $l));
+    return '<br><small class="muted">' . ($az ? 'Associati: ' : 'Aziende: ') . '<span class="pop"><button type="button" class="pop__n" aria-haspopup="true">' . count($l) . '</button>'
+        . '<span class="pop__box" role="tooltip"><b>' . ($az ? 'Persone associate' : 'Aziende associate') . '</b><ul>' . $voci . '</ul></span></span></small>';
+}
+
 $stati = Clienti::stati();
 $statiById = array_column($stati, null, 'id');
 $tag = fn($sid) => isset($statiById[$sid]) ? '<span class="tag tag--stato" style="--c:' . e($statiById[$sid]['colore']) . '">' . e($statiById[$sid]['nome']) . '</span>' : '–';
@@ -387,11 +400,12 @@ elseif ($id):
   </form>
 <?php
 /* ---------- elenco ---------- */
+
 else:
     $per = 50; $pag = max(1, (int)($_GET['p'] ?? 1));
     $st = db()->prepare("SELECT COUNT(*) FROM clienti c WHERE $where"); $st->execute($par); $tot = (int)$st->fetchColumn();
     $st = db()->prepare("SELECT c.id, c.tipo, c.nome, c.email, c.telefono, c.stato_id, c.origine, c.aggiornato_il, COALESCE(CONCAT(co.nome, ' (', co.sigla, ')'), CONCAT(c.citta, IF(c.provincia IS NULL, '', CONCAT(' (', c.provincia, ')')))) AS comune,
-        (SELECT GROUP_CONCAT(a.nome ORDER BY a.nome SEPARATOR ', ') FROM clienti_legami l JOIN clienti a ON a.id = IF(c.tipo = 'persona', l.azienda_id, l.persona_id) WHERE IF(c.tipo = 'persona', l.persona_id, l.azienda_id) = c.id) AS legati,
+        (SELECT GROUP_CONCAT(CONCAT(a.id, CHAR(9), a.nome, CHAR(9), COALESCE(l.ruolo, '')) ORDER BY a.nome SEPARATOR '\n') FROM clienti_legami l JOIN clienti a ON a.id = IF(c.tipo = 'persona', l.azienda_id, l.persona_id) WHERE IF(c.tipo = 'persona', l.persona_id, l.azienda_id) = c.id) AS legati,
         (SELECT COUNT(*) FROM preventivi p WHERE p.cliente_id = c.id) AS n_prev,
         (SELECT COUNT(*) FROM polizze po WHERE po.cliente_id = c.id AND po.stato = 'attiva') AS n_pol
         FROM clienti c LEFT JOIN comuni co ON co.id = c.comune_id WHERE $where ORDER BY c.aggiornato_il DESC LIMIT $per OFFSET " . (($pag - 1) * $per));
@@ -421,7 +435,7 @@ else:
     <thead><tr><th>Cliente</th><th>Contatti</th><th>Comune / città</th><th>Stato</th><th class="right">Preventivi</th><th class="right">Polizze attive</th><th>Tipo</th></tr></thead>
     <tbody>
     <?php foreach ($st as $c): ?>
-      <tr><td><a href="?id=<?= (int)$c['id'] ?>"><b><?= e($c['nome']) ?></b></a><?= $c['legati'] ? '<br><small class="muted">' . ($c['tipo'] === 'azienda' ? 'Persone: ' : 'Azienda: ') . e($c['legati']) . '</small>' : '' ?></td>
+      <tr><td><a href="?id=<?= (int)$c['id'] ?>"><b><?= e($c['nome']) ?></b></a><?= legati_cella($c) ?></td>
       <td><?= e($c['email'] ?: '') ?><br><small class="muted"><?= e($c['telefono'] ?: '') ?></small></td>
       <td><?= e($c['comune'] ?: '–') ?></td><td><?= $tag($c['stato_id']) ?></td><td class="right"><?= (int)$c['n_prev'] ?></td><td class="right"><?= (int)$c['n_pol'] ?></td><td><span class="tag tag--tipo-<?= e($c['tipo']) ?>"><?= $c['tipo'] === 'azienda' ? 'Azienda' : 'Persona' ?></span><?= $c['origine'] === 'sito' ? '<br><small class="muted">dal sito</small>' : '' ?></td></tr>
     <?php endforeach; ?>

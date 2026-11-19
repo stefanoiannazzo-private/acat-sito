@@ -204,3 +204,17 @@ label small, .field small, .campo small, .hint { color: var(--ink); }
 .legami-form legend { font-weight: 600; font-size: 14px; padding: 0 6px; }
 .legami-form .form--grid2 + .form--grid2 { margin-top: 10px; }
 .tag--tipo-azienda { background: #e3ecf8; color: var(--blu); }
+
+/* "Associati: N" con anteprima al passaggio del mouse (o al tocco / tastiera) */
+.pop { position: relative; display: inline-block; }
+.pop__n { background: none; border: 0; padding: 0; font: inherit; font-weight: 600; color: var(--ink); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.pop__box { position: absolute; left: -12px; top: 100%; z-index: 20; min-width: 240px; max-width: 340px; padding: 12px 14px; margin-top: 6px;
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); box-shadow: 0 10px 30px rgb(14 35 64 / .14);
+  color: var(--ink); font-size: 13.5px; visibility: hidden; opacity: 0; transform: translateY(-4px); transition: opacity .15s, transform .15s, visibility .15s; }
+.pop__box::before { content: ""; position: absolute; left: 0; right: 0; top: -10px; height: 10px; }
+.pop:hover .pop__box, .pop:focus-within .pop__box { visibility: visible; opacity: 1; transform: none; }
+.pop__box b { display: block; margin-bottom: 6px; font-size: 12px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: .04em; }
+.pop__box ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.pop__box li { display: flex; flex-direction: column; }
+.pop__box li span { color: var(--muted); font-size: 12.5px; }
+@media (min-width: 1000px) { .tablewrap:has(.pop) { overflow: visible; } }
