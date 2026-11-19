@@ -268,3 +268,31 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!a.classList.contains('flash--errore')) setTimeout(() => chiudi(a), 6000);
   });
 });
+
+/* Prova calcolo: ricalcolo automatico a ogni modifica, senza premere "Calcola" */
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.getElementById('prova'), box = document.getElementById('prova-risultato'), stato = document.getElementById('prova-stato');
+  if (!form || !box) return;
+  let timer, ultimo = '', n = 0;
+  const pronto = () => [...form.querySelectorAll('[required]')].every((f) => f.value.trim() !== '') && form.querySelector('[name="comune_id"]').value !== '';
+  const calcola = async () => {
+    if (!pronto()) return;
+    const dati = new FormData(form);
+    dati.set('dal_vivo', '1');
+    const chiave = new URLSearchParams(dati).toString();
+    if (chiave === ultimo) return;
+    ultimo = chiave;
+    const mio = ++n;
+    box.classList.add('agg'); stato.textContent = 'aggiorno…';
+    try {
+      const html = await fetch('prova.php', { method: 'POST', body: dati, credentials: 'same-origin' }).then((r) => { if (!r.ok) throw new Error(); return r.text(); });
+      if (mio !== n) return;
+      box.innerHTML = html; stato.textContent = 'aggiornato';
+    } catch { if (mio === n) stato.textContent = 'non riesco ad aggiornare: premi Calcola'; }
+    finally { if (mio === n) box.classList.remove('agg'); }
+  };
+  const pianifica = () => { clearTimeout(timer); timer = setTimeout(calcola, 350); };
+  form.addEventListener('change', pianifica);
+  form.addEventListener('input', pianifica);
+  form.addEventListener('submit', (e) => { if (pronto()) { e.preventDefault(); ultimo = ''; calcola(); } });
+});

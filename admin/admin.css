@@ -249,3 +249,12 @@ label small, .field small, .campo small, .hint { color: var(--ink); }
 .avviso.esce { opacity: 0; transform: translateY(-6px); transition: opacity .3s, transform .3s; }
 @keyframes avviso-in { from { opacity: 0; transform: translateY(-8px); } }
 @media (prefers-reduced-motion: reduce) { .avviso { animation: none; } .avviso.esce { transition: none; } }
+
+[hidden] { display: none !important; }
+
+/* Prova calcolo: a sinistra i passi scorrono, a destra il risultato resta fermo */
+.cols--prova { align-items: start; }
+@media (min-width: 901px) {
+  .prova-fisso { position: sticky; top: 70px; max-height: calc(100vh - 86px); overflow-y: auto; }
+}
+#prova-risultato.agg { opacity: .55; transition: opacity .15s; }
