@@ -23,6 +23,22 @@ document.addEventListener('DOMContentLoaded', () => {
       }, 200);
     });
   }
+  // ricerca di una persona o di un'azienda dell'anagrafica (campo testo + id nascosto)
+  document.querySelectorAll('[data-cerca-clienti]').forEach((inp) => {
+    const hid = inp.form.querySelector('[name="' + inp.dataset.campo + '"]'), list = document.getElementById(inp.getAttribute('list'));
+    let map = {}, timer;
+    inp.addEventListener('input', () => {
+      hid.value = map[inp.value] || '';
+      clearTimeout(timer);
+      if (inp.value.length < 2 || hid.value) return;
+      timer = setTimeout(async () => {
+        const r = await fetch('cerca.php?cosa=clienti&tipo=' + inp.dataset.cercaClienti + '&q=' + encodeURIComponent(inp.value)).then((x) => x.json());
+        map = {}; list.innerHTML = '';
+        for (const x of r.r || []) { map[x.n] = x.id; const o = document.createElement('option'); o.value = x.n; list.append(o); }
+        hid.value = map[inp.value] || '';
+      }, 200);
+    });
+  });
   const m = document.querySelector('[data-marca]'), mo = document.querySelector('[data-modello]');
   m?.addEventListener('change', async () => {
     mo.innerHTML = '<option value="">Scegli…</option>';

@@ -6,7 +6,7 @@ $me = Auth::richiedi();
 
 function carica(int $id): ?array
 {
-    $st = db()->prepare('SELECT p.*, c.nome AS cliente_nome, c.email AS cliente_email, c.telefono AS cliente_tel, c.stato_id AS cliente_stato FROM preventivi p LEFT JOIN clienti c ON c.id = p.cliente_id WHERE p.id = ?');
+    $st = db()->prepare('SELECT p.*, c.nome AS cliente_nome, c.email AS cliente_email, c.telefono AS cliente_tel, c.stato_id AS cliente_stato, c.nome_proprio AS cliente_nome_proprio, c.tipo AS cliente_tipo FROM preventivi p LEFT JOIN clienti c ON c.id = p.cliente_id WHERE p.id = ?');
     $st->execute([$id]);
     return $st->fetch() ?: null;
 }
@@ -82,7 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         $token = bin2hex(random_bytes(32));
         $link = EmailPreventivo::sitoUrl() . '/il-tuo-preventivo.php?t=' . $token;
-        $m = EmailPreventivo::preventivo($p, ['nome' => $p['cliente_nome'] ?: $p['nome']], $link);
+        $m = EmailPreventivo::preventivo($p, ['nome' => $p['cliente_nome'] ?: $p['nome'], 'nome_proprio' => $p['cliente_nome_proprio'] ?? null, 'tipo' => $p['cliente_tipo'] ?? 'persona'], $link);
         $rispondi = trim((string)impostazione('email_risposta', '')) ?: null;
         $errore = Mailer::invia($to, $m['oggetto'], $m['html'], $m['testo'], $rispondi);
         Mailer::registra($p['cliente_id'] ? (int)$p['cliente_id'] : null, $id, 'preventivo', $to, $m['oggetto'], $errore, $me['email']);

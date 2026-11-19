@@ -19,4 +19,13 @@ if (($_GET['cosa'] ?? '') === 'prodotti') {
     $st->execute([(int)($_GET['compagnia'] ?? 0)]);
     json_out(['ok' => true, 'r' => $st->fetchAll()]);
 }
+if (($_GET['cosa'] ?? '') === 'clienti') {
+    $q = trim(mb_substr((string)($_GET['q'] ?? ''), 0, 60));
+    $tipo = ($_GET['tipo'] ?? '') === 'azienda' ? 'azienda' : 'persona';
+    $like = '%' . str_replace(['\\', '%', '_'], ['\\\\', '\\%', '\\_'], $q) . '%';
+    $st = db()->prepare("SELECT id, CONCAT(nome, IF(codice_fiscale IS NULL AND partita_iva IS NULL, CONCAT(' · n. ', id), CONCAT(' · ', COALESCE(partita_iva, codice_fiscale)))) AS n
+        FROM clienti WHERE tipo = ? AND (nome LIKE ? OR email LIKE ? OR codice_fiscale LIKE ? OR partita_iva LIKE ?) ORDER BY nome LIMIT 20");
+    $st->execute([$tipo, $like, $like, $like, $like]);
+    json_out(['ok' => true, 'r' => $st->fetchAll()]);
+}
 json_out(['ok' => false], 400);

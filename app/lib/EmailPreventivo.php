@@ -42,7 +42,7 @@ final class EmailPreventivo
     /** @return array{oggetto:string, html:string, testo:string} */
     public static function preventivo(array $p, array $c, string $link): array
     {
-        $nome = trim(explode(' ', trim((string)$c['nome']))[0] ?? '') ?: 'Gentile cliente';
+        $nome = Clienti::saluto($c) ?: 'Gentile cliente';
         $righe = self::righe($p);
         $tot = self::totale($p);
         $msg = trim((string)($p['messaggio'] ?? '')) ?: (string)impostazione('messaggio_preventivo', '');

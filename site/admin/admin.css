@@ -157,3 +157,13 @@ legend { font-weight: 500; padding: 0 4px; }
 .table--edit input[size] { width: auto; }
 .table tr.muted td { color: #7a8597; }
 section.box + .actions { margin-top: 24px; }
+.tag--sit-attiva { background: #e3f3ea; color: #1f7a4d; }
+.tag--sit-in_scadenza { background: #fff1d6; color: #8a5a00; }
+.tag--sit-scaduta { background: #fbe4e2; color: #b3302a; }
+.tag--sit-chiusa { background: #eceff3; color: #5a6880; }
+h3.area { margin: 20px 0 8px; padding-top: 12px; border-top: 1px solid #e3e8ef; }
+h3.area:first-of-type { border-top: 0; }
+details.sede { border: 1px solid #e3e8ef; border-radius: 8px; padding: 10px 12px; margin-bottom: 8px; }
+details.sede summary { cursor: pointer; }
+details.sede form { margin-top: 12px; }
+.form--grid h2.full { margin: 12px 0 0; font-size: 18px; }
