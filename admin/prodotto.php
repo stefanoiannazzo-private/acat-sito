@@ -5,7 +5,7 @@ require __DIR__ . '/_init.php';
 Auth::richiedi();
 
 const VEICOLI = ['entrambi' => 'Auto e moto', 'auto' => 'Solo auto', 'moto' => 'Solo moto'];
-const CORREZIONI = ['eta' => 'Età del contraente', 'provincia' => 'Provincia (sigla)', 'regione' => 'Regione', 'marca' => 'Marca del veicolo', 'veicolo' => 'Tipo di veicolo (auto/moto)'];
+const CORREZIONI = ['eta' => 'Età del contraente', 'provincia' => 'Provincia di residenza', 'regione' => 'Regione di residenza', 'marca' => 'Marca del veicolo', 'veicolo' => 'Tipo di veicolo'];
 const CALCOLI = ['fisso' => 'Importo fisso (€)', 'perc_rc' => '% dell\'RC', 'perc_valore' => '% del valore del veicolo'];
 
 $id = (int)($_GET['id'] ?? $_POST['id'] ?? 0);
@@ -14,6 +14,17 @@ function prodotto(int $id): ?array
     $st = db()->prepare('SELECT p.*, c.nome AS compagnia FROM prodotti p JOIN compagnie c ON c.id = p.compagnia_id WHERE p.id = ?');
     $st->execute([$id]);
     return $st->fetch() ?: null;
+}
+/** Codice interno della garanzia ricavato dal nome (es. "Atti vandalici" → ATTI_VANDALICI): lega la stessa garanzia fra compagnie diverse */
+function codice_da_nome(string $nome, int $prodotto): string
+{
+    $t = iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $nome) ?: $nome;
+    $c = substr(trim(preg_replace('/[^A-Z0-9]+/', '_', strtoupper($t)), '_'), 0, 26) ?: 'GARANZIA';
+    $st = db()->prepare('SELECT codice FROM garanzie WHERE prodotto_id = ?'); $st->execute([$prodotto]);
+    $usati = array_map('strtoupper', $st->fetchAll(PDO::FETCH_COLUMN));
+    $base = $c; $i = 2;
+    while (in_array($c, $usati, true)) $c = $base . '_' . $i++;
+    return $c;
 }
 function dec(mixed $v): ?float { $v = trim((string)$v); return $v === '' ? null : num($v); }
 function data_o_null(string $v): ?string { $v = trim($v); return $v !== '' && DateTimeImmutable::createFromFormat('!Y-m-d', $v) ? $v : null; }
@@ -75,6 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $gid = (int)$gid;
             $nuova = $gid <= 0;
             $codice = strtoupper(trim((string)($g['codice'] ?? '')));
+            if ($codice === '' && trim((string)($g['nome'] ?? '')) !== '') $codice = codice_da_nome((string)$g['nome'], $id);
             $nome = trim(mb_substr((string)($g['nome'] ?? ''), 0, 80));
             if ($nuova && $codice === '' && $nome === '') continue;
             $isRc = $gid === $rcId || ($nuova && $gid === -1 && !$rcId);
@@ -163,9 +175,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $cid = (int)$cid;
             if ($cid > 0 && !empty($r['togli'])) { db()->prepare('DELETE FROM prodotti_correzioni WHERE id = ? AND prodotto_id = ?')->execute([$cid, $id]); continue; }
             $tipo = (string)($r['tipo'] ?? '');
-            $m = num((string)($r['moltiplicatore'] ?? ''));
-            if ($cid <= 0 && ($tipo === '' || $m === null)) continue;
-            if (!isset(CORREZIONI[$tipo]) || $m === null || $m <= 0 || $m > 10) { $err[] = 'Correzione: scegli il tipo e un moltiplicatore fra 0,01 e 10 (es. 1,10 = +10%).'; continue; }
+            $pct = num((string)($r['variazione'] ?? ''));
+            $m = $pct === null ? null : 1 + $pct / 100;
+            if ($cid <= 0 && $tipo === '') continue;
+            if (!isset(CORREZIONI[$tipo]) || $m === null || $pct <= -90 || $pct > 500 || $pct == 0) { $err[] = 'Variazione di prezzo: scegli quando si applica e la percentuale (es. 10 = +10%, -5 = −5%).'; continue; }
             $min = $max = null; $chiave = null;
             if ($tipo === 'eta') {
                 $min = (int)($r['eta_min'] ?? 0); $max = (int)($r['eta_max'] ?? 0);
@@ -174,7 +187,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $chiave = (string)(int)($r['marca'] ?? 0);
                 if ($chiave === '0') { $err[] = 'Correzione per marca: scegli la marca.'; continue; }
             } else {
-                $chiave = trim(mb_substr((string)($r['chiave'] ?? ''), 0, 60));
+                $chiave = trim(mb_substr((string)($tipo === 'veicolo' ? ($r['veicolo'] ?? '') : ($r['chiave'] ?? '')), 0, 60));
                 if ($tipo === 'provincia') $chiave = strtoupper($chiave);
                 if ($tipo === 'veicolo') $chiave = strtolower($chiave);
                 if ($chiave === '' || ($tipo === 'provincia' && !preg_match('/^[A-Z]{2}$/', $chiave)) || ($tipo === 'veicolo' && !in_array($chiave, ['auto', 'moto'], true))) { $err[] = 'Correzione per ' . CORREZIONI[$tipo] . ': valore non valido.'; continue; }
@@ -230,11 +243,12 @@ pagina_inizio($p ? $p['nome'] : 'Nuovo prodotto', 'prodotti');
 ?>
 <p class="crumbs"><a href="tabella.php?t=prodotti">← Prodotti</a></p>
 <h1><?= $p ? e($p['compagnia'] . ' – ' . $p['nome']) : 'Nuovo prodotto' ?> <?= $p && $p['preventivabile'] ? '<span class="tag tag--ok">nel preventivatore online</span>' : '' ?></h1>
-<p class="intro">Ogni prodotto ha il suo listino: garanzie con il premio base, pagamento (annuale, semestrale, mensile…), durate pluriennali, promozioni e correzioni del prezzo.
-I coefficienti comuni (comune, marca, modello, fasce d'età) valgono per tutti i prodotti; le correzioni qui sotto si aggiungono solo per questo prodotto.</p>
+<p class="intro">Un prodotto è un tipo di polizza di una compagnia (es. Allianz – Bonus Malus auto). Qui imposti, nell'ordine: <b>1.</b> i dati del prodotto,
+<b>2.</b> le garanzie (l'RC obbligatoria con il premio base e quelle facoltative), <b>3.</b> come si può pagare (annuale, semestrale, mensile) e per quanti anni,
+e, se servono, <b>4.</b> promozioni e <b>5.</b> prezzi diversi per età, zona o veicolo. Il preventivo segue lo stesso ordine.</p>
 
 <section class="box">
-  <h2>Dati del prodotto</h2>
+  <h2>1. Dati del prodotto</h2>
   <form method="post" class="form">
     <?= Auth::campoCsrf() ?><input type="hidden" name="id" value="<?= (int)$id ?>">
     <div class="form--grid2">
@@ -264,24 +278,25 @@ I coefficienti comuni (comune, marca, modello, fasce d'età) valgono per tutti i
     $oggi = date('Y-m-d'); ?>
 
 <section class="box" id="garanzie">
-  <h2>Garanzie e tariffe</h2>
-  <p class="muted">L'RC è la garanzia principale: il suo valore è il premio base, moltiplicato per i coefficienti di comune, marca e modello. Le altre garanzie si aggiungono all'RC.
-  Il <b>codice</b> collega la stessa garanzia fra prodotti diversi (es. FURTO): sul sito il cliente sceglie per codice e vede il prezzo del prodotto più conveniente che le include tutte.</p>
+  <h2>2. Garanzie e tariffe</h2>
+  <p class="muted">La <b>responsabilità civile (RC)</b> è obbligatoria ed è sempre inclusa: il suo importo è il premio base, che varia con comune, marca e modello del veicolo.
+  Le altre garanzie (furto, incendio, cristalli…) sono <b>facoltative</b> e si aggiungono solo insieme all'RC: non si può fare una polizza con solo furto e incendio.</p>
   <form method="post" class="form">
     <?= Auth::campoCsrf() ?><input type="hidden" name="id" value="<?= $id ?>">
-    <div class="scroll-x"><table class="table table--edit"><thead><tr><th>Codice</th><th>Nome</th><th>Calcolo</th><th class="right">Valore</th><th>Coeff.</th><th>Ordine</th><th>Attiva</th><th></th></tr></thead><tbody>
+    <div class="scroll-x"><table class="table table--edit table--garanzie"><thead><tr><th>Garanzia</th><th>Come si calcola</th><th class="right">Valore</th><th>Varia con zona e veicolo</th><th>Attiva</th><th></th></tr></thead><tbody>
     <?php
     $righe = $gar;
     if (!$hasRc) array_unshift($righe, ['id' => -1, 'codice' => 'RC', 'nome' => 'Responsabilità civile', 'descrizione' => '', 'principale' => 1, 'tipo_calcolo' => 'fisso', 'valore' => '', 'applica_coefficienti' => 1, 'ordine' => 0, 'attivo' => 1]);
-    $righe[] = ['id' => -2, 'codice' => '', 'nome' => '', 'descrizione' => '', 'principale' => 0, 'tipo_calcolo' => 'fisso', 'valore' => '', 'applica_coefficienti' => 0, 'ordine' => 100, 'attivo' => 1];
-    foreach ($righe as $g): $k = (int)$g['id']; $rc = (int)$g['principale'] === 1; $n = "g[$k]"; ?>
+    $righe[] = ['id' => -2, 'codice' => '', 'nome' => '', 'descrizione' => '', 'principale' => 0, 'tipo_calcolo' => 'fisso', 'valore' => '', 'applica_coefficienti' => 0, 'ordine' => 0, 'attivo' => 1];
+    foreach ($righe as $pos => $g): $k = (int)$g['id']; $rc = (int)$g['principale'] === 1; $n = "g[$k]"; ?>
       <tr<?= $k === -2 ? ' class="row-new"' : '' ?>>
-        <td><input name="<?= $n ?>[codice]" value="<?= e($g['codice']) ?>" maxlength="30" size="10" aria-label="Codice"><?= $k === -2 ? '<small class="hint">Codice, es. ASSISTENZA</small>' : '' ?></td>
-        <td><input name="<?= $n ?>[nome]" value="<?= e($g['nome']) ?>" maxlength="80" aria-label="Nome"><?= $k === -2 ? '<small class="hint">Nome della nuova garanzia</small>' : '' ?><input name="<?= $n ?>[descrizione]" value="<?= e((string)$g['descrizione']) ?>" maxlength="255" aria-label="Descrizione" class="sub"><small class="hint">Descrizione per il cliente</small></td>
-        <td><?php if ($rc): ?>Premio base (€)<?php else: ?><select name="<?= $n ?>[tipo_calcolo]" aria-label="Calcolo"><?php foreach (CALCOLI as $ck => $cl): ?><option value="<?= $ck ?>"<?= $g['tipo_calcolo'] === $ck ? ' selected' : '' ?>><?= e($cl) ?></option><?php endforeach; ?></select><?php endif; ?></td>
+        <td><input type="hidden" name="<?= $n ?>[codice]" value="<?= e($g['codice']) ?>"><input type="hidden" name="<?= $n ?>[ordine]" value="<?= $rc ? 0 : ($pos + 1) * 10 ?>">
+          <?php if ($k === -2): ?><b class="nuova">+ Aggiungi una garanzia facoltativa</b><?php endif; ?>
+          <input name="<?= $n ?>[nome]" value="<?= e($g['nome']) ?>" maxlength="80" aria-label="Nome della garanzia"><?php if ($rc): ?><small class="hint">Obbligatoria, sempre inclusa</small><?php elseif ($k === -2): ?><small class="hint">Nome, es. Assistenza stradale</small><?php endif; ?>
+          <input name="<?= $n ?>[descrizione]" value="<?= e((string)$g['descrizione']) ?>" maxlength="255" aria-label="Descrizione" class="sub"><small class="hint">Descrizione per il cliente (facoltativa)</small></td>
+        <td><?php if ($rc): ?>Premio base in €<?php else: ?><select name="<?= $n ?>[tipo_calcolo]" aria-label="Come si calcola"><?php foreach (CALCOLI as $ck => $cl): ?><option value="<?= $ck ?>"<?= $g['tipo_calcolo'] === $ck ? ' selected' : '' ?>><?= e($cl) ?></option><?php endforeach; ?></select><?php endif; ?></td>
         <td><input name="<?= $n ?>[valore]" value="<?= e(nd((string)$g['valore'])) ?>" inputmode="decimal" class="right" size="8" aria-label="Valore"></td>
-        <td><?= $rc ? 'sempre' : '<input type="checkbox" name="' . $n . '[coeff]" value="1"' . ((int)$g['applica_coefficienti'] ? ' checked' : '') . ' aria-label="Applica i coefficienti" title="Solo per gli importi fissi">' ?></td>
-        <td><input name="<?= $n ?>[ordine]" value="<?= (int)$g['ordine'] ?>" inputmode="numeric" size="4" aria-label="Ordine"></td>
+        <td><?= $rc ? 'sempre' : '<input type="checkbox" name="' . $n . '[coeff]" value="1"' . ((int)$g['applica_coefficienti'] ? ' checked' : '') . ' aria-label="Varia con zona e veicolo"><small class="hint">Solo per gli importi fissi</small>' ?></td>
         <td><?= $rc ? 'sì' : '<input type="checkbox" name="' . $n . '[attivo]" value="1"' . ((int)$g['attivo'] ? ' checked' : '') . ' aria-label="Attiva">' ?></td>
         <td><?php if (!$rc && $k > 0): ?><label class="check"><input type="checkbox" name="<?= $n ?>[togli]" value="1"> togli</label><?php endif; ?></td>
       </tr>
@@ -292,7 +307,7 @@ I coefficienti comuni (comune, marca, modello, fasce d'età) valgono per tutti i
 </section>
 
 <section class="box" id="pagamento">
-  <h2>Pagamento e durata</h2>
+  <h2>3. Pagamento e annualità</h2>
   <form method="post" class="form">
     <?= Auth::campoCsrf() ?><input type="hidden" name="id" value="<?= $id ?>">
     <div class="cols">
@@ -321,7 +336,7 @@ I coefficienti comuni (comune, marca, modello, fasce d'età) valgono per tutti i
 </section>
 
 <section class="box" id="promozioni">
-  <h2>Promozioni</h2>
+  <h2>4. Promozioni <span class="muted">(facoltative)</span></h2>
   <p class="muted">Sconti applicati al premio annuo nel periodo indicato (date vuote = sempre). Si sommano in ordine, prima dello sconto per la durata e dei limiti di premio.</p>
   <form method="post" class="form">
     <?= Auth::campoCsrf() ?><input type="hidden" name="id" value="<?= $id ?>">
@@ -344,24 +359,29 @@ I coefficienti comuni (comune, marca, modello, fasce d'età) valgono per tutti i
 </section>
 
 <section class="box" id="correzioni">
-  <h2>Correzioni del prezzo per questo prodotto</h2>
-  <p class="muted">Moltiplicano RC e garanzie con i coefficienti, in aggiunta ai coefficienti comuni: 1,10 = +10%, 0,90 = −10%. Esempi: età 18–25 × 1,20; provincia TO × 1,05; regione Piemonte × 0,95; tipo di veicolo moto × 0,80.</p>
+  <h2>5. Prezzo diverso per età, zona o veicolo <span class="muted">(facoltativo)</span></h2>
+  <p class="muted">Facoltativo. Alza o abbassa il prezzo di questo prodotto in certi casi, in percentuale. Esempi: età da 18 a 25 anni +20; provincia TO +5; regione Piemonte −5; moto −20.</p>
   <form method="post" class="form">
     <?= Auth::campoCsrf() ?><input type="hidden" name="id" value="<?= $id ?>">
-    <div class="scroll-x"><table class="table table--edit"><thead><tr><th>Tipo</th><th>Età da–a</th><th>Valore (sigla, regione, auto/moto)</th><th>Marca</th><th class="right">Moltiplicatore</th><th>Descrizione</th><th></th></tr></thead><tbody>
-    <?php foreach (array_merge($corr, [['id' => 0, 'tipo' => '', 'eta_min' => null, 'eta_max' => null, 'chiave' => '', 'moltiplicatore' => '', 'descrizione' => '']]) as $r): $k = (int)$r['id']; $n = "co[$k]"; ?>
-      <tr<?= $k ? '' : ' class="row-new"' ?>>
-        <td><select name="<?= $n ?>[tipo]" aria-label="Tipo"><option value=""><?= $k ? '' : 'Aggiungi…' ?></option><?php foreach (CORREZIONI as $ck => $cl): ?><option value="<?= $ck ?>"<?= $r['tipo'] === $ck ? ' selected' : '' ?>><?= e($cl) ?></option><?php endforeach; ?></select></td>
-        <td><input name="<?= $n ?>[eta_min]" value="<?= e((string)$r['eta_min']) ?>" inputmode="numeric" size="3" aria-label="Età da">–<input name="<?= $n ?>[eta_max]" value="<?= e((string)$r['eta_max']) ?>" inputmode="numeric" size="3" aria-label="Età a"></td>
-        <td><input name="<?= $n ?>[chiave]" value="<?= $r['tipo'] === 'marca' ? '' : e((string)$r['chiave']) ?>" maxlength="60" size="12" aria-label="Valore"></td>
-        <td><select name="<?= $n ?>[marca]" aria-label="Marca"><option value=""></option><?php foreach ($marche as $mk => $ml): ?><option value="<?= (int)$mk ?>"<?= $r['tipo'] === 'marca' && (int)$r['chiave'] === (int)$mk ? ' selected' : '' ?>><?= e($ml) ?></option><?php endforeach; ?></select></td>
-        <td><input name="<?= $n ?>[moltiplicatore]" value="<?= e(nd((string)$r['moltiplicatore'], 3)) ?>" inputmode="decimal" class="right" size="6" aria-label="Moltiplicatore"></td>
-        <td><input name="<?= $n ?>[descrizione]" value="<?= e((string)$r['descrizione']) ?>" maxlength="120" aria-label="Descrizione"></td>
+    <div class="scroll-x"><table class="table table--edit table--correzioni"><thead><tr><th>Quando</th><th>Condizione</th><th class="right">Variazione %</th><th>Nota</th><th></th></tr></thead><tbody>
+    <?php foreach (array_merge($corr, [['id' => 0, 'tipo' => '', 'eta_min' => null, 'eta_max' => null, 'chiave' => '', 'moltiplicatore' => '', 'descrizione' => '']]) as $r): $k = (int)$r['id']; $n = "co[$k]";
+        $pct = $r['moltiplicatore'] === '' ? '' : nd((string)round(((float)$r['moltiplicatore'] - 1) * 100, 2)); ?>
+      <tr<?= $k ? '' : ' class="row-new"' ?> data-correzione>
+        <td><select name="<?= $n ?>[tipo]" aria-label="Quando"><option value=""><?= $k ? '' : '+ Aggiungi…' ?></option><?php foreach (CORREZIONI as $ck => $cl): ?><option value="<?= $ck ?>"<?= $r['tipo'] === $ck ? ' selected' : '' ?>><?= e($cl) ?></option><?php endforeach; ?></select></td>
+        <td>
+          <span class="cond" data-per="eta"><span class="eta">da <input name="<?= $n ?>[eta_min]" value="<?= e((string)$r['eta_min']) ?>" inputmode="numeric" size="3" aria-label="Età da"> a <input name="<?= $n ?>[eta_max]" value="<?= e((string)$r['eta_max']) ?>" inputmode="numeric" size="3" aria-label="Età a"> anni</span></span>
+          <span class="cond" data-per="provincia regione"><input name="<?= $n ?>[chiave]" value="<?= in_array($r['tipo'], ['provincia', 'regione'], true) ? e((string)$r['chiave']) : '' ?>" maxlength="60" size="14" aria-label="Provincia o regione"><small class="hint">Sigla della provincia (es. TO) o nome della regione</small></span>
+          <span class="cond" data-per="marca"><select name="<?= $n ?>[marca]" aria-label="Marca"><option value="">Scegli…</option><?php foreach ($marche as $mk => $ml): ?><option value="<?= (int)$mk ?>"<?= $r['tipo'] === 'marca' && (int)$r['chiave'] === (int)$mk ? ' selected' : '' ?>><?= e($ml) ?></option><?php endforeach; ?></select></span>
+          <span class="cond" data-per="veicolo"><select name="<?= $n ?>[veicolo]" aria-label="Tipo di veicolo"><option value="auto"<?= $r['chiave'] === 'auto' ? ' selected' : '' ?>>Auto</option><option value="moto"<?= $r['chiave'] === 'moto' ? ' selected' : '' ?>>Moto</option></select></span>
+          <span class="cond muted" data-per="">Scegli prima "Quando"</span>
+        </td>
+        <td><input name="<?= $n ?>[variazione]" value="<?= e($pct) ?>" inputmode="decimal" class="right" size="6" aria-label="Variazione percentuale"><small class="hint">Es. 10 = +10%, -5 = −5%</small></td>
+        <td><input name="<?= $n ?>[descrizione]" value="<?= e((string)$r['descrizione']) ?>" maxlength="120" aria-label="Nota"></td>
         <td><?php if ($k): ?><label class="check"><input type="checkbox" name="<?= $n ?>[togli]" value="1"> togli</label><?php endif; ?></td>
       </tr>
     <?php endforeach; ?>
     </tbody></table></div>
-    <div class="actions"><button class="btn" name="azione" value="correzioni">Salva le correzioni</button></div>
+    <div class="actions"><button class="btn" name="azione" value="correzioni">Salva</button></div>
   </form>
 </section>
 

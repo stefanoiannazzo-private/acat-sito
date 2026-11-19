@@ -53,9 +53,13 @@ final class Preventivatore
     }
 
     /** Listino completo dei prodotti (preventivabili, o il solo $id) per Calcolo::prodotto */
-    public static function listini(?int $id = null): array
+    public static function listini(int|array|null $id = null): array
     {
-        if ($id !== null) {
+        if (is_array($id)) {
+            $ids = array_values(array_filter(array_map('intval', $id)));
+            if (!$ids) return [];
+            $st = db()->query('SELECT p.*, c.nome AS compagnia FROM prodotti p JOIN compagnie c ON c.id = p.compagnia_id WHERE p.id IN (' . implode(',', $ids) . ') ORDER BY c.nome, p.nome');
+        } elseif ($id !== null) {
             $st = db()->prepare('SELECT p.*, c.nome AS compagnia FROM prodotti p JOIN compagnie c ON c.id = p.compagnia_id WHERE p.id = ?');
             $st->execute([$id]);
         } else {
@@ -112,7 +116,7 @@ final class Preventivatore
         $scelte = array_values(array_unique(array_map(fn($c) => strtoupper((string)$c), $scelte)));
         $fasce = self::fasce();
 
-        $listini = self::listini(isset($pag['prodotto_id']) ? (int)$pag['prodotto_id'] : null);
+        $listini = self::listini(isset($pag['prodotto_id']) ? (int)$pag['prodotto_id'] : ($pag['prodotti'] ?? null));
         if (!$listini) return [null, 'Al momento non ci sono tariffe disponibili per la stima online: chiamaci o scrivici.'];
         $validi = []; $esclusi = [];
         foreach ($listini as $p) {

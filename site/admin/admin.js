@@ -182,3 +182,80 @@ document.addEventListener('DOMContentLoaded', () => {
   form.addEventListener('change', (e) => { if (e.target.matches('[name^="riga_togli"]')) controlla(); });
   riempi(); controlla();
 });
+
+/* calcolo passo per passo: tipo di polizza → compagnia (→ prodotto) → garanzie (RC fissa) → frazionamento → annualità */
+document.addEventListener('DOMContentLoaded', () => {
+  const el = document.getElementById('calc-dati');
+  if (!el) return;
+  const { prodotti, scelte, nomi_fraz: nomiFraz } = JSON.parse(el.textContent);
+  const $ = (id) => document.getElementById(id);
+  const tipo = $('calc-tipo'), comp = $('calc-compagnia'), prod = $('calc-prodotto'), prodBox = $('calc-prodotto-box');
+  const gar = $('calc-garanzie'), fraz = $('calc-fraz'), dur = $('calc-durata');
+  const esc = (t) => String(t).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const opt = (v, t, sel) => `<option value="${esc(v)}"${sel ? ' selected' : ''}>${esc(t)}</option>`;
+  let prima = true; // al primo giro ripristino le scelte (modulo ricaricato dopo un errore)
+
+  const delTipo = () => prodotti.filter((p) => String(p.categoria) === tipo.value);
+  const inUso = () => {
+    const l = delTipo();
+    if (!comp.value) return [];
+    if (comp.value === 'tutte') return l;
+    const c = l.filter((p) => String(p.compagnia_id) === comp.value);
+    if (c.length > 1 && prod.value) return c.filter((p) => String(p.id) === prod.value);
+    return c.length > 1 ? [c[0]] : c;
+  };
+
+  const aggiornaCompagnie = () => {
+    const l = delTipo(), viste = new Map();
+    l.forEach((p) => viste.set(String(p.compagnia_id), p.compagnia));
+    const v = prima ? String(scelte.compagnia || '') : comp.value;
+    comp.innerHTML = opt('', tipo.value ? 'Scegli…' : 'Scegli prima il tipo di polizza')
+      + [...viste].map(([id, n]) => opt(id, n, v === id)).join('')
+      + (viste.size > 1 ? opt('tutte', 'Confronta tutte le compagnie (prezzo migliore)', v === 'tutte') : '');
+    if (viste.size === 1 && !comp.value) comp.value = [...viste.keys()][0];
+    aggiornaProdotti();
+  };
+  const aggiornaProdotti = () => {
+    const c = delTipo().filter((p) => comp.value && comp.value !== 'tutte' && String(p.compagnia_id) === comp.value);
+    prodBox.hidden = c.length < 2;
+    const v = prima ? String(scelte.prodotto_id || '') : prod.value;
+    prod.innerHTML = c.length > 1 ? c.map((p, i) => opt(p.id, p.nome, v ? v === String(p.id) : i === 0)).join('') : (c[0] ? opt(c[0].id, c[0].nome, true) : '');
+    aggiornaResto();
+  };
+  const aggiornaResto = () => {
+    const l = inUso();
+    // garanzie: quelle del prodotto (o comuni a tutti, se si confronta); la RC è sempre inclusa
+    const presenti = new Map();
+    l.forEach((p) => p.garanzie.forEach((g) => { if (!presenti.has(g.codice)) presenti.set(g.codice, g); }));
+    const spuntate = prima ? new Set(scelte.garanzie) : new Set([...gar.querySelectorAll('input:checked:not(:disabled)')].map((x) => x.value));
+    if (!l.length) gar.innerHTML = '<p class="muted">Scegli tipo di polizza e compagnia.</p>';
+    else {
+      const rc = [...presenti.values()].filter((g) => g.rc), altre = [...presenti.values()].filter((g) => !g.rc);
+      gar.innerHTML = rc.map((g) => `<label class="check"><input type="checkbox" checked disabled> <b>${esc(g.nome)}</b> <small class="hint">obbligatoria, sempre inclusa</small></label>`).join('')
+        + (altre.length ? '<p class="hint">Garanzie facoltative, in aggiunta alla RC:</p>' : '<p class="hint">Questo prodotto non ha garanzie facoltative.</p>')
+        + altre.map((g) => `<label class="check"><input type="checkbox" name="garanzie[]" value="${esc(g.codice)}"${spuntate.has(g.codice) ? ' checked' : ''}> ${esc(g.nome)}</label>`).join('')
+        + (comp.value === 'tutte' ? '<p class="hint">Confrontando tutte le compagnie, quelle che non hanno una garanzia scelta vengono escluse dal confronto.</p>' : '');
+    }
+    const f = new Set(), d = new Set([1]);
+    l.forEach((p) => { p.frazionamenti.forEach((x) => f.add(x)); p.durate.forEach((x) => d.add(x)); });
+    if (!f.size) f.add('annuale');
+    const vf = prima ? scelte.frazionamento : fraz.value, vd = prima ? String(scelte.durata) : dur.value;
+    fraz.innerHTML = Object.keys(nomiFraz).filter((k) => f.has(k)).map((k) => opt(k, nomiFraz[k], k === vf)).join('');
+    dur.innerHTML = [...d].sort((a, b) => a - b).map((a) => opt(a, a === 1 ? '1 anno' : a + ' anni', String(a) === vd)).join('');
+  };
+
+  tipo.addEventListener('change', aggiornaCompagnie);
+  comp.addEventListener('change', aggiornaProdotti);
+  prod.addEventListener('change', aggiornaResto);
+  aggiornaCompagnie();
+  prima = false;
+});
+
+/* prodotto: nella variazione di prezzo mostro solo il campo che serve per il "Quando" scelto */
+document.addEventListener('DOMContentLoaded', () => {
+  const mostra = (tr) => {
+    const t = tr.querySelector('[name$="[tipo]"]').value;
+    tr.querySelectorAll('.cond').forEach((c) => { c.hidden = !c.dataset.per.split(' ').includes(t) && !(t === '' && c.dataset.per === ''); });
+  };
+  document.querySelectorAll('[data-correzione]').forEach((tr) => { mostra(tr); tr.querySelector('[name$="[tipo]"]').addEventListener('change', () => mostra(tr)); });
+});

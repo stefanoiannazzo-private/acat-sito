@@ -37,6 +37,8 @@ pagina_inizio('Nuovo preventivo', 'clienti');
 <p class="intro">Il calcolo usa le stesse tariffe del sito (anche per elementi non attivi). Nella pagina successiva puoi correggere gli importi, indicare la compagnia e inviarlo al cliente.</p>
 <form method="post" class="form form--narrow">
   <?= Auth::campoCsrf() ?><input type="hidden" name="cliente" value="<?= $cid ?>">
+  <?php campi_calcolo($in); ?>
+  <fieldset class="passo"><legend><span>5</span> Contraente e veicolo</legend>
   <label>Comune di residenza
     <input name="comune" list="comuni-list" value="<?= e($in['comune']) ?>" autocomplete="off" data-cerca-comuni required>
     <input type="hidden" name="comune_id" value="<?= $in['comune_id'] ?: '' ?>"><datalist id="comuni-list"></datalist><small class="hint">Scrivi almeno 2 lettere e scegli dall'elenco</small>
@@ -44,7 +46,7 @@ pagina_inizio('Nuovo preventivo', 'clienti');
   <label>Data di nascita del contraente<input type="date" name="nascita" value="<?= e($in['nascita']) ?>" required></label>
   <label>Marca<select name="marca_id" data-marca required><option value="">Scegli…</option><?php foreach ($marche as $k => $v): ?><option value="<?= (int)$k ?>"<?= $in['marca_id'] === (int)$k ? ' selected' : '' ?>><?= e($v) ?></option><?php endforeach; ?></select></label>
   <label>Modello<select name="modello_id" data-modello required><option value="">Scegli…</option><?php foreach ($modelli as $k => $v): ?><option value="<?= (int)$k ?>"<?= $in['modello_id'] === (int)$k ? ' selected' : '' ?>><?= e($v) ?></option><?php endforeach; ?></select></label>
-  <?php campi_calcolo($in); ?>
+  </fieldset>
   <div class="actions"><button class="btn">Calcola e crea il preventivo</button><a class="btn btn--ghost" href="clienti.php?id=<?= $cid ?>">Annulla</a></div>
 </form>
 <?php pagina_fine();

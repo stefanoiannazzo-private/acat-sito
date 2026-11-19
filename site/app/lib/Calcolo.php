@@ -143,7 +143,15 @@ final class Calcolo
                 'veicolo' => (string)$c['chiave'] === (string)($ctx['tipo_veicolo'] ?? ''),
                 default => false,
             };
-            if ($ok) { $molt *= (float)$c['moltiplicatore']; $applicate[] = ($c['descrizione'] ?: $c['tipo']) . ' ×' . rtrim(rtrim(number_format((float)$c['moltiplicatore'], 3, ',', ''), '0'), ','); }
+            if ($ok) {
+                $molt *= (float)$c['moltiplicatore'];
+                $pct = round(((float)$c['moltiplicatore'] - 1) * 100, 2);
+                $cosa = $c['descrizione'] ?: match ($c['tipo']) {
+                    'eta' => 'Età ' . (int)$c['eta_min'] . '–' . (int)$c['eta_max'], 'provincia' => 'Provincia ' . $c['chiave'], 'regione' => 'Regione ' . $c['chiave'],
+                    'marca' => 'Marca del veicolo', 'veicolo' => ucfirst((string)$c['chiave']), default => 'Variazione',
+                };
+                $applicate[] = $cosa . ' ' . ($pct > 0 ? '+' : '−') . rtrim(rtrim(number_format(abs($pct), 2, ',', ''), '0'), ',') . '%';
+            }
         }
 
         try {

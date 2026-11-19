@@ -17,6 +17,8 @@ pagina_inizio('Prova calcolo', 'prova');
 <div class="cols">
 <form method="post" class="form" id="prova">
   <?= Auth::campoCsrf() ?>
+  <?php campi_calcolo($in); ?>
+  <fieldset class="passo"><legend><span>5</span> Contraente e veicolo</legend>
   <label>Comune di residenza
     <input name="comune" list="comuni-list" value="<?= e($in['comune']) ?>" autocomplete="off" data-cerca-comuni required>
     <input type="hidden" name="comune_id" value="<?= $in['comune_id'] ?: '' ?>">
@@ -25,7 +27,7 @@ pagina_inizio('Prova calcolo', 'prova');
   <label>Data di nascita<input type="date" name="nascita" value="<?= e($in['nascita']) ?>" required></label>
   <label>Marca<select name="marca_id" data-marca required><option value="">Scegli…</option><?php foreach ($marche as $k => $v): ?><option value="<?= (int)$k ?>"<?= $in['marca_id'] === (int)$k ? ' selected' : '' ?>><?= e($v) ?></option><?php endforeach; ?></select></label>
   <label>Modello<select name="modello_id" data-modello required><option value="">Scegli…</option><?php foreach ($modelli as $k => $v): ?><option value="<?= (int)$k ?>"<?= $in['modello_id'] === (int)$k ? ' selected' : '' ?>><?= e($v) ?></option><?php endforeach; ?></select></label>
-  <?php campi_calcolo($in); ?>
+  </fieldset>
   <button class="btn">Calcola</button>
 </form>
 <section class="box">
@@ -41,7 +43,7 @@ pagina_inizio('Prova calcolo', 'prova');
     <?php if ($ris['limite']): ?><tr><td colspan="2" class="muted">Applicato il <?= e($ris['limite']) ?></td></tr><?php endif; ?>
     <tr class="tot"><td>Premio annuo<?= $ris['rate'] > 1 ? ' · ' . $ris['rate'] . ' rate da ' . euro($ris['rata']) : '' ?><?= $ris['durata'] > 1 ? ' · durata ' . $ris['durata'] . ' anni (' . euro($ris['totale_durata']) . ')' : '' ?></td><td class="right"><?= euro($ris['totale']) ?></td></tr>
     </tbody></table>
-    <?php if ($ris['correzioni']): ?><p class="muted">Correzioni del prodotto: <?= e(implode(' · ', $ris['correzioni'])) ?></p><?php endif; ?>
+    <?php if ($ris['correzioni']): ?><p class="muted">Variazioni di prezzo del prodotto: <?= e(implode(' · ', $ris['correzioni'])) ?></p><?php endif; ?>
     <?php tabella_confronto($ris); ?>
   <?php else: ?><p class="muted">Compila i dati e premi Calcola.</p><?php endif; ?>
 </section>

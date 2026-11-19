@@ -60,7 +60,7 @@ final class ListinoTest extends TestCase
         $p = $this->prodotto(['correzioni' => [['tipo' => 'provincia', 'eta_min' => null, 'eta_max' => null, 'chiave' => 'TO', 'moltiplicatore' => 1.1, 'descrizione' => 'Torino']]]);
         [$r] = Calcolo::prodotto($p, ['FURTO'], 40, [], $this->ctx());
         $this->assertEqualsWithDelta(484.0, $r['annuo'], 0.001); // RC 440 + furto 10% = 44
-        $this->assertSame(['Torino ×1,1'], $r['correzioni']);
+        $this->assertSame(['Torino +10%'], $r['correzioni']);
     }
 
     public function testCorrezioneEtaFuoriFasciaNonSiApplica(): void

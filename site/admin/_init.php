@@ -141,40 +141,83 @@ function paginazione(int $tot, int $pag, int $per, array $q): string
 function calcolo_input(array $base = []): array
 {
     $fraz = (string)($_POST['frazionamento'] ?? 'annuale');
+    $comp = (string)($_POST['compagnia'] ?? '');
     return [
         'comune_id' => (int)($_POST['comune_id'] ?? $base['comune_id'] ?? 0), 'comune' => (string)($_POST['comune'] ?? $base['comune'] ?? ''),
         'nascita' => (string)($_POST['nascita'] ?? $base['nascita'] ?? ''), 'marca_id' => (int)($_POST['marca_id'] ?? 0), 'modello_id' => (int)($_POST['modello_id'] ?? 0),
         'garanzie' => array_values(array_filter(array_map(fn($x) => strtoupper(trim((string)$x)), (array)($_POST['garanzie'] ?? [])), fn($x) => (bool)preg_match('/^[A-Z0-9_-]{1,30}$/', $x))),
         'frazionamento' => isset(Preventivatore::FRAZIONAMENTI[$fraz]) ? $fraz : 'annuale', 'durata' => max(1, min(10, (int)($_POST['durata'] ?? 1))),
+        'categoria_id' => (int)($_POST['categoria_id'] ?? 0),
+        'compagnia' => $comp === 'tutte' ? 'tutte' : (string)(int)$comp,
         'prodotto_id' => (int)($_POST['prodotto_id'] ?? 0),
     ];
+}
+
+/** Prodotti con una tariffa (RC con premio base) dell'area Auto, con garanzie, frazionamenti e durate: guidano il modulo passo per passo */
+function prodotti_tariffati(): array
+{
+    $auto = Categorie::perChiave('auto');
+    $rows = db()->query("SELECT p.id, p.nome, p.categoria_id, p.compagnia_id, c.nome AS compagnia, p.preventivabile
+        FROM prodotti p JOIN compagnie c ON c.id = p.compagnia_id LEFT JOIN categorie k ON k.id = p.categoria_id
+        WHERE p.attivo = 1 AND c.attivo = 1 AND p.categoria_id IS NOT NULL" . ($auto ? ' AND COALESCE(k.parent_id, k.id) = ' . (int)$auto : '') . "
+          AND EXISTS (SELECT 1 FROM garanzie g WHERE g.prodotto_id = p.id AND g.principale = 1 AND g.attivo = 1)
+        ORDER BY c.nome, p.nome")->fetchAll();
+    $out = [];
+    foreach ($rows as $r) $out[(int)$r['id']] = ['id' => (int)$r['id'], 'nome' => $r['nome'], 'categoria' => (int)$r['categoria_id'], 'compagnia_id' => (int)$r['compagnia_id'],
+        'compagnia' => $r['compagnia'], 'garanzie' => [], 'frazionamenti' => [], 'durate' => [1]];
+    if (!$out) return [];
+    $in = implode(',', array_keys($out));
+    foreach (db()->query("SELECT prodotto_id, codice, nome, principale FROM garanzie WHERE attivo = 1 AND prodotto_id IN ($in) ORDER BY principale DESC, ordine, nome") as $g)
+        $out[(int)$g['prodotto_id']]['garanzie'][] = ['codice' => strtoupper($g['codice']), 'nome' => $g['nome'], 'rc' => (int)$g['principale'] === 1];
+    foreach (db()->query("SELECT prodotto_id, frazionamento FROM prodotti_frazionamenti WHERE prodotto_id IN ($in)") as $f) $out[(int)$f['prodotto_id']]['frazionamenti'][] = $f['frazionamento'];
+    foreach (db()->query("SELECT prodotto_id, anni FROM prodotti_durate WHERE anni > 1 AND prodotto_id IN ($in) ORDER BY anni") as $d) $out[(int)$d['prodotto_id']]['durate'][] = (int)$d['anni'];
+    foreach ($out as &$p) if (!$p['frazionamenti']) $p['frazionamenti'] = ['annuale'];
+    return array_values($out);
 }
 
 function calcola_da_input(array $in): array
 {
     $pag = ['frazionamento' => $in['frazionamento'], 'durata' => $in['durata']];
-    if ($in['prodotto_id']) $pag['prodotto_id'] = $in['prodotto_id'];
+    $prodotti = array_values(array_filter(prodotti_tariffati(), fn($p) => $p['categoria'] === $in['categoria_id']));
+    if (!$in['categoria_id'] || !$prodotti) return [null, 'Scegli il tipo di polizza.'];
+    if ($in['compagnia'] === '' || $in['compagnia'] === '0') return [null, 'Scegli la compagnia (oppure "Confronta tutte").'];
+    if ($in['compagnia'] !== 'tutte') $prodotti = array_values(array_filter($prodotti, fn($p) => $p['compagnia_id'] === (int)$in['compagnia']));
+    $ids = array_column($prodotti, 'id');
+    if ($in['prodotto_id'] && in_array($in['prodotto_id'], $ids, true)) $pag['prodotto_id'] = $in['prodotto_id'];
+    elseif (count($ids) === 1) $pag['prodotto_id'] = $ids[0];
+    elseif ($ids) $pag['prodotti'] = $ids;
+    else return [null, 'Questa compagnia non ha tariffe per il tipo di polizza scelto.'];
     return Preventivatore::calcola($in['comune_id'], $in['nascita'], $in['modello_id'], $in['garanzie'], true, $pag);
 }
 
-/** Garanzie (per codice), pagamento, durata e scelta del prodotto */
+/** Passi del calcolo: tipo di polizza → compagnia (→ prodotto) → garanzie (RC sempre inclusa) → pagamento → durata */
 function campi_calcolo(array $in): void
 {
-    $g = Preventivatore::garanziePubbliche();
-    $prodotti = db()->query("SELECT p.id, CONCAT(c.nome, ' – ', p.nome, IF(p.preventivabile = 1, '', ' (non in tariffa online)')) FROM prodotti p JOIN compagnie c ON c.id = p.compagnia_id
-        WHERE EXISTS (SELECT 1 FROM garanzie g WHERE g.prodotto_id = p.id AND g.principale = 1) ORDER BY p.preventivabile DESC, c.nome, p.nome")->fetchAll(PDO::FETCH_KEY_PAIR); ?>
-  <fieldset><legend>Garanzie</legend>
-  <?php if (!$g): ?><p class="muted">Nessun prodotto in tariffa online: apri un prodotto auto e spunta "Preventivabile online".</p><?php endif; ?>
-  <?php foreach ($g as $x): ?>
-    <label class="check"><input type="checkbox" name="garanzie[]" value="<?= e($x['codice']) ?>"<?= $x['principale'] ? ' checked disabled' : (in_array($x['codice'], $in['garanzie'], true) ? ' checked' : '') ?>> <?= e($x['nome']) ?></label>
-  <?php endforeach; ?>
+    $prodotti = prodotti_tariffati();
+    $cat = array_unique(array_column($prodotti, 'categoria'));
+    $scelte = ['categoria_id' => $in['categoria_id'], 'compagnia' => $in['compagnia'], 'prodotto_id' => $in['prodotto_id'], 'garanzie' => $in['garanzie'], 'frazionamento' => $in['frazionamento'], 'durata' => $in['durata']]; ?>
+  <fieldset class="passo"><legend><span>1</span> Tipo di polizza</legend>
+    <?php if (!$prodotti): ?><p class="err">Non c'è ancora nessun prodotto auto con una tariffa: apri Prodotti, scegli un prodotto auto e inserisci l'RC con il premio base.</p><?php endif; ?>
+    <label>Tipo di polizza<select name="categoria_id" id="calc-tipo" required><option value="">Scegli…</option>
+      <?php foreach ($cat as $k): ?><option value="<?= $k ?>"<?= $in['categoria_id'] === $k ? ' selected' : '' ?>><?= e(Categorie::etichetta($k)) ?></option><?php endforeach; ?></select>
+      <small class="hint">Es. RC auto e moto (Bonus Malus): comprende sempre la responsabilità civile</small></label>
   </fieldset>
-  <div class="form--grid2">
-    <label>Pagamento<select name="frazionamento"><?php foreach (Preventivatore::FRAZIONAMENTI as $k => $l): ?><option value="<?= $k ?>"<?= $in['frazionamento'] === $k ? ' selected' : '' ?>><?= e($l) ?></option><?php endforeach; ?></select></label>
-    <label>Durata<select name="durata"><?php for ($a = 1; $a <= 5; $a++): ?><option value="<?= $a ?>"<?= $in['durata'] === $a ? ' selected' : '' ?>><?= $a === 1 ? '1 anno' : "$a anni" ?></option><?php endfor; ?></select></label>
-  </div>
-  <label>Prodotto<select name="prodotto_id"><option value="">Tutti i prodotti in tariffa: il prezzo migliore</option>
-    <?php foreach ($prodotti as $k => $v): ?><option value="<?= (int)$k ?>"<?= $in['prodotto_id'] === (int)$k ? ' selected' : '' ?>><?= e($v) ?></option><?php endforeach; ?></select></label>
+  <fieldset class="passo"><legend><span>2</span> Compagnia</legend>
+    <label>Compagnia<select name="compagnia" id="calc-compagnia" required><option value="">Scegli prima il tipo di polizza</option></select>
+      <small class="hint">"Confronta tutte" calcola ogni compagnia e propone il prezzo migliore</small></label>
+    <label id="calc-prodotto-box" hidden>Prodotto della compagnia<select name="prodotto_id" id="calc-prodotto"></select>
+      <small class="hint">La compagnia ha più prodotti per questo tipo di polizza</small></label>
+  </fieldset>
+  <fieldset class="passo"><legend><span>3</span> Garanzie</legend>
+    <div id="calc-garanzie"><p class="muted">Scegli tipo di polizza e compagnia.</p></div>
+  </fieldset>
+  <fieldset class="passo"><legend><span>4</span> Pagamento e annualità</legend>
+    <div class="form--grid2">
+      <label>Frazionamento<select name="frazionamento" id="calc-fraz"></select></label>
+      <label>Annualità (durata del contratto)<select name="durata" id="calc-durata"></select></label>
+    </div>
+  </fieldset>
+  <script type="application/json" id="calc-dati"><?= json_encode(['prodotti' => $prodotti, 'scelte' => $scelte, 'nomi_fraz' => Preventivatore::FRAZIONAMENTI], JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP) ?></script>
 <?php }
 
 /** Tabella di confronto fra i prodotti calcolati; con $preventivoId ogni riga ha "Usa questa proposta" */

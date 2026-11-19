@@ -223,3 +223,16 @@ label small, .field small, .campo small, .hint { color: var(--ink); }
 .table--confronto tr:has(+ .riga-azione) td { border-bottom: 0; }
 .table--confronto .riga-azione td { text-align: center; padding: 4px 0 16px; }
 .btn--rosso:hover { filter: none; background: #fff; color: var(--accent); }
+
+/* moduli di calcolo a passi numerati */
+.passo { border: 1px solid var(--line); border-radius: var(--r); padding: 14px 18px 16px; margin: 0 0 14px; background: var(--surface); display: grid; gap: 12px; }
+.passo legend { display: flex; align-items: center; gap: 8px; padding: 0 6px; font-weight: 600; }
+.passo legend span { display: inline-grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; background: var(--ink); color: #fff; font-size: 13px; }
+.passo .check { display: flex; align-items: center; gap: 8px; }
+.passo .check .hint { display: inline; margin: 0; }
+#calc-garanzie { display: grid; gap: 8px; }
+#calc-garanzie p { margin: 4px 0 0; }
+.table--correzioni .eta { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+.table--correzioni .cond { display: block; }
+.table--correzioni .cond[hidden] { display: none; }
+.table--garanzie .nuova { display: block; margin-bottom: 6px; font-size: 13px; }
