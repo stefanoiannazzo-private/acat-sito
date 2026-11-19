@@ -34,6 +34,12 @@ switch ($cosa) {
         json_out(['ok' => true, 'modelli' => array_map(fn($m) => ['id' => (int)$m['id'], 'nome' => $m['nome']], $st->fetchAll())]);
     case 'garanzie':
         json_out(['ok' => true, 'garanzie' => Preventivatore::garanziePubbliche()] + Preventivatore::opzioniPagamento());
+    case 'tipi_polizza':
+        json_out(['ok' => true, 'tipi' => Preventivatore::categorieCapitale(true)]);
+    case 'questionario':
+        $l = Preventivatore::prodottiCapitale((int)($_GET['categoria'] ?? 0), true);
+        if (!$l) json_out(['ok' => false, 'errore' => 'Tipo di polizza non disponibile online.'], 404);
+        json_out(['ok' => true] + Preventivatore::questionario($l));
     default:
         json_out(['ok' => false, 'errore' => 'Richiesta non valida.'], 400);
 }

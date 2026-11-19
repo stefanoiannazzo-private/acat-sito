@@ -12,10 +12,14 @@ function risultato(?array $ris, ?string $err): void
   <?php if ($err): ?><p class="flash flash--errore"><?= e($err) ?></p>
   <?php elseif ($ris): ?>
     <p><b><?= e($ris['compagnia'] . ' – ' . $ris['prodotto']) ?></b> è il prezzo migliore<?= count($ris['confronto']['validi']) > 1 ? ' fra ' . count($ris['confronto']['validi']) . ' prodotti' : '' ?>.</p>
+    <?php if (isset($ris['capitale'])): ?>
+    <p><?= e($ris['tipo_polizza']) ?> · capitale <?= euro($ris['capitale']) ?><?php if ($ris['risposte']): ?><br><small class="muted"><?= e(implode(' · ', array_map(fn($x) => $x['domanda'] . ' ' . $x['risposta'], $ris['risposte']))) ?></small><?php endif; ?></p>
+    <?php else: ?>
     <p><?= e($ris['comune']) ?> · <?= (int)$ris['eta'] ?> anni (<?= e($ris['fascia_eta'] ?? 'nessuna fascia') ?>) · <?= e($ris['veicolo']) ?><br><small class="muted">Coefficiente complessivo comune × marca × modello: <?= e(str_replace('.', ',', (string)$ris['coefficiente'])) ?></small></p>
+    <?php endif; ?>
     <table class="table"><tbody>
     <?php foreach ($ris['righe'] as $r): ?><tr><td><?= e($r['nome']) ?><br><small class="muted"><?= e($r['spiegazione']) ?></small></td><td class="right"><?= $r['importo'] === null ? 'su richiesta' : euro($r['importo']) ?></td></tr><?php endforeach; ?>
-    <tr><td>Premio delle garanzie</td><td class="right"><?= euro($ris['premio_garanzie']) ?></td></tr>
+    <tr><td><?= isset($ris['capitale']) ? 'Premio dopo le risposte' : 'Premio delle garanzie' ?></td><td class="right"><?= euro($ris['premio_garanzie']) ?></td></tr>
     <?php foreach ($ris['sconti'] as $r): ?><tr><td><?= e($r['nome']) ?></td><td class="right"><?= euro($r['importo']) ?></td></tr><?php endforeach; ?>
     <?php if ($ris['limite']): ?><tr><td colspan="2" class="muted">Applicato il <?= e($ris['limite']) ?></td></tr><?php endif; ?>
     <tr class="tot"><td>Premio annuo<?= $ris['rate'] > 1 ? ' · ' . $ris['rate'] . ' rate da ' . euro($ris['rata']) : '' ?><?= $ris['durata'] > 1 ? ' · durata ' . $ris['durata'] . ' anni (' . euro($ris['totale_durata']) . ')' : '' ?></td><td class="right"><?= euro($ris['totale']) ?></td></tr>
@@ -38,7 +42,7 @@ pagina_inizio('Prova calcolo', 'prova');
 <form method="post" class="form" id="prova">
   <?= Auth::campoCsrf() ?>
   <?php campi_calcolo($in); ?>
-  <fieldset class="passo"><legend><span>5</span> Contraente e veicolo</legend>
+  <fieldset class="passo" id="calc-contraente"><legend><span>5</span> Contraente e veicolo</legend>
   <label>Comune di residenza
     <input name="comune" list="comuni-list" value="<?= e($in['comune']) ?>" autocomplete="off" data-cerca-comuni required>
     <input type="hidden" name="comune_id" value="<?= $in['comune_id'] ?: '' ?>">

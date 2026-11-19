@@ -31,6 +31,9 @@ function data_o_null(string $v): ?string { $v = trim($v); return $v !== '' && Da
 function nd(?string $v, int $dec = 2): string { return $v === null || $v === '' ? '' : rtrim(rtrim(number_format((float)$v, $dec, ',', ''), '0'), ','); }
 
 $p = $id ? (prodotto($id) ?? vai('tabella.php?t=prodotti')) : null;
+/** Il prodotto è dell'area Auto? (le altre aree usano capitale × tasso e il questionario) */
+function area_auto(?int $categoria): bool { return $categoria !== null && Categorie::area($categoria) === Categorie::perChiave('auto'); }
+$auto = $p ? area_auto($p['categoria_id'] !== null ? (int)$p['categoria_id'] : null) : true;
 
 /* ---------- azioni ---------- */
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -51,8 +54,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (!$v['categoria_id']) $err[] = 'Scegli la classificazione.';
         if ($v['premio_minimo'] !== null && $v['premio_massimo'] !== null && $v['premio_minimo'] > $v['premio_massimo']) $err[] = 'Il premio minimo supera il massimo.';
         if ($v['preventivabile'] && $id) {
-            $st = db()->prepare('SELECT COUNT(*) FROM garanzie WHERE prodotto_id = ? AND principale = 1 AND attivo = 1'); $st->execute([$id]);
-            if (!$st->fetchColumn()) $err[] = 'Per metterlo nel preventivatore online serve prima la garanzia RC con il premio base.';
+            if (area_auto($v['categoria_id'])) {
+                $st = db()->prepare('SELECT COUNT(*) FROM garanzie WHERE prodotto_id = ? AND principale = 1 AND attivo = 1'); $st->execute([$id]);
+                if (!$st->fetchColumn()) $err[] = 'Per metterlo nel preventivatore online serve prima la garanzia RC con il premio base.';
+            } elseif (!(float)($p['tasso'] ?? 0)) $err[] = 'Per metterlo nel preventivatore online serve prima il tasso sul capitale (sezione 2).';
         }
         if ($err) { foreach ($err as $m) flash('errore', $m); $id ? $torna() : vai('prodotto.php'); }
         try {
@@ -122,6 +127,58 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         foreach ($err as $m) flash('errore', $m);
         if (!$err) flash('ok', 'Garanzie salvate.');
         $torna('#garanzie');
+    }
+
+    if ($az === 'capitale') {
+        $tasso = dec($_POST['tasso'] ?? ''); $min = dec($_POST['capitale_minimo'] ?? ''); $max = dec($_POST['capitale_massimo'] ?? '');
+        $err = [];
+        if ($tasso === null || $tasso <= 0 || $tasso > 1000) $err[] = 'Indica il tasso per mille (es. 1,5 = 1,50 € ogni 1.000 € di capitale).';
+        if ($min !== null && $max !== null && $min > $max) $err[] = 'Il capitale minimo supera il massimo.';
+        if ($err) { foreach ($err as $m) flash('errore', $m); $torna('#capitale'); }
+        db()->prepare('UPDATE prodotti SET tasso = ?, capitale_minimo = ?, capitale_massimo = ? WHERE id = ?')->execute([round($tasso, 4), $min, $max, $id]);
+        Auth::log('modifica', 'prodotti', $id, 'tasso sul capitale');
+        flash('ok', 'Tasso e capitale salvati.');
+        $torna('#capitale');
+    }
+
+    if ($az === 'questionario') {
+        $err = [];
+        db()->beginTransaction();
+        $pos = 0;
+        foreach ((array)($_POST['q'] ?? []) as $qk => $q) {
+            $did = ctype_digit((string)$qk) ? (int)$qk : 0;
+            $testo = trim(mb_substr((string)($q['testo'] ?? ''), 0, 255));
+            if ($did && !empty($q['togli'])) { db()->prepare('DELETE FROM prodotti_domande WHERE id = ? AND prodotto_id = ?')->execute([$did, $id]); continue; }
+            $risp = [];
+            foreach ((array)($q['r'] ?? []) as $rk => $r) {
+                $rt = trim(mb_substr((string)($r['testo'] ?? ''), 0, 160));
+                $rid = ctype_digit((string)$rk) ? (int)$rk : 0;
+                if ($rt === '' || !empty($r['togli'])) { if ($rid) $risp[] = ['id' => $rid, 'togli' => true]; continue; }
+                $val = num((string)($r['valore'] ?? '0')) ?? 0;
+                $tipo = ($r['tipo'] ?? '') === 'importo' ? 'importo' : 'percentuale';
+                if ($tipo === 'percentuale' && ($val <= -100 || $val > 1000)) { $err[] = "Risposta \"$rt\": percentuale non plausibile."; continue; }
+                $risp[] = ['id' => $rid, 'testo' => $rt, 'tipo' => $tipo, 'valore' => round($val, 2)];
+            }
+            if ($testo === '') { if (!$did && array_filter($risp, fn($x) => empty($x['togli']))) $err[] = 'Una domanda nuova ha le risposte ma non il testo.'; if (!$did) continue; $err[] = 'Una domanda è senza testo: non l\'ho modificata.'; continue; }
+            $vive = array_values(array_filter($risp, fn($x) => empty($x['togli'])));
+            if (count($vive) < 2) { $err[] = "La domanda \"$testo\" deve avere almeno due risposte (es. Sì e No)."; if (!$did) continue; }
+            $pos += 10;
+            $aiuto = trim(mb_substr((string)($q['aiuto'] ?? ''), 0, 255)) ?: null;
+            if ($did) db()->prepare('UPDATE prodotti_domande SET testo = ?, aiuto = ?, ordine = ? WHERE id = ? AND prodotto_id = ?')->execute([$testo, $aiuto, $pos, $did, $id]);
+            else { db()->prepare('INSERT INTO prodotti_domande (prodotto_id, testo, aiuto, ordine) VALUES (?, ?, ?, ?)')->execute([$id, $testo, $aiuto, $pos]); $did = (int)db()->lastInsertId(); }
+            $rpos = 0;
+            foreach ($risp as $r) {
+                if (!empty($r['togli'])) { db()->prepare('DELETE FROM prodotti_risposte WHERE id = ? AND domanda_id = ?')->execute([$r['id'], $did]); continue; }
+                $rpos += 10;
+                if ($r['id']) db()->prepare('UPDATE prodotti_risposte SET testo = ?, tipo = ?, valore = ?, ordine = ? WHERE id = ? AND domanda_id = ?')->execute([$r['testo'], $r['tipo'], $r['valore'], $rpos, $r['id'], $did]);
+                else db()->prepare('INSERT INTO prodotti_risposte (domanda_id, testo, tipo, valore, ordine) VALUES (?, ?, ?, ?, ?)')->execute([$did, $r['testo'], $r['tipo'], $r['valore'], $rpos]);
+            }
+        }
+        db()->commit();
+        Auth::log('modifica', 'prodotti', $id, 'questionario');
+        foreach (array_unique($err) as $m) flash('errore', $m);
+        if (!$err) flash('ok', 'Domande al cliente salvate.');
+        $torna('#questionario');
     }
 
     if ($az === 'pagamento') {
@@ -210,7 +267,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (!$st->fetchColumn()) break;
             $nome = mb_substr($p['nome'] . " (copia $i)", 0, 120);
         }
-        db()->prepare('INSERT INTO prodotti (compagnia_id, categoria_id, nome, descrizione, preventivabile, veicoli, premio_minimo, premio_massimo, attivo) SELECT compagnia_id, categoria_id, ?, descrizione, 0, veicoli, premio_minimo, premio_massimo, attivo FROM prodotti WHERE id = ?')->execute([$nome, $id]);
+        db()->prepare('INSERT INTO prodotti (compagnia_id, categoria_id, nome, descrizione, preventivabile, veicoli, tasso, capitale_minimo, capitale_massimo, premio_minimo, premio_massimo, attivo) SELECT compagnia_id, categoria_id, ?, descrizione, 0, veicoli, tasso, capitale_minimo, capitale_massimo, premio_minimo, premio_massimo, attivo FROM prodotti WHERE id = ?')->execute([$nome, $id]);
         $nid = (int)db()->lastInsertId();
         // prima l'RC, poi le accessorie legate alla nuova RC
         db()->prepare('INSERT INTO garanzie (prodotto_id, codice, nome, descrizione, principale, dipende_da, tipo_calcolo, valore, applica_coefficienti, ordine, attivo) SELECT ?, codice, nome, descrizione, 1, NULL, tipo_calcolo, valore, applica_coefficienti, ordine, attivo FROM garanzie WHERE prodotto_id = ? AND principale = 1')->execute([$nid, $id]);
@@ -218,6 +275,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         db()->prepare('INSERT INTO garanzie (prodotto_id, codice, nome, descrizione, principale, dipende_da, tipo_calcolo, valore, applica_coefficienti, ordine, attivo) SELECT ?, codice, nome, descrizione, 0, ?, tipo_calcolo, valore, applica_coefficienti, ordine, attivo FROM garanzie WHERE prodotto_id = ? AND principale = 0' . ($rc ? '' : ' AND 0'))->execute([$nid, $rc, $id]);
         foreach (['prodotti_frazionamenti' => 'frazionamento, variazione', 'prodotti_durate' => 'anni, sconto', 'promozioni' => 'nome, tipo, valore, dal, al, attivo', 'prodotti_correzioni' => 'tipo, eta_min, eta_max, chiave, moltiplicatore, descrizione'] as $t => $c)
             db()->prepare("INSERT INTO $t (prodotto_id, $c) SELECT ?, $c FROM $t WHERE prodotto_id = ?")->execute([$nid, $id]);
+        $st = db()->prepare('SELECT * FROM prodotti_domande WHERE prodotto_id = ? ORDER BY ordine, id'); $st->execute([$id]);
+        foreach ($st->fetchAll() as $d) {
+            db()->prepare('INSERT INTO prodotti_domande (prodotto_id, testo, aiuto, ordine) VALUES (?, ?, ?, ?)')->execute([$nid, $d['testo'], $d['aiuto'], $d['ordine']]);
+            db()->prepare('INSERT INTO prodotti_risposte (domanda_id, testo, tipo, valore, ordine) SELECT ?, testo, tipo, valore, ordine FROM prodotti_risposte WHERE domanda_id = ?')->execute([(int)db()->lastInsertId(), $d['id']]);
+        }
         db()->commit();
         Auth::log('crea', 'prodotti', $nid, 'copia del prodotto ' . $id);
         flash('ok', 'Prodotto duplicato: la copia non è nel preventivatore online finché non lo attivi.');
@@ -248,9 +310,14 @@ pagina_inizio($p ? $p['nome'] : 'Nuovo prodotto', 'prodotti');
 ?>
 <p class="crumbs"><a href="tabella.php?t=prodotti">← Prodotti</a></p>
 <h1><?= $p ? e($p['compagnia'] . ' – ' . $p['nome']) : 'Nuovo prodotto' ?> <?= $p && $p['preventivabile'] ? '<span class="tag tag--ok">nel preventivatore online</span>' : '' ?></h1>
+<?php if ($auto): ?>
 <p class="intro">Un prodotto è un tipo di polizza di una compagnia (es. Allianz – Bonus Malus auto). Qui imposti, nell'ordine: <b>1.</b> i dati del prodotto,
 <b>2.</b> le garanzie (l'RC obbligatoria con il premio base e quelle facoltative), <b>3.</b> come si può pagare (annuale, semestrale, mensile) e per quanti anni,
 e, se servono, <b>4.</b> promozioni e <b>5.</b> prezzi diversi per età, zona o veicolo. Il preventivo segue lo stesso ordine.</p>
+<?php else: ?>
+<p class="intro">Per le polizze vita e danni il premio parte dal <b>capitale assicurato × tasso</b>; poi le <b>domande al cliente</b> che costruisci qui (es. "Fumatore?") lo alzano o lo abbassano.
+Ordine: <b>1.</b> dati, <b>2.</b> tasso sul capitale, <b>3.</b> domande al cliente, <b>4.</b> pagamento, <b>5.</b> promozioni (facoltative).</p>
+<?php endif; ?>
 
 <section class="box">
   <h2>1. Dati del prodotto</h2>
@@ -282,6 +349,7 @@ e, se servono, <b>4.</b> promozioni e <b>5.</b> prezzi diversi per età, zona o 
     $marche = db()->query("SELECT id, CONCAT(nome, IF(tipo_veicolo = 'moto', ' (moto)', '')) FROM marche ORDER BY tipo_veicolo, nome")->fetchAll(PDO::FETCH_KEY_PAIR);
     $oggi = date('Y-m-d'); ?>
 
+<?php if ($auto): ?>
 <section class="box" id="garanzie">
   <h2>2. Garanzie e tariffe</h2>
   <p class="muted">La <b>responsabilità civile (RC)</b> è obbligatoria ed è sempre inclusa: il suo importo è il premio base, che varia con comune, marca e modello del veicolo.
@@ -310,9 +378,58 @@ e, se servono, <b>4.</b> promozioni e <b>5.</b> prezzi diversi per età, zona o 
     <div class="actions"><button class="btn" name="azione" value="garanzie">Salva le garanzie</button></div>
   </form>
 </section>
+<?php else:
+    $st = db()->prepare('SELECT * FROM prodotti_domande WHERE prodotto_id = ? ORDER BY ordine, id'); $st->execute([$id]); $domande = $st->fetchAll();
+    foreach ($domande as &$d) { $st = db()->prepare('SELECT * FROM prodotti_risposte WHERE domanda_id = ? ORDER BY ordine, id'); $st->execute([$d['id']]); $d['risposte'] = $st->fetchAll(); }
+    unset($d); ?>
+<section class="box" id="capitale">
+  <h2>2. Premio: tasso sul capitale</h2>
+  <p class="muted">Premio di partenza = capitale assicurato × tasso per mille. Esempio: capitale 100.000 € e tasso 1,5 ‰ → 150 € l'anno, prima delle domande al cliente.</p>
+  <form method="post" class="form">
+    <?= Auth::campoCsrf() ?><input type="hidden" name="id" value="<?= $id ?>">
+    <div class="form--grid3">
+      <label>Tasso (‰) *<input name="tasso" inputmode="decimal" required value="<?= e(nd((string)$p['tasso'], 4)) ?>"><small class="hint">Euro ogni 1.000 € di capitale, es. 1,5</small></label>
+      <label>Capitale minimo (€)<input name="capitale_minimo" inputmode="decimal" value="<?= e(nd((string)$p['capitale_minimo'])) ?>"><small class="hint">Vuoto = nessun minimo</small></label>
+      <label>Capitale massimo (€)<input name="capitale_massimo" inputmode="decimal" value="<?= e(nd((string)$p['capitale_massimo'])) ?>"><small class="hint">Vuoto = nessun massimo</small></label>
+    </div>
+    <div class="actions"><button class="btn" name="azione" value="capitale">Salva il tasso</button></div>
+  </form>
+</section>
+
+<section class="box" id="questionario">
+  <h2>3. Domande al cliente</h2>
+  <p class="muted">Le domande che il cliente (o tu, in agenzia) compila nel preventivo. Per ogni risposta indica quanto cambia il premio: in <b>%</b> del premio di partenza
+  (es. Fumatore: Sì +80, No 0) o come <b>importo fisso</b> in euro. Per uno sconto usa un numero negativo (es. −10). Ogni domanda ha almeno due risposte.</p>
+  <form method="post" class="form questionario">
+    <?= Auth::campoCsrf() ?><input type="hidden" name="id" value="<?= $id ?>">
+    <?php foreach (array_merge($domande, [['id' => 'n', 'testo' => '', 'aiuto' => '', 'risposte' => []]]) as $di => $d):
+        $dk = $d['id'] === 'n' ? 'n' . $di : (int)$d['id']; $nuova = $d['id'] === 'n';
+        $righeR = $d['risposte']; for ($x = 0; $x < ($nuova ? 2 : 1); $x++) $righeR[] = ['id' => 'n' . $x, 'testo' => '', 'tipo' => 'percentuale', 'valore' => '']; ?>
+      <fieldset class="domanda<?= $nuova ? ' domanda--nuova' : '' ?>">
+        <legend><?= $nuova ? '+ Aggiungi una domanda' : 'Domanda ' . ($di + 1) ?></legend>
+        <div class="form--grid2">
+          <label>Domanda<?= $nuova ? '' : ' *' ?><input name="q[<?= $dk ?>][testo]" maxlength="255" value="<?= e($d['testo']) ?>"><small class="hint">Es. Fumatore? · Durata in anni · Professione</small></label>
+          <label>Spiegazione per il cliente<input name="q[<?= $dk ?>][aiuto]" maxlength="255" value="<?= e((string)$d['aiuto']) ?>"><small class="hint">Facoltativa, compare sotto la domanda</small></label>
+        </div>
+        <table class="table table--edit table--risposte"><thead><tr><th>Risposta</th><th>Effetto sul premio</th><th class="right">Valore</th><th></th></tr></thead><tbody>
+        <?php foreach ($righeR as $r): $rk = (string)$r['id']; $rn = "q[$dk][r][$rk]"; ?>
+          <tr><td><input name="<?= $rn ?>[testo]" maxlength="160" value="<?= e($r['testo']) ?>" aria-label="Risposta"></td>
+          <td><select name="<?= $rn ?>[tipo]" aria-label="Effetto"><option value="percentuale"<?= $r['tipo'] === 'percentuale' ? ' selected' : '' ?>>% del premio di partenza</option><option value="importo"<?= $r['tipo'] === 'importo' ? ' selected' : '' ?>>Importo fisso (€)</option></select></td>
+          <td><input name="<?= $rn ?>[valore]" value="<?= e(nd((string)$r['valore'])) ?>" inputmode="decimal" class="right" size="7" aria-label="Valore"></td>
+          <td><?php if (ctype_digit($rk)): ?><label class="check"><input type="checkbox" name="<?= $rn ?>[togli]" value="1"> togli</label><?php endif; ?></td></tr>
+        <?php endforeach; ?>
+        </tbody></table>
+        <div class="domanda__azioni"><button type="button" class="linkbtn" data-aggiungi-risposta>+ Aggiungi una risposta</button>
+          <?php if (!$nuova): ?><label class="check"><input type="checkbox" name="q[<?= $dk ?>][togli]" value="1"> Elimina questa domanda</label><?php endif; ?></div>
+      </fieldset>
+    <?php endforeach; ?>
+    <div class="actions"><button class="btn" name="azione" value="questionario">Salva le domande</button></div>
+  </form>
+</section>
+<?php endif; ?>
 
 <section class="box" id="pagamento">
-  <h2>3. Pagamento e annualità</h2>
+  <h2><?= $auto ? '3. Pagamento e annualità' : '4. Pagamento' ?></h2>
   <form method="post" class="form">
     <?= Auth::campoCsrf() ?><input type="hidden" name="id" value="<?= $id ?>">
     <div class="cols">
@@ -325,7 +442,7 @@ e, se servono, <b>4.</b> promozioni e <b>5.</b> prezzi diversi per età, zona o 
         <?php endforeach; ?>
         </tbody></table>
       </fieldset>
-      <fieldset><legend>Durata del contratto</legend>
+      <?php if ($auto): ?><fieldset><legend>Durata del contratto</legend>
         <p class="muted">Sconto sul premio annuo per i contratti pluriennali.</p>
         <table class="table table--small"><tbody>
           <tr><td>1 anno</td><td class="muted">sempre</td></tr>
@@ -334,14 +451,14 @@ e, se servono, <b>4.</b> promozioni e <b>5.</b> prezzi diversi per età, zona o 
           <td>sconto <input name="sconto[<?= $a ?>]" value="<?= e(nd($dur[$a] ?? '0')) ?>" inputmode="decimal" class="right" size="5" aria-label="Sconto <?= $a ?> anni"> %</td></tr>
         <?php endfor; ?>
         </tbody></table>
-      </fieldset>
+      </fieldset><?php endif; ?>
     </div>
-    <div class="actions"><button class="btn" name="azione" value="pagamento">Salva pagamento e durata</button></div>
+    <div class="actions"><button class="btn" name="azione" value="pagamento"><?= $auto ? 'Salva pagamento e durata' : 'Salva il pagamento' ?></button></div>
   </form>
 </section>
 
 <section class="box" id="promozioni">
-  <h2>4. Promozioni <span class="muted">(facoltative)</span></h2>
+  <h2><?= $auto ? 4 : 5 ?>. Promozioni <span class="muted">(facoltative)</span></h2>
   <p class="muted">Sconti applicati al premio annuo nel periodo indicato (date vuote = sempre). Si sommano in ordine, prima dello sconto per la durata e dei limiti di premio.</p>
   <form method="post" class="form">
     <?= Auth::campoCsrf() ?><input type="hidden" name="id" value="<?= $id ?>">
@@ -363,6 +480,7 @@ e, se servono, <b>4.</b> promozioni e <b>5.</b> prezzi diversi per età, zona o 
   </form>
 </section>
 
+<?php if ($auto): ?>
 <section class="box" id="correzioni">
   <h2>5. Prezzo diverso per età, zona o veicolo <span class="muted">(facoltativo)</span></h2>
   <p class="muted">Facoltativo. Alza o abbassa il prezzo di questo prodotto in certi casi, in percentuale. Esempi: età da 18 a 25 anni +20; provincia TO +5; regione Piemonte −5; moto −20.</p>
@@ -389,6 +507,7 @@ e, se servono, <b>4.</b> promozioni e <b>5.</b> prezzi diversi per età, zona o 
     <div class="actions"><button class="btn" name="azione" value="correzioni">Salva</button></div>
   </form>
 </section>
+<?php endif; ?>
 
 <div class="actions actions--wrap">
   <a class="btn btn--ghost" href="prova.php">Prova il calcolo</a>

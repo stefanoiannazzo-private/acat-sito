@@ -258,3 +258,12 @@ label small, .field small, .campo small, .hint { color: var(--ink); }
   .prova-fisso { position: sticky; top: 70px; max-height: calc(100vh - 86px); overflow-y: auto; }
 }
 #prova-risultato.agg { opacity: .55; transition: opacity .15s; }
+
+/* questionario del prodotto */
+.form--grid3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px 16px; align-items: start; }
+@media (max-width: 900px) { .form--grid3 { grid-template-columns: 1fr; } }
+.domanda { border: 1px solid var(--line); border-radius: var(--r); padding: 12px 16px 14px; margin: 0 0 14px; display: grid; gap: 10px; }
+.domanda legend { font-weight: 600; padding: 0 6px; }
+.domanda--nuova { border-style: dashed; background: #f9fbfd; }
+.domanda__azioni { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.table--risposte input:not([type="checkbox"]) { width: 100%; }

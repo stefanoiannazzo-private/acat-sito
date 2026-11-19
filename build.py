@@ -180,6 +180,7 @@ def nav(current):
               <a href="assicurazione-casa-famiglia.html">{li_ic("house")}<b>Casa e famiglia</b><span>Abitazione e responsabilità civile</span></a>
               <a href="assicurazione-vita-impresa.html">{li_ic("heart-handshake")}<b>Vita e impresa</b><span>Risparmio, infortuni, attività</span></a>
               <a href="preventivo-rc-auto.html">{li_ic("calendar-check")}<b>Calcola la RC online</b><span>Stima in un minuto</span></a>
+              <a href="preventivo-polizze.html">{li_ic("calendar-check")}<b>Preventivo vita e casa</b><span>Stima con poche domande</span></a>
             </div>
             <div class="menu-col span-3">
               <p class="t-label">Pratiche auto</p>
@@ -883,7 +884,7 @@ def svc_page(c):
         for o in SVC if o["slug"] != c["slug"])
     body = hero(c["h1"], c["lead"],
                 u(hp, ha, sizes="100vw", lazy=False, pos=hpos),
-                (f'<a class="btn btn--secondary" href="preventivo-rc-auto.html">Calcola la stima online</a>' if c["slug"] == "assicurazione-auto-moto" else f'<a class="btn btn--secondary" href="{TEL}">Chiama il {PHONE}</a>'), float_card=False, kicker=c["group"])
+                (f'<a class="btn btn--secondary" href="preventivo-rc-auto.html">Calcola la stima online</a>' if c["slug"] == "assicurazione-auto-moto" else f'<a class="btn btn--secondary" href="preventivo-polizze.html">Calcola la stima online</a>' if c["slug"] in ("assicurazione-casa-famiglia", "assicurazione-vita-impresa") else f'<a class="btn btn--secondary" href="{TEL}">Chiama il {PHONE}</a>'), float_card=False, kicker=c["group"])
     body += f'''
   <section class="section svc-sec" id="what" aria-labelledby="what-h">
     <div class="wrap grid grid--top">
@@ -932,6 +933,84 @@ def svc_page(c):
 for _c in SVC:
     svc_page(_c)
 
+
+# ---------------------------------------------------------------- PREVENTIVATORE VITA E DANNI
+pp_body = hero("Preventivo vita, casa e famiglia",
+               "Scegli il tipo di polizza, indica il capitale da assicurare e rispondi a poche domande: ottieni subito una stima. Poi ti prepariamo il preventivo definitivo confrontando più compagnie.",
+               u("1687856265836", "Una strada di campagna con le colline sullo sfondo", sizes="100vw", lazy=False, pos="50% 55%"),
+               f'<a class="btn btn--secondary" href="{TEL}">Preferisci chiamare? {PHONE}</a>', float_card=False, kicker="Preventivo online")
+pp_body = pp_body.replace(f'<a class="btn btn--primary" href="{CTA_HREF}">{CTA}{ARROW}</a>', f'<a class="btn btn--primary" href="#calcolo">Inizia la stima{ARROW}</a>', 1)
+pp_body += f"""
+  <section class="section svc-sec pv-sec" id="calcolo" aria-labelledby="pp-h">
+    <div class="wrap grid grid--top">
+      <div class="span-7">
+        <div class="section-head"><h2 id="pp-h">La tua stima</h2><p>Nessun dato viene salvato finché non chiedi di essere ricontattato.</p></div>
+        <p class="pv-off" hidden role="status"></p>
+        <form class="pv" id="pp" novalidate>
+          <fieldset class="pv-step">
+            <legend><span class="pv-step__n">1</span>Il tipo di polizza</legend>
+            <div class="pv-field"><label for="pp-tipo">Tipo di polizza</label><select id="pp-tipo" required><option value="">Caricamento…</option></select></div>
+          </fieldset>
+          <fieldset class="pv-step" id="pp-dati" hidden>
+            <legend><span class="pv-step__n">2</span>Capitale e domande</legend>
+            <div class="pv-field"><label for="pp-capitale">Capitale da assicurare (€)</label><input id="pp-capitale" inputmode="decimal" required><p class="pv-hint" id="pp-capitale-hint">La somma che la polizza paga</p></div>
+            <div id="pp-domande"></div>
+            <div class="pv-row pv-pag">
+              <div class="pv-field"><label for="pp-fraz">Pagamento</label><select id="pp-fraz"><option value="annuale">Annuale</option></select></div>
+            </div>
+          </fieldset>
+          <fieldset class="pv-step pv-contatti" id="pv-contatti" hidden>
+            <legend><span class="pv-step__n">3</span>I tuoi contatti</legend>
+            <p class="pv-hint" id="pv-contatti-hint">Ti mandiamo il preventivo definitivo, confrontando più compagnie.</p>
+            <div class="pv-row">
+              <div class="pv-field"><label for="pv-nome">Nome e cognome</label><input id="pv-nome" autocomplete="name"></div>
+              <div class="pv-field"><label for="pv-email">Email</label><input id="pv-email" type="email" autocomplete="email"></div>
+            </div>
+            <div class="pv-row">
+              <div class="pv-field"><label for="pv-tel">Telefono <span class="pv-opt">(facoltativo)</span></label><input id="pv-tel" type="tel" autocomplete="tel"></div>
+              <div class="pv-field"><label for="pv-note">Note <span class="pv-opt">(facoltative)</span></label><input id="pv-note"></div>
+            </div>
+            <div class="hp" aria-hidden="true"><label>Sito web <input id="pv-sito" tabindex="-1" autocomplete="off"></label></div>
+            <label class="pv-check"><input type="checkbox" id="pv-consenso"> Ho letto l'<a class="link" href="privacy.html" target="_blank">informativa privacy</a> e acconsento al trattamento dei miei dati per ricevere il preventivo.</label>
+          </fieldset>
+          <p class="pv-err" id="pv-err" role="alert" hidden></p>
+          <button class="btn btn--primary pv-submit" type="submit" id="pv-submit">Calcola la stima{ARROW}</button>
+        </form>
+      </div>
+      <aside class="pv-out span-4 start-9" id="pv-out" aria-live="polite">
+        <div class="pv-out__empty">
+          {li_ic("shield-check")}
+          <h3>Il risultato compare qui</h3>
+          <p>Scegli il tipo di polizza, indica il capitale e rispondi alle domande.</p>
+          <ul class="pv-out__points"><li>{li_ic("clock")}<span>Meno di un minuto</span></li><li>{li_ic("umbrella")}<span>Più compagnie a confronto in agenzia</span></li><li>{li_ic("badge-check")}<span>Nessun impegno</span></li></ul>
+        </div>
+        <div class="pv-out__res" hidden>
+          <p class="pv-out__label">Stima annuale indicativa</p>
+          <p class="pv-out__tot" id="pv-tot"></p>
+          <p class="pv-out__rata" id="pv-rata" hidden></p>
+          <p class="pv-out__meta" id="pv-meta"></p>
+          <ul class="pv-out__rows" id="pv-righe"></ul>
+          <p class="pv-out__note" id="pv-avviso"></p>
+          <button class="btn btn--primary" type="button" id="pv-richiedi">Richiedi il preventivo definitivo{ARROW}</button>
+        </div>
+        <div class="pv-out__ok" hidden>
+          {li_ic("badge-check")}
+          <h3>Richiesta inviata</h3>
+          <p>Ti ricontattiamo al più presto con il preventivo definitivo. Se hai fretta chiamaci al <a class="link" href="{TEL}">{PHONE}</a>.</p>
+        </div>
+      </aside>
+    </div>
+  </section>
+"""
+page("preventivo-polizze.html",
+     head("Preventivo vita, casa e famiglia online a Giaveno | ACAT Servizi",
+          "Calcola una stima della tua polizza vita, casa o famiglia con ACAT Servizi a Giaveno: tipo di polizza, capitale e poche domande. Poi il preventivo definitivo.",
+          "word-highlight"),
+     "servizi", DEAL, pp_body,
+     footer("Preferisci parlarne di persona?", HOURS + ", in Via Coazze.",
+            u("1733522688659", "Una strada a tornanti in una valle alpina in autunno", sizes="(max-width: 639px) 160vw, 100vw", cls="")))
+_p = open("preventivo-polizze.html").read()
+open("preventivo-polizze.html", "w").write(_p.replace('<script src="assets/fx.js"></script>', '<script src="assets/fx.js"></script>\n<script src="assets/preventivo-polizze.js" defer></script>', 1))
 
 # ---------------------------------------------------------------- PREVENTIVATORE RC AUTO
 pv_body = hero("Calcola la tua RC auto e moto",

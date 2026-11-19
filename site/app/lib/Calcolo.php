@@ -196,4 +196,84 @@ final class Calcolo
             'correzioni' => $applicate, 'limite' => $limite,
         ], null];
     }
+
+    /** Testo normalizzato per confrontare domande e risposte (maiuscole, spazi) */
+    public static function norm(string $t): string
+    {
+        return preg_replace('/\s+/u', ' ', mb_strtolower(trim($t)));
+    }
+
+    /**
+     * Polizze non auto: premio base = capitale × tasso (per mille), poi ogni risposta del questionario
+     * aggiunge (o toglie) una percentuale del premio base o un importo fisso; poi promozioni, premio minimo/massimo, frazionamento.
+     *
+     * @param array $p        prodotto: id, nome, compagnia, tasso, capitale_minimo, capitale_massimo, premio_minimo, premio_massimo,
+     *                        frazionamenti [fraz => %], promozioni, domande [[testo, risposte [[testo, tipo, valore]]]]
+     * @param array $risposte [testo della domanda => testo della risposta] (confronto senza maiuscole/spazi)
+     * @param array $ctx      frazionamento, oggi
+     * @return array{0:?array,1:?string}
+     */
+    public static function capitale(array $p, float $capitale, array $risposte, array $ctx, array $opz = []): array
+    {
+        $fraz = $ctx['frazionamento'] ?? 'annuale';
+        $oggi = $ctx['oggi'] ?? date('Y-m-d');
+        $arr = fn(float $v) => ($opz['arrotondamento'] ?? 'centesimi') === 'euro' ? round($v, 0) : round($v, 2);
+        $eu = fn(float $v) => '€ ' . number_format($v, 2, ',', '.');
+        if (empty($p['tasso']) || (float)$p['tasso'] <= 0) return [null, 'Tasso non impostato'];
+        if (!array_key_exists($fraz, $p['frazionamenti'] ?? [])) return [null, 'Frazionamento ' . $fraz . ' non previsto'];
+        if ($capitale <= 0) return [null, 'Capitale non indicato'];
+        if (!empty($p['capitale_minimo']) && $capitale < (float)$p['capitale_minimo']) return [null, 'Capitale sotto il minimo del prodotto (' . $eu((float)$p['capitale_minimo']) . ')'];
+        if (!empty($p['capitale_massimo']) && $capitale > (float)$p['capitale_massimo']) return [null, 'Capitale sopra il massimo del prodotto (' . $eu((float)$p['capitale_massimo']) . ')'];
+
+        $date = [];
+        foreach ($risposte as $d => $r) $date[self::norm((string)$d)] = self::norm((string)$r);
+        $tasso = (float)$p['tasso'];
+        $base = $capitale * $tasso / 1000;
+        $righe = [['nome' => 'Premio base', 'importo' => $arr($base), 'spiegazione' => 'Capitale ' . $eu($capitale) . ' × tasso ' . rtrim(rtrim(number_format($tasso, 4, ',', ''), '0'), ',') . '‰']];
+        $tot = $base;
+        $scelte = [];
+        foreach ($p['domande'] ?? [] as $d) {
+            $k = self::norm($d['testo']);
+            if (!isset($date[$k]) || $date[$k] === '') return [null, 'Manca la risposta a: ' . $d['testo']];
+            $trovata = null;
+            foreach ($d['risposte'] as $r) if (self::norm($r['testo']) === $date[$k]) { $trovata = $r; break; }
+            if (!$trovata) return [null, 'Risposta non prevista per: ' . $d['testo']];
+            $v = (float)$trovata['valore'];
+            $imp = $trovata['tipo'] === 'importo' ? $v : $base * $v / 100;
+            $scelte[] = ['domanda' => $d['testo'], 'risposta' => $trovata['testo']];
+            if ($imp != 0) {
+                $righe[] = ['nome' => $d['testo'] . ': ' . $trovata['testo'], 'importo' => $arr($imp),
+                    'spiegazione' => $trovata['tipo'] === 'importo' ? 'Importo fisso' : (($v > 0 ? '+' : '−') . rtrim(rtrim(number_format(abs($v), 2, ',', ''), '0'), ',') . '% del premio base')];
+                $tot += $imp;
+            }
+        }
+        $tot = max(0, $tot);
+        $annuo = $tot; $sconti = [];
+        foreach ($p['promozioni'] ?? [] as $pr) {
+            if ((int)($pr['attivo'] ?? 1) !== 1) continue;
+            if (!empty($pr['dal']) && $pr['dal'] > $oggi) continue;
+            if (!empty($pr['al']) && $pr['al'] < $oggi) continue;
+            $d = $pr['tipo'] === 'importo' ? min($annuo, (float)$pr['valore']) : $annuo * (float)$pr['valore'] / 100;
+            $annuo -= $d;
+            $sconti[] = ['nome' => $pr['nome'], 'importo' => -$arr($d)];
+        }
+        $limite = null;
+        if (!empty($p['premio_minimo']) && $annuo < (float)$p['premio_minimo']) { $annuo = (float)$p['premio_minimo']; $limite = 'premio minimo del prodotto'; }
+        if (!empty($p['premio_massimo']) && $annuo > (float)$p['premio_massimo']) { $annuo = (float)$p['premio_massimo']; $limite = 'premio massimo del prodotto'; }
+        $var = (float)$p['frazionamenti'][$fraz];
+        if ($var != 0) {
+            $d = $annuo * $var / 100;
+            $annuo += $d;
+            $sconti[] = ['nome' => ($var > 0 ? 'Maggiorazione' : 'Sconto') . ' pagamento ' . $fraz . ' (' . ($var > 0 ? '+' : '') . rtrim(rtrim(number_format($var, 2, ',', ''), '0'), ',') . '%)', 'importo' => $arr($d)];
+        }
+        $annuo = $arr(max(0, $annuo));
+        $n = self::RATE[$fraz] ?? 1;
+        return [[
+            'prodotto_id' => (int)$p['id'], 'prodotto' => $p['nome'], 'compagnia' => $p['compagnia'] ?? '',
+            'righe' => $righe, 'sconti' => $sconti, 'premio_garanzie' => $arr($tot), 'annuo' => $annuo,
+            'frazionamento' => $fraz, 'rate' => $n, 'rata' => round($annuo / $n, 2), 'durata' => 1, 'totale_durata' => $annuo,
+            'su_richiesta' => false, 'fascia_eta' => null, 'coefficiente' => null, 'correzioni' => [], 'limite' => $limite,
+            'capitale' => $capitale, 'risposte' => $scelte,
+        ], null];
+    }
 }

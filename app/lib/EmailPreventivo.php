@@ -46,9 +46,10 @@ final class EmailPreventivo
         $righe = self::righe($p);
         $tot = self::totale($p);
         $msg = trim((string)($p['messaggio'] ?? '')) ?: (string)impostazione('messaggio_preventivo', '');
-        $oggetto = 'Il tuo preventivo RC auto è pronto · ACAT Servizi (n. ' . (int)$p['id'] . ')';
+        $tipo = !empty($p['capitale']) ? 'Il tuo preventivo' : 'Il tuo preventivo RC auto';
+        $oggetto = $tipo . ' è pronto · ACAT Servizi (n. ' . (int)$p['id'] . ')';
         $dati = array_filter([
-            'Veicolo' => $p['veicolo'] ?? null,
+            (!empty($p['capitale']) ? 'Polizza' : 'Veicolo') => $p['veicolo'] ?? null,
             'Residenza' => $p['comune_nome'] ?? null,
             'Compagnia' => $p['compagnia'] ?? null,
             'Decorrenza' => !empty($p['decorrenza']) ? date('d/m/Y', strtotime($p['decorrenza'])) : null,

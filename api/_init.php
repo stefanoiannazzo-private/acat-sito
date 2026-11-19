@@ -53,7 +53,21 @@ function dati_contatto(array $d): array {
 /** Toglie dalla stima i dettagli interni della tariffa prima di mandarla al browser */
 function stima_pubblica(array $r): array {
     // al cliente solo il prezzo migliore: niente nome della compagnia/prodotto né confronto
-    foreach (['coefficiente', 'confronto', 'prodotto', 'prodotto_id', 'compagnia', 'correzioni', 'limite', 'premio_garanzie'] as $k) unset($r[$k]);
+    foreach (['coefficiente', 'confronto', 'prodotto', 'prodotto_id', 'compagnia', 'correzioni', 'limite', 'premio_garanzie', 'categoria_id'] as $k) unset($r[$k]);
     $r['righe'] = array_map(function ($x) { unset($x['spiegazione'], $x['id']); return $x; }, $r['righe']);
     return $r;
 }
+
+/** Polizze vita e danni: [prodotti online della categoria, capitale, risposte, frazionamento] dal corpo della richiesta */
+function dati_capitale(array $d): array {
+    $cat = (int)($d['categoria_id'] ?? 0);
+    $listini = $cat ? Preventivatore::prodottiCapitale($cat, true) : [];
+    $risposte = [];
+    foreach (array_slice((array)($d['risposte'] ?? []), 0, 40, true) as $k => $v) $risposte[mb_substr((string)$k, 0, 255)] = mb_substr((string)$v, 0, 160);
+    $fraz = (string)($d['frazionamento'] ?? 'annuale');
+    return [$listini, num((string)($d['capitale'] ?? '')) ?? 0.0, $risposte, isset(Preventivatore::FRAZIONAMENTI[$fraz]) ? $fraz : 'annuale'];
+}
+
+/** È una richiesta per una polizza vita/danni (capitale e questionario) invece che auto? */
+function e_capitale(array $d): bool { return !empty($d['categoria_id']) && empty($d['modello_id']); }
+

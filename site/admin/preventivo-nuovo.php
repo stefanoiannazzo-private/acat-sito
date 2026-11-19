@@ -15,13 +15,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     [$r, $err] = calcola_da_input($in);
     if ($err) flash('errore', $err);
     else {
-        db()->prepare("INSERT INTO preventivi (cliente_id, creato_il, origine, creato_da, comune_id, comune_nome, data_nascita, eta, modello_id, prodotto_id, frazionamento, durata_anni, compagnia, veicolo, garanzie, dettaglio, totale, nome, email, telefono, consenso_privacy, stato)
-            VALUES (?, UTC_TIMESTAMP(), 'backoffice', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'in_lavorazione')")
-            ->execute([$cid, $me['email'], $in['comune_id'], $r['comune'], $in['nascita'], $r['eta'], $in['modello_id'], $r['prodotto_id'], $r['frazionamento'], $r['durata'], $r['compagnia'], $r['veicolo'],
+        $capitale = isset($r['capitale']);
+        // per vita e danni la descrizione è "tipo di polizza · capitale" al posto del veicolo
+        $oggetto = $capitale ? $r['tipo_polizza'] . ' · capitale € ' . number_format((float)$r['capitale'], 0, ',', '.') : $r['veicolo'];
+        db()->prepare("INSERT INTO preventivi (cliente_id, creato_il, origine, creato_da, comune_id, comune_nome, data_nascita, eta, modello_id, prodotto_id, categoria_id, capitale, frazionamento, durata_anni, compagnia, veicolo, garanzie, dettaglio, totale, nome, email, telefono, consenso_privacy, stato)
+            VALUES (?, UTC_TIMESTAMP(), 'backoffice', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'in_lavorazione')")
+            ->execute([$cid, $me['email'], $capitale ? null : $in['comune_id'], $r['comune'] ?? null, $capitale ? null : $in['nascita'], $r['eta'] ?? null, $capitale ? null : $in['modello_id'],
+                $r['prodotto_id'], $capitale ? $r['categoria_id'] : ($in['categoria_id'] ?: null), $r['capitale'] ?? null, $r['frazionamento'], $r['durata'], $r['compagnia'], $oggetto,
                 implode(', ', array_column($r['righe'], 'nome')), json_encode($r, JSON_UNESCAPED_UNICODE), $r['totale'], $c['nome'], $c['email'], $c['telefono'], (int)$c['consenso_privacy']]);
         $pid = (int)db()->lastInsertId();
         // completa l'anagrafica con comune e data di nascita, se mancavano
-        db()->prepare('UPDATE clienti SET comune_id = COALESCE(comune_id, ?), data_nascita = COALESCE(data_nascita, ?), aggiornato_il = UTC_TIMESTAMP() WHERE id = ?')->execute([$in['comune_id'], $in['nascita'], $cid]);
+        if (!$capitale) db()->prepare('UPDATE clienti SET comune_id = COALESCE(comune_id, ?), data_nascita = COALESCE(data_nascita, ?), aggiornato_il = UTC_TIMESTAMP() WHERE id = ?')->execute([$in['comune_id'], $in['nascita'], $cid]);
         Auth::log('crea', 'preventivi', $pid, 'dal pannello per il cliente ' . $cid);
         flash('ok', 'Preventivo creato. Controlla gli importi, completa i dati e invialo al cliente.');
         vai('preventivi.php?id=' . $pid);
@@ -38,7 +42,7 @@ pagina_inizio('Nuovo preventivo', 'clienti');
 <form method="post" class="form form--narrow">
   <?= Auth::campoCsrf() ?><input type="hidden" name="cliente" value="<?= $cid ?>">
   <?php campi_calcolo($in); ?>
-  <fieldset class="passo"><legend><span>5</span> Contraente e veicolo</legend>
+  <fieldset class="passo" id="calc-contraente"><legend><span>5</span> Contraente e veicolo</legend>
   <label>Comune di residenza
     <input name="comune" list="comuni-list" value="<?= e($in['comune']) ?>" autocomplete="off" data-cerca-comuni required>
     <input type="hidden" name="comune_id" value="<?= $in['comune_id'] ?: '' ?>"><datalist id="comuni-list"></datalist><small class="hint">Scrivi almeno 2 lettere e scegli dall'elenco</small>

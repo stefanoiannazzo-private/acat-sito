@@ -28,7 +28,7 @@ if ($p && ($_SERVER['REQUEST_METHOD'] ?? '') === 'POST' && ($_POST['azione'] ?? 
         if ($to !== '' && filter_var($to, FILTER_VALIDATE_EMAIL)) {
             $m = EmailPreventivo::avviso('Preventivo n. ' . $p['id'] . ' accettato da ' . $p['cliente_nome'], [
                 'Cliente' => (string)$p['cliente_nome'], 'Email' => (string)$p['email'], 'Telefono' => $p['telefono'] ?: '–',
-                'Veicolo' => (string)$p['veicolo'], 'Totale' => number_format((float)EmailPreventivo::totale($p), 2, ',', '.') . ' €',
+                (empty($p['capitale']) ? 'Veicolo' : 'Polizza') => (string)$p['veicolo'], 'Totale' => number_format((float)EmailPreventivo::totale($p), 2, ',', '.') . ' €',
             ], EmailPreventivo::sitoUrl() . '/admin/preventivi.php?id=' . $p['id']);
             Mailer::registra((int)$p['cliente_id'], (int)$p['id'], 'avviso_accettazione', $to, $m['oggetto'], Mailer::invia($to, $m['oggetto'], $m['html'], $m['testo'], $p['email'], 'Sito ACAT Servizi'), null);
         }
@@ -81,9 +81,9 @@ $euro = fn($v) => $v === null ? 'su richiesta' : '€ ' . number_format((float)$
 <?php else:
     $righe = EmailPreventivo::righe($p); ?>
     <p class="k">Preventivo n. <?= (int)$p['id'] ?></p>
-    <h1>Il tuo preventivo RC auto</h1>
+    <h1>Il tuo preventivo<?= empty($p['capitale']) ? ' RC auto' : '' ?></h1>
     <dl class="meta">
-      <?php foreach (['Intestatario' => $p['cliente_nome'], 'Veicolo' => $p['veicolo'], 'Residenza' => $p['comune_nome'], 'Compagnia' => $p['compagnia'],
+      <?php foreach (['Intestatario' => $p['cliente_nome'], (empty($p['capitale']) ? 'Veicolo' : 'Polizza') => $p['veicolo'], 'Residenza' => $p['comune_nome'], 'Compagnia' => $p['compagnia'],
           'Decorrenza' => $p['decorrenza'] ? date('d/m/Y', strtotime($p['decorrenza'])) : null] as $k => $v) if ($v): ?>
         <dt><?= e($k) ?></dt><dd><?= e((string)$v) ?></dd>
       <?php endif; ?>

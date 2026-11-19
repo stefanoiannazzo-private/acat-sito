@@ -150,14 +150,20 @@ if (isset($_GET['id'])):
     <?= $p['inviato_il'] ? ' · inviato il ' . e(data_it($p['inviato_il'])) : '' ?><?= $p['accettato_il'] ? ' · <b>accettato dal cliente il ' . e(data_it($p['accettato_il'])) . '</b>' : '' ?></p>
   <div class="cols cols--wide">
     <section class="box">
-      <h2>Cliente e veicolo</h2>
+      <h2><?= $p['capitale'] !== null ? 'Cliente e polizza' : 'Cliente e veicolo' ?></h2>
       <dl class="dl">
         <dt>Cliente</dt><dd><?= $p['cliente_id'] ? '<a href="clienti.php?id=' . (int)$p['cliente_id'] . '">' . e($p['cliente_nome']) . '</a>' : e($p['nome']) ?></dd>
         <dt>Email</dt><dd><?= $emailCliente ? '<a href="mailto:' . e($emailCliente) . '">' . e($emailCliente) . '</a>' : '<span class="muted">manca</span>' ?></dd>
         <dt>Telefono</dt><dd><?= e(($p['cliente_tel'] ?: $p['telefono']) ?: '–') ?></dd>
+        <?php if ($p['capitale'] !== null): $dq = json_decode((string)$p['dettaglio'], true) ?: []; ?>
+        <dt>Polizza</dt><dd><?= e($dq['tipo_polizza'] ?? $p['veicolo']) ?></dd>
+        <dt>Capitale</dt><dd><?= euro($p['capitale']) ?></dd>
+        <?php foreach ($dq['risposte'] ?? [] as $x): ?><dt><?= e($x['domanda']) ?></dt><dd><?= e($x['risposta']) ?></dd><?php endforeach; ?>
+        <?php else: ?>
         <dt>Residenza</dt><dd><?= e($p['comune_nome']) ?></dd>
         <dt>Contraente</dt><dd><?= $p['data_nascita'] ? e(date('d/m/Y', strtotime($p['data_nascita']))) . ' · ' . (int)$p['eta'] . ' anni' : '–' ?></dd>
         <dt>Veicolo</dt><dd><?= e($p['veicolo']) ?></dd>
+        <?php endif; ?>
       </dl>
       <?php if ($p['note']): ?><h3>Note del cliente</h3><p class="pre"><?= e($p['note']) ?></p><?php endif; ?>
       <h3>Stima automatica</h3>

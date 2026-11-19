@@ -154,7 +154,24 @@ function calcolo_input(array $base = []): array
         'categoria_id' => (int)($_POST['categoria_id'] ?? 0),
         'compagnia' => $comp === 'tutte' ? 'tutte' : (string)(int)$comp,
         'prodotto_id' => (int)($_POST['prodotto_id'] ?? 0),
+        'capitale' => num((string)($_POST['capitale'] ?? '')) ?? 0.0,
+        'risposte' => array_filter(array_combine(
+            array_map(fn($x) => trim(mb_substr((string)$x, 0, 255)), array_values((array)($_POST['dom'] ?? []))),
+            array_map(fn($x) => trim(mb_substr((string)$x, 0, 160)), array_pad(array_values((array)($_POST['risp'] ?? [])), count((array)($_POST['dom'] ?? [])), ''))
+        ) ?: [], fn($v, $k) => $k !== '', ARRAY_FILTER_USE_BOTH),
     ];
+}
+
+/** Prodotti vita e danni con tasso sul capitale, con le loro domande: per il modulo passo per passo del pannello */
+function prodotti_capitale(): array
+{
+    $out = [];
+    foreach (Preventivatore::categorieCapitale(false) as $c) foreach (Preventivatore::prodottiCapitale($c['id'], false) as $p)
+        $out[] = ['id' => (int)$p['id'], 'nome' => $p['nome'], 'categoria' => (int)$p['categoria_id'], 'compagnia_id' => (int)$p['compagnia_id'], 'compagnia' => $p['compagnia'],
+            'tipo' => 'capitale', 'garanzie' => [], 'frazionamenti' => array_keys($p['frazionamenti']), 'durate' => [1],
+            'capitale_minimo' => $p['capitale_minimo'] !== null ? (float)$p['capitale_minimo'] : null, 'capitale_massimo' => $p['capitale_massimo'] !== null ? (float)$p['capitale_massimo'] : null,
+            'domande' => array_map(fn($d) => ['testo' => $d['testo'], 'aiuto' => $d['aiuto'], 'risposte' => array_column($d['risposte'], 'testo')], $p['domande'])];
+    return $out;
 }
 
 /** Prodotti con una tariffa (RC con premio base) dell'area Auto, con garanzie, frazionamenti e durate: guidano il modulo passo per passo */
@@ -181,6 +198,16 @@ function prodotti_tariffati(): array
 
 function calcola_da_input(array $in): array
 {
+    // vita e danni: capitale × tasso e questionario
+    $cap = array_values(array_filter(prodotti_capitale(), fn($p) => $p['categoria'] === $in['categoria_id']));
+    if ($in['categoria_id'] && $cap) {
+        if ($in['compagnia'] === '' || $in['compagnia'] === '0') return [null, 'Scegli la compagnia (oppure "Confronta tutte").'];
+        if ($in['compagnia'] !== 'tutte') $cap = array_values(array_filter($cap, fn($p) => $p['compagnia_id'] === (int)$in['compagnia']));
+        $ids = array_column($cap, 'id');
+        if ($in['prodotto_id'] && in_array($in['prodotto_id'], $ids, true)) $ids = [$in['prodotto_id']];
+        elseif ($in['compagnia'] !== 'tutte' && $ids) $ids = [$ids[0]];
+        return Preventivatore::calcolaCapitale($ids ? Preventivatore::listini($ids) : [], (float)$in['capitale'], $in['risposte'], $in['frazionamento']);
+    }
     $pag = ['frazionamento' => $in['frazionamento'], 'durata' => $in['durata']];
     $prodotti = array_values(array_filter(prodotti_tariffati(), fn($p) => $p['categoria'] === $in['categoria_id']));
     if (!$in['categoria_id'] || !$prodotti) return [null, 'Scegli il tipo di polizza.'];
@@ -197,14 +224,15 @@ function calcola_da_input(array $in): array
 /** Passi del calcolo: tipo di polizza → compagnia (→ prodotto) → garanzie (RC sempre inclusa) → pagamento → durata */
 function campi_calcolo(array $in): void
 {
-    $prodotti = prodotti_tariffati();
+    $prodotti = array_merge(prodotti_tariffati(), prodotti_capitale());
     $cat = array_unique(array_column($prodotti, 'categoria'));
-    $scelte = ['categoria_id' => $in['categoria_id'], 'compagnia' => $in['compagnia'], 'prodotto_id' => $in['prodotto_id'], 'garanzie' => $in['garanzie'], 'frazionamento' => $in['frazionamento'], 'durata' => $in['durata']]; ?>
+    usort($cat, fn($a, $b) => strcmp(Categorie::etichetta($a), Categorie::etichetta($b)));
+    $scelte = ['categoria_id' => $in['categoria_id'], 'compagnia' => $in['compagnia'], 'prodotto_id' => $in['prodotto_id'], 'garanzie' => $in['garanzie'], 'frazionamento' => $in['frazionamento'], 'durata' => $in['durata'], 'capitale' => $in['capitale'] ?: '', 'risposte' => $in['risposte']]; ?>
   <fieldset class="passo"><legend><span>1</span> Tipo di polizza</legend>
-    <?php if (!$prodotti): ?><p class="err">Non c'è ancora nessun prodotto auto con una tariffa: apri Prodotti, scegli un prodotto auto e inserisci l'RC con il premio base.</p><?php endif; ?>
+    <?php if (!$prodotti): ?><p class="err">Non c'è ancora nessun prodotto con una tariffa: apri Prodotti e inserisci l'RC con il premio base (auto) o il tasso sul capitale (vita e danni).</p><?php endif; ?>
     <label>Tipo di polizza<select name="categoria_id" id="calc-tipo" required><option value="">Scegli…</option>
       <?php foreach ($cat as $k): ?><option value="<?= $k ?>"<?= $in['categoria_id'] === $k ? ' selected' : '' ?>><?= e(Categorie::etichetta($k)) ?></option><?php endforeach; ?></select>
-      <small class="hint">Es. RC auto e moto (Bonus Malus): comprende sempre la responsabilità civile</small></label>
+      <small class="hint">Es. RC auto e moto (comprende sempre la responsabilità civile) oppure una polizza vita come la TCM</small></label>
   </fieldset>
   <fieldset class="passo"><legend><span>2</span> Compagnia</legend>
     <label>Compagnia<select name="compagnia" id="calc-compagnia" required><option value="">Scegli prima il tipo di polizza</option></select>
@@ -212,13 +240,17 @@ function campi_calcolo(array $in): void
     <label id="calc-prodotto-box" hidden>Prodotto della compagnia<select name="prodotto_id" id="calc-prodotto"></select>
       <small class="hint">La compagnia ha più prodotti per questo tipo di polizza</small></label>
   </fieldset>
-  <fieldset class="passo"><legend><span>3</span> Garanzie</legend>
+  <fieldset class="passo"><legend><span>3</span> <span class="passo__t" id="calc-passo3">Garanzie</span></legend>
     <div id="calc-garanzie"><p class="muted">Scegli tipo di polizza e compagnia.</p></div>
+    <div id="calc-capitale-box" hidden>
+      <label>Capitale assicurato (€)<input name="capitale" id="calc-capitale" inputmode="decimal" disabled><small class="hint" id="calc-capitale-aiuto">La somma che la polizza paga</small></label>
+      <div id="calc-domande"></div>
+    </div>
   </fieldset>
   <fieldset class="passo"><legend><span>4</span> Pagamento e annualità</legend>
     <div class="form--grid2">
       <label>Frazionamento<select name="frazionamento" id="calc-fraz"></select></label>
-      <label>Annualità (durata del contratto)<select name="durata" id="calc-durata"></select></label>
+      <label id="calc-durata-box">Annualità (durata del contratto)<select name="durata" id="calc-durata"></select></label>
     </div>
   </fieldset>
   <script type="application/json" id="calc-dati"><?= json_encode(['prodotti' => $prodotti, 'scelte' => $scelte, 'nomi_fraz' => Preventivatore::FRAZIONAMENTI], JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP) ?></script>

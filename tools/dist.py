@@ -5,7 +5,7 @@ import hashlib, os, re, shutil
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(ROOT)
-PAGES = ["index.html", "chi-siamo.html", "servizi.html", "contatti.html", "privacy.html", "cookie.html", "credits.html", "assicurazione-auto-moto.html", "assicurazione-casa-famiglia.html", "assicurazione-vita-impresa.html", "passaggio-di-proprieta.html", "immatricolazioni.html", "patenti.html", "preventivo-rc-auto.html"]
+PAGES = ["index.html", "chi-siamo.html", "servizi.html", "contatti.html", "privacy.html", "cookie.html", "credits.html", "assicurazione-auto-moto.html", "assicurazione-casa-famiglia.html", "assicurazione-vita-impresa.html", "passaggio-di-proprieta.html", "immatricolazioni.html", "patenti.html", "preventivo-rc-auto.html", "preventivo-polizze.html"]
 EXTRA_ROOT = ["preventivo.php"]
 EXTRA = ["favicon.svg", "share.jpg", "robots.txt", ".htaccess", "preventivo.php", "sitemap.php",
          "vendor/fonts/fonts.css", "vendor/fonts/instrument-sans-latin.woff2", "vendor/fonts/instrument-serif-latin.woff2",
@@ -21,7 +21,7 @@ for _d in ("app", "admin", "api"):
             _p = os.path.join(_root, _f)
             if _p != os.path.join("app", "config.php") and not _f.endswith((".pyc", ".DS_Store")):
                 EXTRA.append(_p)
-EXTRA += ["assets/preventivo.js", "il-tuo-preventivo.php", "assets/email/logo-acat.png"]
+EXTRA += ["assets/preventivo.js", "assets/preventivo-polizze.js", "il-tuo-preventivo.php", "assets/email/logo-acat.png"]
 
 refs = set()
 for p in PAGES:

@@ -38,8 +38,8 @@ final class Preventivatore
     /** Frazionamenti e durate offerti da almeno un prodotto preventivabile */
     public static function opzioniPagamento(): array
     {
-        $f = db()->query('SELECT DISTINCT f.frazionamento FROM prodotti_frazionamenti f JOIN prodotti p ON p.id = f.prodotto_id WHERE p.preventivabile = 1 AND p.attivo = 1')->fetchAll(PDO::FETCH_COLUMN);
-        $d = db()->query('SELECT DISTINCT d.anni FROM prodotti_durate d JOIN prodotti p ON p.id = d.prodotto_id WHERE p.preventivabile = 1 AND p.attivo = 1 ORDER BY d.anni')->fetchAll(PDO::FETCH_COLUMN);
+        $f = db()->query('SELECT DISTINCT f.frazionamento FROM prodotti_frazionamenti f JOIN prodotti p ON p.id = f.prodotto_id WHERE p.preventivabile = 1 AND p.attivo = 1 AND (p.tasso IS NULL OR p.tasso = 0)')->fetchAll(PDO::FETCH_COLUMN);
+        $d = db()->query('SELECT DISTINCT d.anni FROM prodotti_durate d JOIN prodotti p ON p.id = d.prodotto_id WHERE p.preventivabile = 1 AND p.attivo = 1 AND (p.tasso IS NULL OR p.tasso = 0) ORDER BY d.anni')->fetchAll(PDO::FETCH_COLUMN);
         $fr = [];
         foreach (self::FRAZIONAMENTI as $k => $n) if (in_array($k, $f, true)) $fr[] = ['valore' => $k, 'nome' => $n];
         $du = array_values(array_unique(array_merge([1], array_map('intval', $d))));
@@ -63,7 +63,7 @@ final class Preventivatore
             $st = db()->prepare('SELECT p.*, c.nome AS compagnia FROM prodotti p JOIN compagnie c ON c.id = p.compagnia_id WHERE p.id = ?');
             $st->execute([$id]);
         } else {
-            $st = db()->query('SELECT p.*, c.nome AS compagnia FROM prodotti p JOIN compagnie c ON c.id = p.compagnia_id WHERE p.preventivabile = 1 AND p.attivo = 1 AND c.attivo = 1 ORDER BY c.nome, p.nome');
+            $st = db()->query('SELECT p.*, c.nome AS compagnia FROM prodotti p JOIN compagnie c ON c.id = p.compagnia_id WHERE p.preventivabile = 1 AND p.attivo = 1 AND c.attivo = 1 AND (p.tasso IS NULL OR p.tasso = 0) ORDER BY c.nome, p.nome');
         }
         $prodotti = [];
         foreach ($st->fetchAll() as $p) { $p['garanzie'] = []; $p['frazionamenti'] = []; $p['durate'] = [1 => 0.0]; $p['promozioni'] = []; $p['correzioni'] = []; $prodotti[(int)$p['id']] = $p; }
@@ -74,7 +74,12 @@ final class Preventivatore
         foreach (db()->query("SELECT * FROM prodotti_durate WHERE prodotto_id IN ($in) ORDER BY anni") as $r) $prodotti[(int)$r['prodotto_id']]['durate'][(int)$r['anni']] = (float)$r['sconto'];
         foreach (db()->query("SELECT * FROM promozioni WHERE prodotto_id IN ($in) ORDER BY id") as $r) $prodotti[(int)$r['prodotto_id']]['promozioni'][] = $r;
         foreach (db()->query("SELECT * FROM prodotti_correzioni WHERE prodotto_id IN ($in) ORDER BY id") as $r) $prodotti[(int)$r['prodotto_id']]['correzioni'][] = $r;
-        foreach ($prodotti as &$p) if (!$p['frazionamenti']) $p['frazionamenti'] = ['annuale' => 0.0];
+        foreach ($prodotti as &$p) { $p['domande'] = []; if (!$p['frazionamenti']) $p['frazionamenti'] = ['annuale' => 0.0]; }
+        unset($p);
+        $dom = [];
+        foreach (db()->query("SELECT * FROM prodotti_domande WHERE prodotto_id IN ($in) ORDER BY ordine, id") as $d) $dom[(int)$d['id']] = $d + ['risposte' => []];
+        if ($dom) foreach (db()->query('SELECT * FROM prodotti_risposte WHERE domanda_id IN (' . implode(',', array_keys($dom)) . ') ORDER BY ordine, id') as $r) $dom[(int)$r['domanda_id']]['risposte'][] = $r;
+        foreach ($dom as $d) $prodotti[(int)$d['prodotto_id']]['domande'][] = $d;
         return $prodotti;
     }
 
@@ -133,6 +138,76 @@ final class Preventivatore
         $r['comune'] = $comune['nome'] . ' (' . $comune['sigla'] . ')';
         $r['veicolo'] = $mod['marca'] . ' ' . $mod['nome'];
         $r['avviso'] = impostazione('avviso', '');
+        $r['confronto'] = ['validi' => array_map(fn($x) => array_intersect_key($x, array_flip(['prodotto_id', 'prodotto', 'compagnia', 'annuo', 'rata', 'rate', 'frazionamento', 'durata', 'su_richiesta', 'righe', 'sconti', 'correzioni', 'limite'])), $validi), 'esclusi' => $esclusi];
+        return [$r, null];
+    }
+
+    /** Categorie non auto con almeno un prodotto preventivabile (con tasso), per il sito */
+    public static function categorieCapitale(bool $soloOnline = true): array
+    {
+        $auto = Categorie::perChiave('auto');
+        $st = db()->query('SELECT DISTINCT p.categoria_id FROM prodotti p JOIN compagnie c ON c.id = p.compagnia_id LEFT JOIN categorie k ON k.id = p.categoria_id
+            WHERE p.attivo = 1 AND c.attivo = 1 AND p.tasso > 0 AND p.categoria_id IS NOT NULL' . ($soloOnline ? ' AND p.preventivabile = 1' : '') . ($auto ? ' AND COALESCE(k.parent_id, k.id) <> ' . (int)$auto : ''));
+        $out = [];
+        foreach ($st->fetchAll(PDO::FETCH_COLUMN) as $id) $out[] = ['id' => (int)$id, 'nome' => Categorie::etichetta((int)$id)];
+        usort($out, fn($a, $b) => strcmp($a['nome'], $b['nome']));
+        return $out;
+    }
+
+    /** Prodotti a capitale di una categoria (solo quelli online, se richiesto) */
+    public static function prodottiCapitale(int $categoria, bool $soloOnline = true): array
+    {
+        $st = db()->prepare('SELECT p.id FROM prodotti p JOIN compagnie c ON c.id = p.compagnia_id WHERE p.attivo = 1 AND c.attivo = 1 AND p.tasso > 0 AND p.categoria_id = ?' . ($soloOnline ? ' AND p.preventivabile = 1' : ''));
+        $st->execute([$categoria]);
+        $ids = $st->fetchAll(PDO::FETCH_COLUMN);
+        return $ids ? self::listini($ids) : [];
+    }
+
+    /** Questionario comune ai prodotti: domande e risposte unite per testo, frazionamenti, capitale ammesso */
+    public static function questionario(array $listini): array
+    {
+        $dom = []; $fraz = []; $min = null; $max = null;
+        foreach ($listini as $p) {
+            foreach ($p['domande'] as $d) {
+                $k = Calcolo::norm($d['testo']);
+                $dom[$k] ??= ['testo' => $d['testo'], 'aiuto' => $d['aiuto'], 'ordine' => (int)$d['ordine'], 'risposte' => []];
+                foreach ($d['risposte'] as $r) $dom[$k]['risposte'][Calcolo::norm($r['testo'])] ??= $r['testo'];
+            }
+            foreach (array_keys($p['frazionamenti']) as $f) $fraz[$f] = true;
+            if (!empty($p['capitale_minimo'])) $min = $min === null ? (float)$p['capitale_minimo'] : min($min, (float)$p['capitale_minimo']);
+            if (!empty($p['capitale_massimo'])) $max = $max === null ? (float)$p['capitale_massimo'] : max($max, (float)$p['capitale_massimo']);
+        }
+        uasort($dom, fn($a, $b) => $a['ordine'] <=> $b['ordine']);
+        $fr = [];
+        foreach (self::FRAZIONAMENTI as $k => $n) if (isset($fraz[$k])) $fr[] = ['valore' => $k, 'nome' => $n];
+        return ['domande' => array_values(array_map(fn($d) => ['testo' => $d['testo'], 'aiuto' => $d['aiuto'], 'risposte' => array_values($d['risposte'])], $dom)),
+            'frazionamenti' => $fr ?: [['valore' => 'annuale', 'nome' => 'Annuale']], 'capitale_minimo' => $min, 'capitale_massimo' => $max];
+    }
+
+    /**
+     * Polizze a capitale (vita, danni): calcola ogni prodotto e restituisce il migliore con il confronto.
+     * @param array $listini prodotti già caricati (listini())
+     */
+    public static function calcolaCapitale(array $listini, float $capitale, array $risposte, string $fraz): array
+    {
+        if (!$listini) return [null, 'Al momento non ci sono tariffe per questo tipo di polizza.'];
+        if (!isset(self::FRAZIONAMENTI[$fraz])) $fraz = 'annuale';
+        if ($capitale <= 0) return [null, 'Indica il capitale da assicurare.'];
+        $opz = ['arrotondamento' => impostazione('arrotondamento', 'centesimi')];
+        $validi = []; $esclusi = [];
+        foreach ($listini as $p) {
+            [$r, $motivo] = Calcolo::capitale($p, $capitale, $risposte, ['frazionamento' => $fraz, 'oggi' => date('Y-m-d')], $opz);
+            if ($r) $validi[] = $r;
+            else $esclusi[] = ['prodotto_id' => (int)$p['id'], 'prodotto' => $p['nome'], 'compagnia' => $p['compagnia'], 'motivo' => $motivo];
+        }
+        if (!$validi) return [null, count($esclusi) === 1 ? $esclusi[0]['motivo'] . '.' : 'Nessuna tariffa copre questa combinazione: controlla capitale e risposte, oppure chiamaci.'];
+        usort($validi, fn($a, $b) => $a['annuo'] <=> $b['annuo']);
+        $r = $validi[0];
+        $p0 = array_values(array_filter($listini, fn($x) => (int)$x['id'] === $r['prodotto_id']))[0];
+        $r['totale'] = $r['annuo'];
+        $r['categoria_id'] = (int)$p0['categoria_id'];
+        $r['tipo_polizza'] = Categorie::etichetta((int)$p0['categoria_id']);
+        $r['avviso'] = impostazione('avviso_polizze', 'Stima indicativa e non vincolante, calcolata sulle risposte inserite. Non è un\'offerta contrattuale: il premio definitivo dipende dalla compagnia, dal questionario sanitario o di rischio e dalla verifica dei dati in agenzia.');
         $r['confronto'] = ['validi' => array_map(fn($x) => array_intersect_key($x, array_flip(['prodotto_id', 'prodotto', 'compagnia', 'annuo', 'rata', 'rate', 'frazionamento', 'durata', 'su_richiesta', 'righe', 'sconti', 'correzioni', 'limite'])), $validi), 'esclusi' => $esclusi];
         return [$r, null];
     }

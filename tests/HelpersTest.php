@@ -37,4 +37,12 @@ final class HelpersTest extends TestCase
             $this->assertNotEmpty(Migrazioni::istruzioni((string)file_get_contents($f)), basename($f));
         }
     }
+
+    public function testNumMigliaiaAllItaliana(): void
+    {
+        $this->assertSame(100000.0, num('100.000'));
+        $this->assertSame(1250000.5, num('1.250.000,50'));
+        $this->assertSame(1.5, num('1.5'));
+        $this->assertSame(1.5, num('1,5'));
+    }
 }

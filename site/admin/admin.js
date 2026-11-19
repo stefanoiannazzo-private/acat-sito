@@ -222,8 +222,37 @@ document.addEventListener('DOMContentLoaded', () => {
     prod.innerHTML = c.length > 1 ? c.map((p, i) => opt(p.id, p.nome, v ? v === String(p.id) : i === 0)).join('') : (c[0] ? opt(c[0].id, c[0].nome, true) : '');
     aggiornaResto();
   };
+  const capBox = $('calc-capitale-box'), cap = $('calc-capitale'), dom = $('calc-domande'), contr = $('calc-contraente');
+  const norm = (t) => String(t).trim().toLowerCase().replace(/\s+/g, ' ');
+  const modoCapitale = () => delTipo().some((p) => p.tipo === 'capitale');
+  const aggiornaCapitale = (l) => {
+    const si = modoCapitale();
+    gar.hidden = si; capBox.hidden = !si; cap.disabled = !si; cap.required = si;
+    $('calc-passo3').textContent = si ? 'Capitale e domande al cliente' : 'Garanzie';
+    $('calc-durata-box').hidden = si; dur.disabled = si;
+    if (contr) { contr.hidden = si; contr.querySelectorAll('input, select').forEach((f) => { f.disabled = si; }); }
+    if (!si) { dom.innerHTML = ''; return; }
+    if (prima && scelte.capitale) cap.value = String(scelte.capitale).replace('.', ',');
+    const mn = Math.min(...l.map((p) => p.capitale_minimo || Infinity)), mx = Math.max(...l.map((p) => p.capitale_massimo || 0));
+    const eu = (v) => v.toLocaleString('it-IT') + ' €';
+    $('calc-capitale-aiuto').textContent = 'La somma che la polizza paga' + (isFinite(mn) ? ' · minimo ' + eu(mn) : '') + (mx ? ' · massimo ' + eu(mx) : '');
+    // domande unite per testo fra i prodotti in uso
+    const prec = {};
+    dom.querySelectorAll('[data-domanda]').forEach((x) => { prec[norm(x.dataset.domanda)] = x.querySelector('select').value; });
+    if (prima) Object.entries(scelte.risposte || {}).forEach(([k, v]) => { prec[norm(k)] = v; });
+    const unite = new Map();
+    l.forEach((p) => p.domande.forEach((d) => {
+      const k = norm(d.testo);
+      if (!unite.has(k)) unite.set(k, { testo: d.testo, aiuto: d.aiuto, risposte: [] });
+      d.risposte.forEach((r) => { if (!unite.get(k).risposte.some((x) => norm(x) === norm(r))) unite.get(k).risposte.push(r); });
+    }));
+    dom.innerHTML = [...unite.values()].map((d, i) => `<label data-domanda="${esc(d.testo)}">${esc(d.testo)}<input type="hidden" name="dom[${i}]" value="${esc(d.testo)}">
+      <select name="risp[${i}]" required>${opt('', 'Scegli…')}${d.risposte.map((r) => opt(r, r, norm(prec[norm(d.testo)] || '') === norm(r))).join('')}</select>
+      ${d.aiuto ? `<small class="hint">${esc(d.aiuto)}</small>` : ''}</label>`).join('') || '<p class="hint">Questo prodotto non ha domande: il premio dipende solo dal capitale.</p>';
+  };
   const aggiornaResto = () => {
     const l = inUso();
+    aggiornaCapitale(l);
     // garanzie: quelle del prodotto (o comuni a tutti, se si confronta); la RC è sempre inclusa
     const presenti = new Map();
     l.forEach((p) => p.garanzie.forEach((g) => { if (!presenti.has(g.codice)) presenti.set(g.codice, g); }));
@@ -274,7 +303,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('prova'), box = document.getElementById('prova-risultato'), stato = document.getElementById('prova-stato');
   if (!form || !box) return;
   let timer, ultimo = '', n = 0;
-  const pronto = () => [...form.querySelectorAll('[required]')].every((f) => f.value.trim() !== '') && form.querySelector('[name="comune_id"]').value !== '';
+  const pronto = () => { const ci = form.querySelector('[name="comune_id"]'); return [...form.querySelectorAll('[required]:not(:disabled)')].every((f) => f.value.trim() !== '') && (!ci || ci.disabled || ci.value !== ''); };
   const calcola = async () => {
     if (!pronto()) return;
     const dati = new FormData(form);
@@ -308,4 +337,17 @@ document.addEventListener('DOMContentLoaded', () => {
   };
   sel.addEventListener('change', aggiorna);
   aggiorna();
+});
+
+/* questionario: "+ Aggiungi una risposta" duplica l'ultima riga vuota della domanda */
+document.addEventListener('click', (e) => {
+  const b = e.target.closest('[data-aggiungi-risposta]');
+  if (!b) return;
+  const tbody = b.closest('.domanda').querySelector('.table--risposte tbody');
+  const ultima = tbody.lastElementChild, nuova = ultima.cloneNode(true);
+  const k = 'n' + Date.now();
+  nuova.querySelectorAll('[name]').forEach((f) => { f.name = f.name.replace(/\[r\]\[[^\]]+\]/, `[r][${k}]`); if (f.type !== 'checkbox' && f.tagName !== 'SELECT') f.value = ''; });
+  nuova.querySelector('td:last-child').innerHTML = '';
+  tbody.append(nuova);
+  nuova.querySelector('input')?.focus();
 });

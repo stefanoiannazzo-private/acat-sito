@@ -13,6 +13,7 @@ function num(string|float|int|null $v): ?float {
     $v = trim(str_replace([' ', '€', '%'], '', (string)$v));
     if ($v === '') return null;
     if (str_contains($v, ',')) $v = str_replace(['.', ','], ['', '.'], $v);
+    elseif (preg_match('/^-?\d{1,3}(\.\d{3})+$/', $v)) $v = str_replace('.', '', $v); // 100.000 = centomila
     return is_numeric($v) ? (float)$v : null;
 }
 
