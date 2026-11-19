@@ -228,7 +228,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $st = db()->prepare('SELECT COUNT(*) FROM polizze WHERE prodotto_id = ?'); $st->execute([$id]);
         if ($st->fetchColumn()) { flash('errore', 'Ci sono polizze collegate a questo prodotto: disattivalo invece di eliminarlo.'); $torna(); }
         db()->prepare('UPDATE preventivi SET prodotto_id = NULL WHERE prodotto_id = ?')->execute([$id]);
+        // prima le garanzie facoltative (dipendono dall'RC), poi l'RC, poi il prodotto con il resto del listino
+        db()->beginTransaction();
+        db()->prepare('DELETE FROM garanzie WHERE prodotto_id = ? AND principale = 0')->execute([$id]);
+        db()->prepare('DELETE FROM garanzie WHERE prodotto_id = ?')->execute([$id]);
         db()->prepare('DELETE FROM prodotti WHERE id = ?')->execute([$id]);
+        db()->commit();
         Auth::log('elimina', 'prodotti', $id, $p['nome']);
         flash('ok', 'Prodotto eliminato.');
         vai('tabella.php?t=prodotti');
