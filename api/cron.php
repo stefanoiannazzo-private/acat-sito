@@ -4,7 +4,8 @@
 declare(strict_types=1);
 require __DIR__ . '/../app/bootstrap.php';
 
-$cli = PHP_SAPI === 'cli';
+// eseguito dall'hosting (riga di comando o php-cgi senza richiesta web) oppure via web con la chiave
+$cli = PHP_SAPI === 'cli' || empty($_SERVER['REQUEST_METHOD']);
 if (!$cli) {
     header('Content-Type: text/plain; charset=utf-8');
     header('X-Robots-Tag: noindex');
