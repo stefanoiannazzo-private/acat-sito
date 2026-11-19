@@ -974,6 +974,10 @@ pv_body += f'''
             <legend><span class="pv-step__n">3</span>Le garanzie</legend>
             <p class="pv-hint">La responsabilità civile è obbligatoria ed è sempre inclusa. Aggiungi le garanzie che ti interessano.</p>
             <div class="pv-garanzie" id="pv-garanzie"></div>
+            <div class="pv-row pv-pag">
+              <div class="pv-field"><label for="pv-fraz">Pagamento</label><select id="pv-fraz"><option value="annuale">Annuale</option></select></div>
+              <div class="pv-field" id="pv-durata-box" hidden><label for="pv-durata">Durata del contratto</label><select id="pv-durata"><option value="1">1 anno</option></select></div>
+            </div>
           </fieldset>
           <fieldset class="pv-step pv-contatti" id="pv-contatti" hidden>
             <legend><span class="pv-step__n">4</span>I tuoi contatti</legend>
@@ -1003,6 +1007,7 @@ pv_body += f'''
         <div class="pv-out__res" hidden>
           <p class="pv-out__label">Stima annuale indicativa</p>
           <p class="pv-out__tot" id="pv-tot"></p>
+          <p class="pv-out__rata" id="pv-rata" hidden></p>
           <p class="pv-out__meta" id="pv-meta"></p>
           <ul class="pv-out__rows" id="pv-righe"></ul>
           <p class="pv-out__note" id="pv-avviso"></p>

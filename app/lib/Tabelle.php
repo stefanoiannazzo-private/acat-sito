@@ -68,18 +68,19 @@ final class Tabelle
             'prodotti' => [
                 'titolo' => 'Prodotti', 'singolare' => 'prodotto', 'ordine' => 'compagnia_nome, nome',
                 'ricerca' => ['nome', 'descrizione'], 'filtri' => ['compagnia_id', 'categoria_id', 'attivo'],
-                'lista' => ['compagnia_nome', 'nome', 'categoria_nome', 'n_polizze', 'attivo'], 'csv' => true,
+                'lista' => ['compagnia_nome', 'nome', 'categoria_nome', 'n_polizze', 'preventivabile', 'attivo'], 'csv' => true,
                 'calcolati' => [
                     'compagnia_nome' => ['label' => 'Compagnia', 'sql' => '(SELECT c.nome FROM compagnie c WHERE c.id = t.compagnia_id)'],
                     'categoria_nome' => ['label' => 'Classificazione', 'sql' => "(SELECT CONCAT(COALESCE(CONCAT(a.nome, ' · '), ''), k.nome) FROM categorie k LEFT JOIN categorie a ON a.id = k.parent_id WHERE k.id = t.categoria_id)"],
                     'n_polizze' => ['label' => 'Polizze attive', 'sql' => "(SELECT COUNT(*) FROM polizze po WHERE po.prodotto_id = t.id AND po.stato = 'attiva')"],
                 ],
-                'intro' => 'Il catalogo di ogni compagnia, classificato per area (Auto, Ramo danni, Ramo vita) e categoria. Nella polizza di un cliente scegli prima la compagnia, poi uno dei suoi prodotti.',
+                'intro' => 'Il catalogo di ogni compagnia, classificato per area (Auto, Ramo danni, Ramo vita) e categoria. Apri un prodotto per impostare garanzie, prezzi, frazionamento, durata, promozioni e correzioni: quelli "preventivabili online" entrano nel calcolo del sito.',
                 'campi' => [
                     'compagnia_id' => ['label' => 'Compagnia', 'tipo' => 'compagnia', 'obbl' => true],
                     'nome' => ['label' => 'Nome del prodotto', 'tipo' => 'testo', 'obbl' => true, 'max' => 120],
                     'categoria_id' => ['label' => 'Classificazione', 'tipo' => 'categoria', 'obbl' => true],
                     'descrizione' => ['label' => 'Descrizione', 'tipo' => 'testo', 'max' => 255],
+                    'preventivabile' => ['label' => 'Preventivabile online', 'breve' => 'Online', 'tipo' => 'bool', 'sola_lettura' => true],
                     'attivo' => ['label' => 'Attivo', 'tipo' => 'bool', 'predefinito' => 1],
                 ],
             ],

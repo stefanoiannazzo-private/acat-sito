@@ -9,18 +9,15 @@ $st = db()->prepare('SELECT c.*, CONCAT(co.nome, \' (\', co.sigla, \')\') AS com
 $st->execute([$cid]);
 $c = $st->fetch() ?: vai('clienti.php');
 
-$garanzie = Preventivatore::garanzie();
-$in = ['comune_id' => (int)($_POST['comune_id'] ?? $c['comune_id'] ?? 0), 'comune' => (string)($_POST['comune'] ?? $c['comune'] ?? ''),
-       'nascita' => (string)($_POST['nascita'] ?? $c['data_nascita'] ?? ''), 'marca_id' => (int)($_POST['marca_id'] ?? 0),
-       'modello_id' => (int)($_POST['modello_id'] ?? 0), 'garanzie' => array_map('intval', (array)($_POST['garanzie'] ?? []))];
+$in = calcolo_input(['comune_id' => $c['comune_id'] ?? 0, 'comune' => $c['comune'] ?? '', 'nascita' => $c['data_nascita'] ?? '']);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    [$r, $err] = Preventivatore::calcola($in['comune_id'], $in['nascita'], $in['modello_id'], $in['garanzie'], true);
+    [$r, $err] = calcola_da_input($in);
     if ($err) flash('errore', $err);
     else {
-        db()->prepare("INSERT INTO preventivi (cliente_id, creato_il, origine, creato_da, comune_id, comune_nome, data_nascita, eta, modello_id, veicolo, garanzie, dettaglio, totale, nome, email, telefono, consenso_privacy, stato)
-            VALUES (?, UTC_TIMESTAMP(), 'backoffice', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'in_lavorazione')")
-            ->execute([$cid, $me['email'], $in['comune_id'], $r['comune'], $in['nascita'], $r['eta'], $in['modello_id'], $r['veicolo'],
+        db()->prepare("INSERT INTO preventivi (cliente_id, creato_il, origine, creato_da, comune_id, comune_nome, data_nascita, eta, modello_id, prodotto_id, frazionamento, durata_anni, compagnia, veicolo, garanzie, dettaglio, totale, nome, email, telefono, consenso_privacy, stato)
+            VALUES (?, UTC_TIMESTAMP(), 'backoffice', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'in_lavorazione')")
+            ->execute([$cid, $me['email'], $in['comune_id'], $r['comune'], $in['nascita'], $r['eta'], $in['modello_id'], $r['prodotto_id'], $r['frazionamento'], $r['durata'], $r['compagnia'], $r['veicolo'],
                 implode(', ', array_column($r['righe'], 'nome')), json_encode($r, JSON_UNESCAPED_UNICODE), $r['totale'], $c['nome'], $c['email'], $c['telefono'], (int)$c['consenso_privacy']]);
         $pid = (int)db()->lastInsertId();
         // completa l'anagrafica con comune e data di nascita, se mancavano
@@ -47,11 +44,7 @@ pagina_inizio('Nuovo preventivo', 'clienti');
   <label>Data di nascita del contraente<input type="date" name="nascita" value="<?= e($in['nascita']) ?>" required></label>
   <label>Marca<select name="marca_id" data-marca required><option value="">Scegli…</option><?php foreach ($marche as $k => $v): ?><option value="<?= (int)$k ?>"<?= $in['marca_id'] === (int)$k ? ' selected' : '' ?>><?= e($v) ?></option><?php endforeach; ?></select></label>
   <label>Modello<select name="modello_id" data-modello required><option value="">Scegli…</option><?php foreach ($modelli as $k => $v): ?><option value="<?= (int)$k ?>"<?= $in['modello_id'] === (int)$k ? ' selected' : '' ?>><?= e($v) ?></option><?php endforeach; ?></select></label>
-  <fieldset><legend>Garanzie</legend>
-  <?php foreach ($garanzie as $g): ?>
-    <label class="check"><input type="checkbox" name="garanzie[]" value="<?= (int)$g['id'] ?>"<?= $g['principale'] ? ' checked disabled' : (in_array((int)$g['id'], $in['garanzie'], true) ? ' checked' : '') ?>> <?= e($g['nome']) ?></label>
-  <?php endforeach; ?>
-  </fieldset>
+  <?php campi_calcolo($in); ?>
   <div class="actions"><button class="btn">Calcola e crea il preventivo</button><a class="btn btn--ghost" href="clienti.php?id=<?= $cid ?>">Annulla</a></div>
 </form>
 <?php pagina_fine();

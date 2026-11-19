@@ -97,4 +97,95 @@ final class Calcolo
     {
         return rtrim(rtrim(number_format($v, $dec, ',', '.'), '0'), ',');
     }
+
+    public const RATE = ['annuale' => 1, 'semestrale' => 2, 'trimestrale' => 4, 'mensile' => 12];
+
+    /**
+     * Premio di un prodotto per il cliente: garanzie del prodotto (calcolo di stima()), poi
+     * correzioni del prodotto sull'RC, promozioni attive, sconto per la durata, premio minimo/massimo
+     * e infine la maggiorazione o lo sconto del frazionamento.
+     *
+     * @param array $p   prodotto: id, nome, compagnia, premio_minimo, premio_massimo,
+     *                   frazionamenti [fraz => variazione %], durate [anni => sconto %],
+     *                   promozioni [[nome, tipo, valore, dal, al]], correzioni [[tipo, eta_min, eta_max, chiave, moltiplicatore, descrizione]],
+     *                   garanzie (righe della tabella garanzie del prodotto), veicoli (auto|moto|entrambi)
+     * @param array $codici  codici delle garanzie accessorie scelte (es. FURTO, CRISTALLI)
+     * @param array $ctx     coeff_comune, coeff_marca, coeff_modello, valore, sigla, regione, marca_id, tipo_veicolo, frazionamento, durata, oggi
+     * @return array{0:?array,1:?string} [risultato, motivo dell'esclusione]
+     */
+    public static function prodotto(array $p, array $codici, int $eta, array $fasce, array $ctx, array $opz = []): array
+    {
+        $fraz = $ctx['frazionamento'] ?? 'annuale';
+        $durata = (int)($ctx['durata'] ?? 1);
+        $oggi = $ctx['oggi'] ?? date('Y-m-d');
+        if (($p['veicoli'] ?? 'entrambi') !== 'entrambi' && $p['veicoli'] !== ($ctx['tipo_veicolo'] ?? 'auto')) return [null, 'Non assicura questo tipo di veicolo'];
+        if (!array_key_exists($fraz, $p['frazionamenti'] ?? [])) return [null, 'Frazionamento ' . $fraz . ' non previsto'];
+        $durate = $p['durate'] ?? [1 => 0];
+        if ($durata > 1 && !array_key_exists($durata, $durate)) return [null, "Durata di $durata anni non prevista"];
+
+        $perCodice = [];
+        foreach ($p['garanzie'] as $g) if ((int)($g['attivo'] ?? 1) === 1) $perCodice[strtoupper((string)$g['codice'])] = $g;
+        $ids = [];
+        foreach ($codici as $c) {
+            $c = strtoupper((string)$c);
+            if (!isset($perCodice[$c]) || (int)$perCodice[$c]['principale'] === 1) return [null, 'Garanzia ' . $c . ' non presente'];
+            $ids[] = (int)$perCodice[$c]['id'];
+        }
+
+        // correzioni del prodotto (moltiplicano l'RC e le garanzie che applicano i coefficienti)
+        $molt = 1.0; $applicate = [];
+        foreach ($p['correzioni'] ?? [] as $c) {
+            $ok = match ($c['tipo']) {
+                'eta' => $eta >= (int)$c['eta_min'] && $eta <= (int)$c['eta_max'],
+                'provincia' => strcasecmp((string)$c['chiave'], (string)($ctx['sigla'] ?? '')) === 0,
+                'regione' => strcasecmp((string)$c['chiave'], (string)($ctx['regione'] ?? '')) === 0,
+                'marca' => (int)$c['chiave'] === (int)($ctx['marca_id'] ?? 0),
+                'veicolo' => (string)$c['chiave'] === (string)($ctx['tipo_veicolo'] ?? ''),
+                default => false,
+            };
+            if ($ok) { $molt *= (float)$c['moltiplicatore']; $applicate[] = ($c['descrizione'] ?: $c['tipo']) . ' ×' . rtrim(rtrim(number_format((float)$c['moltiplicatore'], 3, ',', ''), '0'), ','); }
+        }
+
+        try {
+            $s = self::stima(array_values($perCodice), $ids, $eta, $fasce, (float)$ctx['coeff_comune'], (float)$ctx['coeff_marca'], (float)$ctx['coeff_modello'] * $molt,
+                isset($ctx['valore']) && $ctx['valore'] !== null ? (float)$ctx['valore'] : null, $opz);
+        } catch (InvalidArgumentException) {
+            return [null, 'Manca la garanzia RC'];
+        }
+        $arr = fn(float $v) => ($opz['arrotondamento'] ?? 'centesimi') === 'euro' ? round($v, 0) : round($v, 2);
+        $base = $s['totale'];
+        $annuo = $base;
+        $sconti = [];
+        foreach ($p['promozioni'] ?? [] as $pr) {
+            if ((int)($pr['attivo'] ?? 1) !== 1) continue;
+            if (!empty($pr['dal']) && $pr['dal'] > $oggi) continue;
+            if (!empty($pr['al']) && $pr['al'] < $oggi) continue;
+            $d = $pr['tipo'] === 'importo' ? min($annuo, (float)$pr['valore']) : $annuo * (float)$pr['valore'] / 100;
+            $annuo -= $d;
+            $sconti[] = ['nome' => $pr['nome'], 'importo' => -$arr($d)];
+        }
+        if ($durata > 1 && ($sc = (float)($durate[$durata] ?? 0)) != 0) {
+            $d = $annuo * $sc / 100;
+            $annuo -= $d;
+            $sconti[] = ['nome' => "Sconto per durata di $durata anni (" . rtrim(rtrim(number_format($sc, 2, ',', ''), '0'), ',') . '%)', 'importo' => -$arr($d)];
+        }
+        $limite = null;
+        if (!empty($p['premio_minimo']) && $annuo < (float)$p['premio_minimo']) { $annuo = (float)$p['premio_minimo']; $limite = 'premio minimo del prodotto'; }
+        if (!empty($p['premio_massimo']) && $annuo > (float)$p['premio_massimo']) { $annuo = (float)$p['premio_massimo']; $limite = 'premio massimo del prodotto'; }
+        $var = (float)$p['frazionamenti'][$fraz];
+        if ($var != 0) {
+            $d = $annuo * $var / 100;
+            $annuo += $d;
+            $sconti[] = ['nome' => ($var > 0 ? 'Maggiorazione' : 'Sconto') . ' pagamento ' . $fraz . ' (' . ($var > 0 ? '+' : '') . rtrim(rtrim(number_format($var, 2, ',', ''), '0'), ',') . '%)', 'importo' => $arr($d)];
+        }
+        $annuo = $arr(max(0, $annuo));
+        $n = self::RATE[$fraz] ?? 1;
+        return [[
+            'prodotto_id' => (int)$p['id'], 'prodotto' => $p['nome'], 'compagnia' => $p['compagnia'] ?? '',
+            'righe' => $s['righe'], 'sconti' => $sconti, 'premio_garanzie' => $base, 'annuo' => $annuo,
+            'frazionamento' => $fraz, 'rate' => $n, 'rata' => round($annuo / $n, 2), 'durata' => $durata, 'totale_durata' => round($annuo * $durata, 2),
+            'su_richiesta' => $s['su_richiesta'], 'fascia_eta' => $s['fascia_eta'], 'coefficiente' => $s['coefficiente'],
+            'correzioni' => $applicate, 'limite' => $limite,
+        ], null];
+    }
 }

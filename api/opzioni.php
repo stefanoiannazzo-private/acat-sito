@@ -33,8 +33,7 @@ switch ($cosa) {
         $st->execute([(int)($_GET['marca'] ?? 0)]);
         json_out(['ok' => true, 'modelli' => array_map(fn($m) => ['id' => (int)$m['id'], 'nome' => $m['nome']], $st->fetchAll())]);
     case 'garanzie':
-        json_out(['ok' => true, 'garanzie' => array_map(fn($g) => ['id' => (int)$g['id'], 'nome' => $g['nome'], 'descrizione' => $g['descrizione'], 'principale' => (int)$g['principale'] === 1],
-            Preventivatore::garanzie())]);
+        json_out(['ok' => true, 'garanzie' => Preventivatore::garanziePubbliche()] + Preventivatore::opzioniPagamento());
     default:
         json_out(['ok' => false, 'errore' => 'Richiesta non valida.'], 400);
 }

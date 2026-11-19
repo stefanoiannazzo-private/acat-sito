@@ -110,11 +110,16 @@ if (isset($form) || isset($_GET['nuovo']) || isset($_GET['modifica'])):
         else {
             $form = ['id' => 0, 'cliente_id' => (int)($_GET['cliente'] ?? 0), 'frazionamento' => 'annuale', 'avvisa_cliente' => 1, 'stato' => 'attiva', 'compagnia_id' => 0, 'prodotto_id' => null];
             if ($pv = (int)($_GET['preventivo'] ?? 0)) {
-                $st = db()->prepare('SELECT cliente_id, veicolo, compagnia, decorrenza, COALESCE(totale_definitivo, totale) AS premio FROM preventivi WHERE id = ?'); $st->execute([$pv]);
+                $st = db()->prepare('SELECT p.cliente_id, p.veicolo, p.compagnia, p.decorrenza, COALESCE(p.totale_definitivo, p.totale) AS premio, p.prodotto_id, p.frazionamento, pr.compagnia_id AS pr_compagnia, pr.categoria_id AS pr_categoria FROM preventivi p LEFT JOIN prodotti pr ON pr.id = p.prodotto_id WHERE p.id = ?'); $st->execute([$pv]);
                 if ($x = $st->fetch()) {
                     $form['cliente_id'] = (int)$x['cliente_id']; $form['oggetto'] = $x['veicolo']; $form['premio_annuo'] = $x['premio'];
                     if ($x['decorrenza']) { $form['data_stipula'] = $x['decorrenza']; $form['scadenza'] = Scadenze::scadenzaDaStipula($x['decorrenza']); }
                     foreach ($compagnie as $co) if ($x['compagnia'] && mb_strtolower($co['nome']) === mb_strtolower(trim($x['compagnia']))) $form['compagnia_id'] = (int)$co['id'];
+                    if ($x['prodotto_id'] && $x['pr_compagnia'] && (!$form['compagnia_id'] || $form['compagnia_id'] === (int)$x['pr_compagnia'])) {
+                        $form['compagnia_id'] = (int)$x['pr_compagnia']; $form['prodotto_id'] = (int)$x['prodotto_id'];
+                        if ($x['pr_categoria']) $form['categoria_id'] = (int)$x['pr_categoria'];
+                    }
+                    if ($x['frazionamento'] && isset(Scadenze::MESI[$x['frazionamento']])) $form['frazionamento'] = $x['frazionamento'];
                 }
             }
         }

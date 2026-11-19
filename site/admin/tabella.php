@@ -5,6 +5,9 @@ require __DIR__ . '/_init.php';
 Auth::richiedi();
 
 $t = (string)($_GET['t'] ?? '');
+// le garanzie ora stanno dentro i prodotti; il prodotto ha la sua pagina con listino e garanzie
+if ($t === 'garanzie') vai('tabella.php?t=prodotti');
+if ($t === 'prodotti' && $_SERVER['REQUEST_METHOD'] === 'GET' && (isset($_GET['nuovo']) || isset($_GET['id']))) vai('prodotto.php' . (isset($_GET['id']) ? '?id=' . (int)$_GET['id'] : ''));
 $def = Tabelle::def($t);
 if (!$def) vai('index.php');
 $campi = $def['campi'];

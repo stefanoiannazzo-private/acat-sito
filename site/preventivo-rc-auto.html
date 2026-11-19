@@ -19,7 +19,7 @@
 <link rel="stylesheet" href="vendor/fonts/fonts.css?v=792d3e7f">
 <link rel="stylesheet" href="assets/system.css?v=aa881128">
 <link rel="stylesheet" href="assets/motion/motion.css?v=54fb2c67">
-<link rel="stylesheet" href="assets/site.css?v=04d6bf56">
+<link rel="stylesheet" href="assets/site.css?v=60086df8">
 <style>
 :root {
   --p-bg: #f4f6f9; --p-surface: #e6ecf4; --p-ink: #0e2340; --p-muted: #4a5a72;
@@ -146,6 +146,10 @@
             <legend><span class="pv-step__n">3</span>Le garanzie</legend>
             <p class="pv-hint">La responsabilità civile è obbligatoria ed è sempre inclusa. Aggiungi le garanzie che ti interessano.</p>
             <div class="pv-garanzie" id="pv-garanzie"></div>
+            <div class="pv-row pv-pag">
+              <div class="pv-field"><label for="pv-fraz">Pagamento</label><select id="pv-fraz"><option value="annuale">Annuale</option></select></div>
+              <div class="pv-field" id="pv-durata-box" hidden><label for="pv-durata">Durata del contratto</label><select id="pv-durata"><option value="1">1 anno</option></select></div>
+            </div>
           </fieldset>
           <fieldset class="pv-step pv-contatti" id="pv-contatti" hidden>
             <legend><span class="pv-step__n">4</span>I tuoi contatti</legend>
@@ -175,6 +179,7 @@
         <div class="pv-out__res" hidden>
           <p class="pv-out__label">Stima annuale indicativa</p>
           <p class="pv-out__tot" id="pv-tot"></p>
+          <p class="pv-out__rata" id="pv-rata" hidden></p>
           <p class="pv-out__meta" id="pv-meta"></p>
           <ul class="pv-out__rows" id="pv-righe"></ul>
           <p class="pv-out__note" id="pv-avviso"></p>
@@ -220,7 +225,7 @@
 <script src="vendor/gsap/gsap.min.js?v=47da594c"></script>
 <script src="vendor/gsap/ScrollTrigger.min.js?v=ba1fa78e"></script>
 <script src="assets/fx.js?v=bcb849e7"></script>
-<script src="assets/preventivo.js?v=81e5fb09" defer></script>
+<script src="assets/preventivo.js?v=9e1ff5ed" defer></script>
 <script type="module" src="assets/system.js?v=8e0053b1"></script>
 <script type="module" src="assets/motion/motion.js?v=37f5401f"></script>
 </body>

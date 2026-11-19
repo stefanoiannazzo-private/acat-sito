@@ -12,6 +12,7 @@
   const el = {
     comune: $('#pv-comune'), comuneId: $('#pv-comune-id'), lista: $('#pv-comuni'), nascita: $('#pv-nascita'),
     marca: $('#pv-marca'), modello: $('#pv-modello'), garanzie: $('#pv-garanzie'), contatti: $('#pv-contatti'),
+    fraz: $('#pv-fraz'), durata: $('#pv-durata'), durataBox: $('#pv-durata-box'),
     err: $('#pv-err'), submit: $('#pv-submit'), out: $('#pv-out'), off: document.querySelector('.pv-off'),
   };
   let cfg = { mostra_prezzo: 'subito', eta_minima: 18 }, fase = 'calcolo', ultimaStima = null;
@@ -86,9 +87,14 @@
   // ---------- garanzie
   const caricaGaranzie = async () => {
     const r = await api('garanzie').catch(() => ({ garanzie: [] }));
+    const fr = r.frazionamenti || [{ valore: 'annuale', nome: 'Annuale' }];
+    el.fraz.innerHTML = fr.map((f) => `<option value="${esc(f.valore)}">${esc(f.nome)}</option>`).join('');
+    const du = r.durate || [1];
+    el.durata.innerHTML = du.map((a) => `<option value="${a}">${a === 1 ? '1 anno' : a + ' anni'}</option>`).join('');
+    el.durataBox.hidden = du.length < 2;
     el.garanzie.innerHTML = (r.garanzie || []).map((g) => `
       <label class="pv-g${g.principale ? ' pv-g--main' : ''}">
-        <input type="checkbox" value="${g.id}"${g.principale ? ' checked disabled' : ''}>
+        <input type="checkbox" value="${esc(g.codice)}"${g.principale ? ' checked disabled' : ''}>
         <span class="pv-g__box" aria-hidden="true"></span>
         <span class="pv-g__txt"><b>${esc(g.nome)}</b>${g.descrizione ? `<small>${esc(g.descrizione)}</small>` : ''}</span>
         ${g.principale ? '<span class="pv-g__tag">Inclusa</span>' : ''}
@@ -98,7 +104,8 @@
   // ---------- invio
   const dati = () => ({
     comune_id: +el.comuneId.value || 0, nascita: el.nascita.value, modello_id: +el.modello.value || 0,
-    garanzie: [...el.garanzie.querySelectorAll('input:checked:not(:disabled)')].map((x) => +x.value),
+    garanzie: [...el.garanzie.querySelectorAll('input:checked:not(:disabled)')].map((x) => x.value),
+    frazionamento: el.fraz.value || 'annuale', durata: +el.durata.value || 1,
   });
   const contatti = () => ({ nome: $('#pv-nome').value.trim(), email: $('#pv-email').value.trim(), telefono: $('#pv-tel').value.trim(),
     note: $('#pv-note').value.trim(), consenso: $('#pv-consenso').checked, sito_web: $('#pv-sito').value });
@@ -118,8 +125,11 @@
   const disegna = (s) => {
     ultimaStima = s;
     $('#pv-tot').textContent = euro(s.totale) + (s.su_richiesta ? ' +' : '');
+    const rata = $('#pv-rata');
+    rata.hidden = !(s.rate > 1 || s.durata > 1);
+    rata.textContent = [s.rate > 1 ? `${s.rate} rate da ${euro(s.rata)} (pagamento ${s.frazionamento})` : '', s.durata > 1 ? `contratto di ${s.durata} anni` : ''].filter(Boolean).join(' · ');
     $('#pv-meta').textContent = `${s.veicolo} · ${s.comune} · ${s.eta} anni`;
-    $('#pv-righe').innerHTML = s.righe.map((r) => `<li><span>${esc(r.nome)}</span><b>${euro(r.importo)}</b></li>`).join('');
+    $('#pv-righe').innerHTML = s.righe.concat(s.sconti || []).map((r) => `<li><span>${esc(r.nome)}</span><b>${euro(r.importo)}</b></li>`).join('');
     $('#pv-avviso').textContent = s.avviso || '';
   };
   const occupato = (on, testo) => { el.submit.disabled = on; el.submit.classList.toggle('is-busy', on); if (testo) el.submit.firstChild.textContent = testo; };

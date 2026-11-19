@@ -31,8 +31,10 @@ function controlla_attivo(): void {
 
 /** Dati del veicolo e del conducente dal corpo della richiesta */
 function dati_calcolo(array $d): array {
-    $garanzie = array_values(array_filter(array_map('intval', (array)($d['garanzie'] ?? [])), fn($x) => $x > 0));
-    return [(int)($d['comune_id'] ?? 0), (string)($d['nascita'] ?? ''), (int)($d['modello_id'] ?? 0), array_slice($garanzie, 0, 30)];
+    $garanzie = array_values(array_filter(array_map(fn($x) => strtoupper(trim((string)$x)), (array)($d['garanzie'] ?? [])), fn($x) => (bool)preg_match('/^[A-Z0-9_-]{1,30}$/', $x)));
+    $fraz = (string)($d['frazionamento'] ?? 'annuale');
+    $pag = ['frazionamento' => isset(Preventivatore::FRAZIONAMENTI[$fraz]) ? $fraz : 'annuale', 'durata' => max(1, min(10, (int)($d['durata'] ?? 1)))];
+    return [(int)($d['comune_id'] ?? 0), (string)($d['nascita'] ?? ''), (int)($d['modello_id'] ?? 0), array_slice($garanzie, 0, 30), $pag];
 }
 
 /** Dati di contatto validati: [dati, errore] */
@@ -50,7 +52,8 @@ function dati_contatto(array $d): array {
 
 /** Toglie dalla stima i dettagli interni della tariffa prima di mandarla al browser */
 function stima_pubblica(array $r): array {
-    unset($r['coefficiente']);
-    $r['righe'] = array_map(function ($x) { unset($x['spiegazione']); return $x; }, $r['righe']);
+    // al cliente solo il prezzo migliore: niente nome della compagnia/prodotto né confronto
+    foreach (['coefficiente', 'confronto', 'prodotto', 'prodotto_id', 'compagnia', 'correzioni', 'limite', 'premio_garanzie'] as $k) unset($r[$k]);
+    $r['righe'] = array_map(function ($x) { unset($x['spiegazione'], $x['id']); return $x; }, $r['righe']);
     return $r;
 }

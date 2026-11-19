@@ -24,6 +24,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         vai($p['cliente_id'] ? 'clienti.php?id=' . $p['cliente_id'] : 'preventivi.php');
     }
 
+    if ($az === 'usa_proposta') {
+        $d = json_decode((string)$p['dettaglio'], true) ?: [];
+        $pid = (int)($_POST['prodotto_id'] ?? 0);
+        foreach ($d['confronto']['validi'] ?? [] as $v) if ((int)$v['prodotto_id'] === $pid) {
+            $righe = array_map(fn($r) => ['nome' => $r['nome'], 'importo' => $r['importo']], array_merge($v['righe'], $v['sconti'] ?? []));
+            db()->prepare('UPDATE preventivi SET righe_definitive = ?, totale_definitivo = ?, compagnia = ?, prodotto_id = ?, frazionamento = ? WHERE id = ?')
+                ->execute([json_encode($righe, JSON_UNESCAPED_UNICODE), $v['annuo'], $v['compagnia'], $pid, $v['frazionamento'], $id]);
+            Auth::log('modifica', 'preventivi', $id, 'proposta ' . $v['compagnia'] . ' – ' . $v['prodotto']);
+            flash('ok', 'Importi e compagnia presi dalla proposta ' . $v['compagnia'] . ' – ' . $v['prodotto'] . '.');
+            vai('preventivi.php?id=' . $id);
+        }
+        flash('errore', 'Proposta non trovata nel confronto.');
+        vai('preventivi.php?id=' . $id);
+    }
+
     if (in_array($az, ['salva', 'invia'], true)) {
         // importi definitivi riga per riga (vuoto = "su richiesta")
         $base = EmailPreventivo::righe($p);
@@ -141,8 +156,10 @@ if (isset($_GET['id'])):
       <h3>Stima automatica</h3>
       <table class="table table--small"><tbody>
       <?php foreach ($d['righe'] ?? [] as $r): ?><tr><td><?= e($r['nome']) ?><br><small class="muted"><?= e($r['spiegazione'] ?? '') ?></small></td><td class="right"><?= $r['importo'] === null ? 'su richiesta' : euro($r['importo']) ?></td></tr><?php endforeach; ?>
-      <tr class="tot"><td>Totale stimato</td><td class="right"><?= euro($p['totale']) ?></td></tr>
+      <?php foreach ($d['sconti'] ?? [] as $r): ?><tr><td><?= e($r['nome']) ?></td><td class="right"><?= euro($r['importo']) ?></td></tr><?php endforeach; ?>
+      <tr class="tot"><td>Totale stimato<?= !empty($d['prodotto']) ? '<br><small class="muted">' . e($d['compagnia'] . ' – ' . $d['prodotto']) . (($d['rate'] ?? 1) > 1 ? ' · ' . (int)$d['rate'] . ' rate da ' . euro($d['rata']) : '') . (($d['durata'] ?? 1) > 1 ? ' · ' . (int)$d['durata'] . ' anni' : '') . '</small>' : '' ?></td><td class="right"><?= euro($p['totale']) ?></td></tr>
       </tbody></table>
+      <?php tabella_confronto($d, (int)$p['id'], $p['prodotto_id'] !== null ? (int)$p['prodotto_id'] : null); ?>
       <h3>Email</h3>
       <?php if (!$mail): ?><p class="muted">Nessuna email per questo preventivo.</p><?php else: ?>
       <ul class="log"><?php foreach ($mail as $m): ?><li><span class="muted"><?= e(data_it($m['creato_il'])) ?></span> <?= e(['preventivo' => 'Preventivo al cliente', 'avviso_agenzia' => 'Avviso all\'agenzia', 'avviso_accettazione' => 'Avviso di accettazione'][$m['tipo']] ?? $m['tipo']) ?> → <?= e($m['destinatario']) ?> <?= $m['esito'] === 'inviata' ? '<span class="tag tag--ok">inviata</span>' : '<span class="tag tag--nuovo">errore</span> <small class="err">' . e((string)$m['errore']) . '</small>' ?></li><?php endforeach; ?></ul>

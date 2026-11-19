@@ -400,6 +400,8 @@ main > section.hero--cover { height: auto; }
 .pv-out__label { font-size: var(--t-small); text-transform: uppercase; letter-spacing: .08em; }
 .pv-out__tot { font: var(--display-weight) clamp(44px, 4vw, 60px)/1 var(--font-display); color: #fff !important; margin: var(--s-3) 0 var(--s-3) !important; }
 .pv-out__meta { font-size: var(--t-small); }
+.pv-out__rata { font-weight: 600; color: #fff !important; margin: 0 0 var(--s-2) !important; }
+.pv-pag { margin-top: var(--s-5); }
 .pv-out__rows { list-style: none; margin: var(--s-5) 0; padding: 0; display: grid; }
 .pv-out__rows li { display: flex; justify-content: space-between; gap: var(--s-4); padding: 10px 0; border-bottom: 1px solid rgb(255 255 255 / .14); }
 .pv-out__rows b { font-weight: 600; white-space: nowrap; }

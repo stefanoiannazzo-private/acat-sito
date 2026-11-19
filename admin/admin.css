@@ -150,3 +150,10 @@ legend { font-weight: 500; padding: 0 4px; }
 .tag--pol-attiva { background: #e3f3ea; color: var(--ok); }
 .tag--pol-disdetta, .tag--pol-sostituita, .tag--pol-scaduta { background: #eceef2; color: #5a6880; }
 @media (max-width: 900px) { .calc, .upload { grid-template-columns: 1fr; } }
+.btn--small { padding: 4px 10px; font-size: 13px; }
+.scroll-x { overflow-x: auto; }
+.table--edit input.sub { margin-top: 4px; font-size: 13px; }
+.table--edit tr.row-new td { background: #f6f8fb; }
+.table--edit input[size] { width: auto; }
+.table tr.muted td { color: #7a8597; }
+section.box + .actions { margin-top: 24px; }

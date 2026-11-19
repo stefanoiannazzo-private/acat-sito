@@ -7,7 +7,7 @@ controlla_attivo();
 if (!Limiti::consenti('calcola', 30)) json_out(['ok' => false, 'errore' => 'Troppe richieste, riprova tra un minuto.'], 429);
 if (impostazione('mostra_prezzo', 'subito') !== 'subito') json_out(['ok' => false, 'errore' => 'Lascia i tuoi contatti per vedere la stima.'], 403);
 
-[$comune, $nascita, $modello, $garanzie] = dati_calcolo(input_json());
-[$r, $err] = Preventivatore::calcola($comune, $nascita, $modello, $garanzie);
+[$comune, $nascita, $modello, $garanzie, $pag] = dati_calcolo(input_json());
+[$r, $err] = Preventivatore::calcola($comune, $nascita, $modello, $garanzie, false, $pag);
 if ($err) json_out(['ok' => false, 'errore' => $err], 422);
 json_out(['ok' => true, 'stima' => stima_pubblica($r)]);

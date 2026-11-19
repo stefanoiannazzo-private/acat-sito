@@ -31,7 +31,7 @@ final class EmailPreventivo
         $def = json_decode((string)($p['righe_definitive'] ?? ''), true);
         if (is_array($def) && $def) return $def;
         $d = json_decode((string)($p['dettaglio'] ?? ''), true) ?: [];
-        return array_map(fn($r) => ['nome' => $r['nome'], 'importo' => $r['importo']], $d['righe'] ?? []);
+        return array_map(fn($r) => ['nome' => $r['nome'], 'importo' => $r['importo']], array_merge($d['righe'] ?? [], $d['sconti'] ?? []));
     }
 
     public static function totale(array $p): ?float

@@ -76,7 +76,6 @@ function pagina_inizio(string $titolo, string $sezione = ''): void
         'prodotti' => ['tabella.php?t=prodotti', 'Prodotti'],
         'categorie' => ['tabella.php?t=categorie', 'Classificazione polizze'],
         'prova' => ['prova.php', 'Prova calcolo'],
-        'garanzie' => ['tabella.php?t=garanzie', 'Garanzie'],
         'fasce_eta' => ['tabella.php?t=fasce_eta', 'Fasce d\'età'],
         'comuni' => ['tabella.php?t=comuni', 'Comuni'],
         'marche' => ['tabella.php?t=marche', 'Marche'],
@@ -135,3 +134,66 @@ function paginazione(int $tot, int $pag, int $per, array $q): string
     if ($pag < $n) $out .= $link($pag + 1, 'Successiva ›');
     return $out . '</nav>';
 }
+
+/* ---------- calcolo: campi comuni a "Prova calcolo" e "Nuovo preventivo" ---------- */
+
+/** Dati del modulo di calcolo (POST), con i valori iniziali in $base */
+function calcolo_input(array $base = []): array
+{
+    $fraz = (string)($_POST['frazionamento'] ?? 'annuale');
+    return [
+        'comune_id' => (int)($_POST['comune_id'] ?? $base['comune_id'] ?? 0), 'comune' => (string)($_POST['comune'] ?? $base['comune'] ?? ''),
+        'nascita' => (string)($_POST['nascita'] ?? $base['nascita'] ?? ''), 'marca_id' => (int)($_POST['marca_id'] ?? 0), 'modello_id' => (int)($_POST['modello_id'] ?? 0),
+        'garanzie' => array_values(array_filter(array_map(fn($x) => strtoupper(trim((string)$x)), (array)($_POST['garanzie'] ?? [])), fn($x) => (bool)preg_match('/^[A-Z0-9_-]{1,30}$/', $x))),
+        'frazionamento' => isset(Preventivatore::FRAZIONAMENTI[$fraz]) ? $fraz : 'annuale', 'durata' => max(1, min(10, (int)($_POST['durata'] ?? 1))),
+        'prodotto_id' => (int)($_POST['prodotto_id'] ?? 0),
+    ];
+}
+
+function calcola_da_input(array $in): array
+{
+    $pag = ['frazionamento' => $in['frazionamento'], 'durata' => $in['durata']];
+    if ($in['prodotto_id']) $pag['prodotto_id'] = $in['prodotto_id'];
+    return Preventivatore::calcola($in['comune_id'], $in['nascita'], $in['modello_id'], $in['garanzie'], true, $pag);
+}
+
+/** Garanzie (per codice), pagamento, durata e scelta del prodotto */
+function campi_calcolo(array $in): void
+{
+    $g = Preventivatore::garanziePubbliche();
+    $prodotti = db()->query("SELECT p.id, CONCAT(c.nome, ' – ', p.nome, IF(p.preventivabile = 1, '', ' (non in tariffa online)')) FROM prodotti p JOIN compagnie c ON c.id = p.compagnia_id
+        WHERE EXISTS (SELECT 1 FROM garanzie g WHERE g.prodotto_id = p.id AND g.principale = 1) ORDER BY p.preventivabile DESC, c.nome, p.nome")->fetchAll(PDO::FETCH_KEY_PAIR); ?>
+  <fieldset><legend>Garanzie</legend>
+  <?php if (!$g): ?><p class="muted">Nessun prodotto in tariffa online: apri un prodotto auto e spunta "Preventivabile online".</p><?php endif; ?>
+  <?php foreach ($g as $x): ?>
+    <label class="check"><input type="checkbox" name="garanzie[]" value="<?= e($x['codice']) ?>"<?= $x['principale'] ? ' checked disabled' : (in_array($x['codice'], $in['garanzie'], true) ? ' checked' : '') ?>> <?= e($x['nome']) ?></label>
+  <?php endforeach; ?>
+  </fieldset>
+  <div class="form--grid2">
+    <label>Pagamento<select name="frazionamento"><?php foreach (Preventivatore::FRAZIONAMENTI as $k => $l): ?><option value="<?= $k ?>"<?= $in['frazionamento'] === $k ? ' selected' : '' ?>><?= e($l) ?></option><?php endforeach; ?></select></label>
+    <label>Durata<select name="durata"><?php for ($a = 1; $a <= 5; $a++): ?><option value="<?= $a ?>"<?= $in['durata'] === $a ? ' selected' : '' ?>><?= $a === 1 ? '1 anno' : "$a anni" ?></option><?php endfor; ?></select></label>
+  </div>
+  <label>Prodotto<select name="prodotto_id"><option value="">Tutti i prodotti in tariffa: il prezzo migliore</option>
+    <?php foreach ($prodotti as $k => $v): ?><option value="<?= (int)$k ?>"<?= $in['prodotto_id'] === (int)$k ? ' selected' : '' ?>><?= e($v) ?></option><?php endforeach; ?></select></label>
+<?php }
+
+/** Tabella di confronto fra i prodotti calcolati; con $preventivoId ogni riga ha "Usa questa proposta" */
+function tabella_confronto(array $d, ?int $preventivoId = null, ?int $scelto = null): void
+{
+    $c = $d['confronto'] ?? null;
+    if (!$c) return; ?>
+  <h3>Confronto fra i prodotti</h3>
+  <table class="table table--small"><thead><tr><th>Compagnia e prodotto</th><th class="right">Annuo</th><th class="right">Rata</th><?= $preventivoId ? '<th></th>' : '' ?></tr></thead><tbody>
+  <?php foreach ($c['validi'] as $i => $v): ?>
+    <tr<?= ($scelto ?? ($d['prodotto_id'] ?? 0)) === $v['prodotto_id'] ? ' class="tot"' : '' ?>><td><?= e($v['compagnia'] . ' – ' . $v['prodotto']) ?><?= $i === 0 ? ' <span class="tag tag--ok">migliore</span>' : '' ?>
+      <?php $note = array_merge($v['correzioni'] ?? [], array_map(fn($s) => $s['nome'], $v['sconti'] ?? []), $v['limite'] ? [ucfirst($v['limite'])] : [], $v['su_richiesta'] ? ['alcune voci su richiesta'] : []); ?>
+      <?php if ($note): ?><br><small class="muted"><?= e(implode(' · ', $note)) ?></small><?php endif; ?></td>
+      <td class="right"><?= euro($v['annuo']) ?></td><td class="right"><?= $v['rate'] > 1 ? $v['rate'] . ' × ' . euro($v['rata']) : '–' ?></td>
+      <?php if ($preventivoId): ?><td><form method="post"><?= Auth::campoCsrf() ?><input type="hidden" name="id" value="<?= $preventivoId ?>"><input type="hidden" name="prodotto_id" value="<?= (int)$v['prodotto_id'] ?>"><button class="btn btn--ghost btn--small" name="azione" value="usa_proposta">Usa questa proposta</button></form></td><?php endif; ?></tr>
+  <?php endforeach; ?>
+  <?php foreach ($c['esclusi'] as $x): ?>
+    <tr class="muted"><td><?= e($x['compagnia'] . ' – ' . $x['prodotto']) ?><br><small><?= e($x['motivo']) ?></small></td><td class="right">–</td><td class="right">–</td><?= $preventivoId ? '<td></td>' : '' ?></tr>
+  <?php endforeach; ?>
+  </tbody></table>
+<?php }
+
