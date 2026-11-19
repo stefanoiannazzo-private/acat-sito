@@ -418,12 +418,12 @@ else:
     <button class="btn btn--ghost">Cerca</button>
   </form>
   <div class="tablewrap"><table class="table">
-    <thead><tr><th>Cliente</th><th>Contatti</th><th>Comune / città</th><th>Stato</th><th class="right">Preventivi</th><th class="right">Polizze attive</th><th>Aggiornato</th></tr></thead>
+    <thead><tr><th>Cliente</th><th>Contatti</th><th>Comune / città</th><th>Stato</th><th class="right">Preventivi</th><th class="right">Polizze attive</th><th>Tipo</th></tr></thead>
     <tbody>
     <?php foreach ($st as $c): ?>
-      <tr><td><a href="?id=<?= (int)$c['id'] ?>"><b><?= e($c['nome']) ?></b></a> <small class="tag"><?= $c['tipo'] === 'azienda' ? 'Azienda' : 'Persona' ?></small><?= $c['origine'] === 'sito' ? ' <small class="muted">dal sito</small>' : '' ?><?= $c['legati'] ? '<br><small class="muted">' . ($c['tipo'] === 'azienda' ? 'Persone: ' : 'Azienda: ') . e($c['legati']) . '</small>' : '' ?></td>
+      <tr><td><a href="?id=<?= (int)$c['id'] ?>"><b><?= e($c['nome']) ?></b></a><?= $c['legati'] ? '<br><small class="muted">' . ($c['tipo'] === 'azienda' ? 'Persone: ' : 'Azienda: ') . e($c['legati']) . '</small>' : '' ?></td>
       <td><?= e($c['email'] ?: '') ?><br><small class="muted"><?= e($c['telefono'] ?: '') ?></small></td>
-      <td><?= e($c['comune'] ?: '–') ?></td><td><?= $tag($c['stato_id']) ?></td><td class="right"><?= (int)$c['n_prev'] ?></td><td class="right"><?= (int)$c['n_pol'] ?></td><td><?= e(data_it($c['aggiornato_il'], false)) ?></td></tr>
+      <td><?= e($c['comune'] ?: '–') ?></td><td><?= $tag($c['stato_id']) ?></td><td class="right"><?= (int)$c['n_prev'] ?></td><td class="right"><?= (int)$c['n_pol'] ?></td><td><span class="tag tag--tipo-<?= e($c['tipo']) ?>"><?= $c['tipo'] === 'azienda' ? 'Azienda' : 'Persona' ?></span><?= $c['origine'] === 'sito' ? '<br><small class="muted">dal sito</small>' : '' ?></td></tr>
     <?php endforeach; ?>
     <?php if (!$tot): ?><tr><td colspan="7" class="muted">Nessun cliente.</td></tr><?php endif; ?>
     </tbody></table></div>
