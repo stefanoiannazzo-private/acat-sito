@@ -188,3 +188,11 @@ label small, .field small, .campo small, .hint { color: var(--ink); }
 /* --- tabelle compatte dentro un riquadro (documenti, legami): respiro dal bordo --- */
 .tablewrap .table--small td { padding: 14px 20px; vertical-align: middle; }
 .tablewrap .table--small td.right.nowrap a, .tablewrap .table--small td.right.nowrap .linkbtn { margin: 0 2px; }
+
+/* --- confronto fra i prodotti: colonne staccate, pulsante su una riga --- */
+.table--confronto th, .table--confronto td { padding: 10px 14px; vertical-align: middle; }
+.table--confronto th:first-child, .table--confronto td:first-child { padding-left: 0; }
+.table--confronto th:last-child, .table--confronto td:last-child { padding-right: 0; }
+.table--confronto td.azione { width: 1%; padding-left: 24px; text-align: right; }
+.table--confronto td.azione .btn { white-space: nowrap; }
+.table--confronto td.nowrap { white-space: nowrap; }
