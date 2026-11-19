@@ -17,7 +17,7 @@ final class LettoreContrattiTest extends TestCase
         $this->assertSame('512345678/AB', $r['numero']);
         $this->assertSame(1, $r['compagnia_id']);
         $this->assertSame(612.4, $r['premio_annuo']);
-        $this->assertSame('Targa GH123KL', $r['oggetto']);
+        $this->assertSame('targa GH123KL', $r['oggetto']);
     }
 
     public function testEtichetteEMesiInLettere(): void
@@ -44,5 +44,27 @@ final class LettoreContrattiTest extends TestCase
         $r = LettoreContratti::analizza('', $this->comp);
         $this->assertSame([], $r['trovati']);
         $this->assertNotEmpty($r['note']);
+    }
+
+    /** Impaginazione tipica di una polizza auto scaricata da un portale (dati inventati) */
+    public function testPolizzaAutoDaPortale(): void
+    {
+        $t = "Allianz Bonus Malus\nScegli il meglio per la tua polizza auto\nPolizza n. 557000111\nVeicolo assicurato\nassicurato Targa/telaio: AB123CD Data prima immatricolazione:\n31/05/2019\nPRIVATO Marca/modello: BMW 116D 5P. (DAL\n2018/07)\nDurata Decorrenza: dalle ore 24:00 del 31/07/2026 Scadenza:\n31/07/2027\nPremio Premio lordo annuo complessivo: 1.422,77\neuro Periodicità di pagamento: Semestrale Prossima rata:\n31/01/2027\nContratto NUOVO per veicolo precedentemente assicurato presso ITALIANA ASSICURAZIONI S.p.A., con contratto scaduto il 31/07/2026\nAllianz S.p.A. Allianz";
+        $r = LettoreContratti::analizza($t, $this->comp)['trovati'];
+        $this->assertSame('2026-07-31', $r['data_stipula']);
+        $this->assertSame('2027-07-31', $r['scadenza']);
+        $this->assertSame('semestrale', $r['frazionamento']);
+        $this->assertSame('557000111', $r['numero']);
+        $this->assertSame(1, $r['compagnia_id']);
+        $this->assertSame(1422.77, $r['premio_annuo']);
+        $this->assertSame('BMW 116D 5P · targa AB123CD', $r['oggetto']);
+        $this->assertSame('Allianz Bonus Malus', $r['prodotto_nuovo']);
+        $this->assertSame('rc_auto', $r['categoria']);
+    }
+
+    public function testProdottoDelCatalogo(): void
+    {
+        $r = LettoreContratti::analizza("Allianz Bonus Malus - polizza auto. Decorrenza 31/07/2026 Scadenza 31/07/2027", $this->comp, [7 => ['Allianz Bonus Malus', 1], 8 => ['Bonus', 1]])['trovati'];
+        $this->assertSame(7, $r['prodotto_id']);
     }
 }

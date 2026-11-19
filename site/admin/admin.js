@@ -49,7 +49,11 @@ document.addEventListener('DOMContentLoaded', () => {
     prod.innerHTML = '<option value="">–</option>';
     if (!comp.value) return;
     const r = await fetch('cerca.php?cosa=prodotti&compagnia=' + comp.value).then((x) => x.json());
-    for (const x of r.r || []) { const o = document.createElement('option'); o.value = x.id; o.textContent = x.n; prod.append(o); }
+    for (const x of r.r || []) { const o = document.createElement('option'); o.value = x.id; o.textContent = x.n; o.dataset.categoria = x.c || ''; prod.append(o); }
+  });
+  prod?.addEventListener('change', () => {
+    const c = prod.selectedOptions[0]?.dataset.categoria, sel = document.querySelector('select[data-categoria]');
+    if (c && c !== '0' && sel) sel.value = c;
   });
 
   const f = document.getElementById('polizza');

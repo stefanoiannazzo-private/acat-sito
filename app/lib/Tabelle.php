@@ -7,9 +7,6 @@ declare(strict_types=1);
  */
 final class Tabelle
 {
-    public const RAMI = ['rc_auto' => 'RC auto e moto', 'auto_cvt' => 'Auto: furto, incendio, kasko', 'casa' => 'Casa', 'famiglia' => 'Famiglia e RC privata',
-        'infortuni' => 'Infortuni', 'salute' => 'Salute', 'vita' => 'Vita', 'risparmio' => 'Risparmio e previdenza', 'impresa' => 'Impresa e negozi',
-        'professionisti' => 'Professionisti', 'viaggi' => 'Viaggi', 'altro' => 'Altro'];
 
     public static function tutte(): array
     {
@@ -49,19 +46,39 @@ final class Tabelle
                     'attivo' => ['label' => 'Attiva', 'tipo' => 'bool', 'predefinito' => 1],
                 ],
             ],
+            'categorie' => [
+                'titolo' => 'Classificazione polizze', 'singolare' => 'categoria',
+                'ordine' => 'COALESCE((SELECT a.ordine FROM categorie a WHERE a.id = t.parent_id), t.ordine), t.parent_id IS NOT NULL, t.ordine, t.nome',
+                'ricerca' => ['nome', 'codice'], 'filtri' => ['attivo'],
+                'lista' => ['area_nome', 'nome', 'codice', 'n_prodotti', 'n_polizze', 'attivo'],
+                'calcolati' => [
+                    'area_nome' => ['label' => 'Area', 'sql' => "COALESCE((SELECT a.nome FROM categorie a WHERE a.id = t.parent_id), '— Area principale —')"],
+                    'n_prodotti' => ['label' => 'Prodotti', 'sql' => '(SELECT COUNT(*) FROM prodotti pr WHERE pr.categoria_id = t.id)'],
+                    'n_polizze' => ['label' => 'Polizze attive', 'sql' => "(SELECT COUNT(*) FROM polizze po WHERE po.stato = 'attiva' AND po.categoria_id IN (SELECT x.id FROM categorie x WHERE x.id = t.id OR x.parent_id = t.id))"],
+                ],
+                'intro' => 'Tre aree principali (Auto, Ramo danni, Ramo vita) e sotto ciascuna le categorie, con i rami ministeriali di riferimento. Puoi aggiungere categorie o rinominarle; una categoria usata da prodotti o con sottocategorie non si può eliminare: disattivala.',
+                'campi' => [
+                    'parent_id' => ['label' => 'Area', 'tipo' => 'area', 'aiuto' => 'Lascia vuoto solo per creare una nuova area principale'],
+                    'nome' => ['label' => 'Nome', 'tipo' => 'testo', 'obbl' => true, 'max' => 100],
+                    'codice' => ['label' => 'Ramo di riferimento', 'tipo' => 'testo', 'max' => 40, 'aiuto' => 'Es. Ramo 10, Ramo I'],
+                    'ordine' => ['label' => 'Ordine', 'tipo' => 'intero', 'min' => 0, 'max_val' => 9999, 'predefinito' => 100],
+                    'attivo' => ['label' => 'Attiva', 'tipo' => 'bool', 'predefinito' => 1],
+                ],
+            ],
             'prodotti' => [
                 'titolo' => 'Prodotti', 'singolare' => 'prodotto', 'ordine' => 'compagnia_nome, nome',
-                'ricerca' => ['nome', 'descrizione'], 'filtri' => ['compagnia_id', 'ramo', 'attivo'],
-                'lista' => ['compagnia_nome', 'nome', 'ramo', 'n_polizze', 'attivo'], 'csv' => true,
+                'ricerca' => ['nome', 'descrizione'], 'filtri' => ['compagnia_id', 'categoria_id', 'attivo'],
+                'lista' => ['compagnia_nome', 'nome', 'categoria_nome', 'n_polizze', 'attivo'], 'csv' => true,
                 'calcolati' => [
                     'compagnia_nome' => ['label' => 'Compagnia', 'sql' => '(SELECT c.nome FROM compagnie c WHERE c.id = t.compagnia_id)'],
+                    'categoria_nome' => ['label' => 'Classificazione', 'sql' => "(SELECT CONCAT(COALESCE(CONCAT(a.nome, ' · '), ''), k.nome) FROM categorie k LEFT JOIN categorie a ON a.id = k.parent_id WHERE k.id = t.categoria_id)"],
                     'n_polizze' => ['label' => 'Polizze attive', 'sql' => "(SELECT COUNT(*) FROM polizze po WHERE po.prodotto_id = t.id AND po.stato = 'attiva')"],
                 ],
-                'intro' => 'Il catalogo di ogni compagnia. Nella polizza di un cliente scegli prima la compagnia, poi uno dei suoi prodotti.',
+                'intro' => 'Il catalogo di ogni compagnia, classificato per area (Auto, Ramo danni, Ramo vita) e categoria. Nella polizza di un cliente scegli prima la compagnia, poi uno dei suoi prodotti.',
                 'campi' => [
                     'compagnia_id' => ['label' => 'Compagnia', 'tipo' => 'compagnia', 'obbl' => true],
                     'nome' => ['label' => 'Nome del prodotto', 'tipo' => 'testo', 'obbl' => true, 'max' => 120],
-                    'ramo' => ['label' => 'Ramo', 'tipo' => 'scelta', 'obbl' => true, 'opzioni' => self::RAMI],
+                    'categoria_id' => ['label' => 'Classificazione', 'tipo' => 'categoria', 'obbl' => true],
                     'descrizione' => ['label' => 'Descrizione', 'tipo' => 'testo', 'max' => 255],
                     'attivo' => ['label' => 'Attivo', 'tipo' => 'bool', 'predefinito' => 1],
                 ],
@@ -174,6 +191,8 @@ final class Tabelle
                     break;
                 case 'marca':
                 case 'compagnia':
+                case 'categoria':
+                case 'area':
                     $v[$k] = (int)$raw ?: null;
                     break;
                 case 'testo_lungo':

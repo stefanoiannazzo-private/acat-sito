@@ -24,6 +24,7 @@ function filtri_sql(array $def, array $src, array &$par): string
     foreach ($def['filtri'] as $f) {
         $v = (string)($src['f_' . $f] ?? '');
         if ($v === '') continue;
+        if ($f === 'categoria_id') { $w[] = 't.categoria_id IN (SELECT x.id FROM categorie x WHERE x.id = ? OR x.parent_id = ?)'; $par[] = (int)$v; $par[] = (int)$v; continue; }
         $w[] = "t.$f = ?";
         $par[] = in_array($f, ['attivo', 'marca_id', 'compagnia_id'], true) ? (int)$v : $v;
     }
@@ -69,6 +70,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($id === $rcId) { $v['attivo'] = 1; $v['tipo_calcolo'] = 'fisso'; $v['applica_coefficienti'] = 1; }
             elseif ($id === 0) { $v['principale'] = 0; $v['dipende_da'] = $rcId; }
             if ($id !== $rcId && in_array($v['tipo_calcolo'], ['perc_rc', 'perc_valore'], true) && ($v['valore'] ?? 0) > 1000) $err['valore'] = 'Valore: una percentuale oltre 1000 non è plausibile.';
+        }
+        if ($t === 'categorie' && $id && $v['parent_id']) {
+            $f = db()->prepare('SELECT COUNT(*) FROM categorie WHERE parent_id = ?'); $f->execute([$id]);
+            if ((int)$f->fetchColumn() > 0) $err['parent_id'] = 'Questa è un\'area con categorie: non può stare dentro un\'altra area.';
+            $f = db()->prepare('SELECT parent_id FROM categorie WHERE id = ?'); $f->execute([$v['parent_id']]);
+            if ($f->fetchColumn()) $err['parent_id'] = 'Scegli un\'area principale.';
         }
         if ($t === 'stati_cliente' && $id) {
             $sys = db()->prepare('SELECT sistema FROM stati_cliente WHERE id = ?'); $sys->execute([$id]);
@@ -177,10 +184,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $cid = db()->prepare('SELECT id FROM compagnie WHERE nome = ?'); $cid->execute([$comp]);
                 $cid = (int)$cid->fetchColumn();
                 if (!$cid) { db()->prepare('INSERT INTO compagnie (nome) VALUES (?)')->execute([$comp]); $cid = (int)db()->lastInsertId(); }
-                $ramo = array_key_exists($row['ramo'] ?? '', Tabelle::RAMI) ? $row['ramo'] : (array_search($row['ramo'] ?? '', Tabelle::RAMI, true) ?: 'altro');
-                db()->prepare('INSERT INTO prodotti (compagnia_id, nome, ramo, descrizione, attivo) VALUES (?, ?, ?, ?, COALESCE(?, 1))
-                    ON DUPLICATE KEY UPDATE ramo = VALUES(ramo), descrizione = COALESCE(VALUES(descrizione), descrizione), attivo = COALESCE(?, attivo)')
-                    ->execute([$cid, $nome, $ramo, ($row['descrizione'] ?? '') ?: null, $att, $att]);
+                $cat = trim((string)($row['categoria'] ?? $row['classificazione'] ?? ''));
+                $catId = null;
+                if ($cat !== '') {
+                    $q = db()->prepare('SELECT id FROM categorie WHERE chiave = ? OR nome = ? OR CONCAT((SELECT a.nome FROM categorie a WHERE a.id = categorie.parent_id), \' · \', nome) = ? LIMIT 1');
+                    $q->execute([$cat, $cat, $cat]);
+                    $catId = (int)$q->fetchColumn() ?: null;
+                }
+                db()->prepare('INSERT INTO prodotti (compagnia_id, nome, categoria_id, descrizione, attivo) VALUES (?, ?, ?, ?, COALESCE(?, 1))
+                    ON DUPLICATE KEY UPDATE categoria_id = COALESCE(VALUES(categoria_id), categoria_id), descrizione = COALESCE(VALUES(descrizione), descrizione), attivo = COALESCE(?, attivo)')
+                    ->execute([$cid, $nome, $catId, ($row['descrizione'] ?? '') ?: null, $att, $att]);
                 $n++;
             } elseif ($t === 'modelli') {
                 $marca = $row['marca'] ?? $row['marca_nome'] ?? '';
@@ -217,11 +230,11 @@ if (isset($_GET['esporta']) && !empty($def['csv'])) {
     header('Content-Disposition: attachment; filename="' . $t . '-' . date('Y-m-d') . '.csv"');
     $out = fopen('php://output', 'w');
     fwrite($out, "\xEF\xBB\xBF");
-    $cols = array_merge(array_keys($campi), $t === 'modelli' ? ['marca'] : [], $t === 'prodotti' ? ['compagnia'] : []);
+    $cols = array_merge(array_keys($campi), $t === 'modelli' ? ['marca'] : [], $t === 'prodotti' ? ['compagnia', 'categoria'] : []);
     fputcsv($out, $cols, ';', '"', '');
     while ($r = $st->fetch()) {
         if ($t === 'modelli') $r['marca'] = preg_replace('/ \(moto\)$/', '', (string)$r['marca_nome']);
-        if ($t === 'prodotti') $r['compagnia'] = $r['compagnia_nome'];
+        if ($t === 'prodotti') { $r['compagnia'] = $r['compagnia_nome']; $r['categoria'] = $r['categoria_nome']; }
         fputcsv($out, array_map(fn($c) => is_numeric($r[$c] ?? null) && str_contains((string)$r[$c], '.') ? str_replace('.', ',', (string)$r[$c]) : $r[$c], $cols), ';', '"', '');
     }
     exit;
@@ -237,7 +250,7 @@ pagina_inizio($def['titolo'], $t);
 if ($importa && !empty($def['csv'])):
     $esempio = ['comuni' => "codice_istat;coefficiente;attivo\n001120;1,15;1", 'marche' => "nome;tipo_veicolo;coefficiente;attivo\nFiat;auto;1;1",
         'modelli' => "marca;tipo_veicolo;nome;anno_inizio;anno_fine;coefficiente;valore_indicativo;attivo\nFiat;auto;Panda;2012;;1,05;14000;1",
-        'prodotti' => "compagnia;nome;ramo;descrizione;attivo\nAllianz;Allianz Ultra Casa;casa;Casa e famiglia;1"][$t]; ?>
+        'prodotti' => "compagnia;nome;categoria;descrizione;attivo\nAllianz;Allianz Ultra Casa;Casa e famiglia (multirischi);Casa e famiglia;1\nAllianz;Allianz Bonus Malus;rc_auto;RC auto;1"][$t]; ?>
   <h1>Importa <?= e(mb_strtolower($def['titolo'])) ?> da CSV</h1>
   <p>File CSV con separatore <code>;</code> o <code>,</code> e la prima riga di intestazione. Le colonne mancanti non vengono toccate. Il modo più semplice: <a href="?<?= e(http_build_query(['t' => $t, 'esporta' => 1])) ?>">esporta il CSV</a>, modificalo in Excel e reimportalo.</p>
   <?php if ($t === 'comuni'): ?><p>Per i comuni si aggiornano coefficiente e stato, cercando il comune per codice ISTAT.</p><?php else: ?><p>Gli elementi nuovi vengono aggiunti, quelli già presenti (stesso nome) aggiornati.</p><?php endif; ?>
@@ -280,6 +293,10 @@ elseif ($id !== null || $nuovo || isset($errori)):
         <label for="<?= $aid ?>"><?= e($c['label']) ?><?= !empty($c['obbl']) ? ' *' : '' ?></label>
         <?php if ($c['tipo'] === 'scelta'): ?>
           <select id="<?= $aid ?>" name="<?= e($k) ?>"><?php foreach ($c['opzioni'] as $ov => $ol): ?><option value="<?= e($ov) ?>"<?= (string)$v === (string)$ov ? ' selected' : '' ?>><?= e($ol) ?></option><?php endforeach; ?></select>
+        <?php elseif ($c['tipo'] === 'categoria'): ?>
+          <select id="<?= $aid ?>" name="<?= e($k) ?>"><option value="">Scegli…</option><?= Categorie::opzioni($v !== null && $v !== '' ? (int)$v : null) ?></select>
+        <?php elseif ($c['tipo'] === 'area'): ?>
+          <select id="<?= $aid ?>" name="<?= e($k) ?>"><option value="">— Nessuna: è un'area principale —</option><?php foreach (Categorie::albero(false) as $ar): if ((int)$ar['id'] === $id) continue; ?><option value="<?= (int)$ar['id'] ?>"<?= (int)$v === (int)$ar['id'] ? ' selected' : '' ?>><?= e($ar['nome']) ?></option><?php endforeach; ?></select>
         <?php elseif ($c['tipo'] === 'compagnia'): ?>
           <select id="<?= $aid ?>" name="<?= e($k) ?>"><option value="">Scegli…</option><?php foreach (compagnie_opzioni() as $ov => $ol): ?><option value="<?= (int)$ov ?>"<?= (int)$v === (int)$ov ? ' selected' : '' ?>><?= e($ol) ?></option><?php endforeach; ?></select>
         <?php elseif ($c['tipo'] === 'testo_lungo'): ?>
@@ -331,6 +348,8 @@ else:
         $cur = $filtri['f_' . $f] ?? '';
         if ($f === 'attivo'): ?>
           <select name="f_attivo" aria-label="Stato"><option value="">Tutti</option><option value="1"<?= $cur === '1' ? ' selected' : '' ?>>Solo attivi</option><option value="0"<?= $cur === '0' ? ' selected' : '' ?>>Solo non attivi</option></select>
+        <?php elseif ($f === 'categoria_id'): ?>
+          <select name="f_categoria_id" aria-label="Classificazione"><option value="">Tutte le classificazioni</option><?= Categorie::opzioni($cur !== '' ? (int)$cur : null) ?></select>
         <?php elseif ($f === 'compagnia_id'): ?>
           <select name="f_compagnia_id" aria-label="Compagnia"><option value="">Tutte le compagnie</option><?php foreach (compagnie_opzioni() as $ov => $ol): ?><option value="<?= (int)$ov ?>"<?= $cur === (string)$ov ? ' selected' : '' ?>><?= e($ol) ?></option><?php endforeach; ?></select>
         <?php elseif ($f === 'marca_id'): ?>

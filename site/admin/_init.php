@@ -74,6 +74,7 @@ function pagina_inizio(string $titolo, string $sezione = ''): void
         'polizze' => ['polizze.php', 'Scadenziario polizze'],
         'compagnie' => ['tabella.php?t=compagnie', 'Compagnie'],
         'prodotti' => ['tabella.php?t=prodotti', 'Prodotti'],
+        'categorie' => ['tabella.php?t=categorie', 'Classificazione polizze'],
         'prova' => ['prova.php', 'Prova calcolo'],
         'garanzie' => ['tabella.php?t=garanzie', 'Garanzie'],
         'fasce_eta' => ['tabella.php?t=fasce_eta', 'Fasce d\'età'],

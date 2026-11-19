@@ -8,7 +8,7 @@ $oggi = date('Y-m-d');
 
 function polizza(int $id): ?array
 {
-    $st = db()->prepare('SELECT p.*, c.nome AS cliente, c.email AS email_cliente, co.nome AS compagnia, co.portale_url, pr.nome AS prodotto, pr.ramo
+    $st = db()->prepare('SELECT p.*, c.nome AS cliente, c.email AS email_cliente, co.nome AS compagnia, co.portale_url, pr.nome AS prodotto
         FROM polizze p JOIN clienti c ON c.id = p.cliente_id JOIN compagnie co ON co.id = p.compagnia_id LEFT JOIN prodotti pr ON pr.id = p.prodotto_id WHERE p.id = ?');
     $st->execute([$id]);
     return $st->fetch() ?: null;
@@ -23,6 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'cliente_id' => (int)($_POST['cliente_id'] ?? 0),
             'compagnia_id' => (int)($_POST['compagnia_id'] ?? 0),
             'prodotto_id' => (int)($_POST['prodotto_id'] ?? 0) ?: null,
+            'categoria_id' => (int)($_POST['categoria_id'] ?? 0) ?: null,
             'numero' => trim(mb_substr((string)($_POST['numero'] ?? ''), 0, 60)) ?: null,
             'oggetto' => trim(mb_substr((string)($_POST['oggetto'] ?? ''), 0, 190)) ?: null,
             'premio_annuo' => num((string)($_POST['premio_annuo'] ?? '')),
@@ -39,7 +40,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (!$st->fetchColumn()) $err[] = 'Cliente non valido.';
         $st = db()->prepare('SELECT COUNT(*) FROM compagnie WHERE id = ?'); $st->execute([$v['compagnia_id']]);
         if (!$st->fetchColumn()) $err[] = 'Scegli la compagnia.';
-        if ($v['prodotto_id']) { $st = db()->prepare('SELECT compagnia_id FROM prodotti WHERE id = ?'); $st->execute([$v['prodotto_id']]); if ((int)$st->fetchColumn() !== $v['compagnia_id']) $err[] = 'Il prodotto non appartiene alla compagnia scelta.'; }
+        if ($v['prodotto_id']) {
+            $st = db()->prepare('SELECT compagnia_id, categoria_id FROM prodotti WHERE id = ?'); $st->execute([$v['prodotto_id']]); $pr = $st->fetch();
+            if (!$pr || (int)$pr['compagnia_id'] !== $v['compagnia_id']) $err[] = 'Il prodotto non appartiene alla compagnia scelta.';
+            elseif (!$v['categoria_id']) $v['categoria_id'] = $pr['categoria_id'] ? (int)$pr['categoria_id'] : null;
+        }
+        $nuovoProd = trim(mb_substr((string)($_POST['prodotto_nuovo'] ?? ''), 0, 120));
+        if (!$err && !$v['prodotto_id'] && $nuovoProd !== '' && $v['compagnia_id']) {
+            // nuovo prodotto aggiunto al catalogo della compagnia (o ritrovato se esiste già)
+            db()->prepare('INSERT INTO prodotti (compagnia_id, nome, categoria_id) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE id = LAST_INSERT_ID(id), categoria_id = COALESCE(categoria_id, VALUES(categoria_id))')
+                ->execute([$v['compagnia_id'], $nuovoProd, $v['categoria_id']]);
+            $v['prodotto_id'] = (int)db()->lastInsertId();
+            Auth::log('crea', 'prodotti', $v['prodotto_id'], $nuovoProd);
+        }
+        if (!$v['categoria_id']) $err[] = 'Scegli la classificazione della polizza (area e categoria).';
         if (!isset(Scadenze::MESI[$v['frazionamento']])) $err[] = 'Frazionamento non valido.';
         if (!isset(Scadenze::STATI[$v['stato']])) $v['stato'] = 'attiva';
         if (!$ok($v['scadenza'])) $err[] = 'Inserisci la scadenza dell\'annualità.';
@@ -65,7 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             vai('polizze.php?id=' . $id);
         }
         foreach ($err as $m) flash('errore', $m);
-        $form = $v + ['id' => $id, 'documento_id' => (int)($_POST['documento_id'] ?? 0)];
+        $form = $v + ['id' => $id, 'documento_id' => (int)($_POST['documento_id'] ?? 0), 'prodotto_nuovo' => $nuovoProd ?? ''];
     }
     if ($id && ($p = polizza($id))) {
         if ($az === 'rinnova') {
@@ -106,13 +120,20 @@ if (isset($form) || isset($_GET['nuovo']) || isset($_GET['modifica'])):
         }
         if ($docId && isset($_SESSION['lettura'][$docId])) {
             $lettura = $_SESSION['lettura'][$docId];
-            foreach ($lettura['trovati'] as $k => $val) { $form[$k] = $val; $auto[$k] = true; }
+            foreach ($lettura['trovati'] as $k => $val) {
+                if ($k === 'categoria') { if ($cid = Categorie::perChiave($val)) { $form['categoria_id'] = $cid; $auto['categoria_id'] = true; } continue; }
+                $form[$k] = $val; $auto[$k] = true;
+            }
+            if (!empty($form['prodotto_id'])) {
+                $st = db()->prepare('SELECT categoria_id FROM prodotti WHERE id = ?'); $st->execute([(int)$form['prodotto_id']]);
+                if ($c = $st->fetchColumn()) { $form['categoria_id'] = (int)$c; $auto['categoria_id'] = true; }
+            }
         }
     }
     $st = db()->prepare('SELECT id, nome FROM clienti WHERE id = ?'); $st->execute([(int)$form['cliente_id']]);
     $cli = $st->fetch() ?: vai('clienti.php');
     $prodotti = [];
-    if (!empty($form['compagnia_id'])) { $st = db()->prepare('SELECT id, nome FROM prodotti WHERE compagnia_id = ? ORDER BY nome'); $st->execute([(int)$form['compagnia_id']]); $prodotti = $st->fetchAll(PDO::FETCH_KEY_PAIR); }
+    if (!empty($form['compagnia_id'])) { $st = db()->prepare('SELECT id, nome, categoria_id FROM prodotti WHERE compagnia_id = ? ORDER BY nome'); $st->execute([(int)$form['compagnia_id']]); foreach ($st as $r) $prodotti[(int)$r['id']] = [$r['nome'], $r['categoria_id']]; }
     $a = fn($k) => isset($auto[$k]) ? ' class="auto" title="Letto dal contratto: controlla"' : '';
     $fid = (int)($form['id'] ?? 0); ?>
   <p class="crumbs"><a href="clienti.php?id=<?= (int)$cli['id'] ?>">← <?= e($cli['nome']) ?></a></p>
@@ -127,7 +148,9 @@ if (isset($form) || isset($_GET['nuovo']) || isset($_GET['modifica'])):
     <?= Auth::campoCsrf() ?><input type="hidden" name="azione" value="salva"><input type="hidden" name="id" value="<?= $fid ?>">
     <input type="hidden" name="cliente_id" value="<?= (int)$cli['id'] ?>"><input type="hidden" name="documento_id" value="<?= $docId ?: '' ?>">
     <label<?= $a('compagnia_id') ?>>Compagnia *<select name="compagnia_id" data-compagnia required><option value="">Scegli…</option><?php foreach ($compagnie as $co): if (!$co['attivo'] && (int)$co['id'] !== (int)$form['compagnia_id']) continue; ?><option value="<?= (int)$co['id'] ?>"<?= (int)$co['id'] === (int)$form['compagnia_id'] ? ' selected' : '' ?>><?= e($co['nome']) ?></option><?php endforeach; ?></select></label>
-    <label>Prodotto<select name="prodotto_id" data-prodotto><option value="">–</option><?php foreach ($prodotti as $k => $n): ?><option value="<?= (int)$k ?>"<?= (int)$k === (int)($form['prodotto_id'] ?? 0) ? ' selected' : '' ?>><?= e($n) ?></option><?php endforeach; ?></select><small><a href="tabella.php?t=prodotti&amp;nuovo=1" target="_blank">Aggiungi un prodotto al catalogo ↗</a></small></label>
+    <label<?= $a('prodotto_id') ?>>Prodotto<select name="prodotto_id" data-prodotto><option value="">–</option><?php foreach ($prodotti as $k => [$n, $cat]): ?><option value="<?= (int)$k ?>" data-categoria="<?= (int)$cat ?>"<?= (int)$k === (int)($form['prodotto_id'] ?? 0) ? ' selected' : '' ?>><?= e($n) ?></option><?php endforeach; ?></select><small><a href="tabella.php?t=prodotti&amp;nuovo=1" target="_blank">Aggiungi un prodotto al catalogo ↗</a></small></label>
+    <label<?= $a('prodotto_nuovo') ?>>…oppure nuovo prodotto<input name="prodotto_nuovo" maxlength="120" value="<?= e((string)($form['prodotto_nuovo'] ?? '')) ?>" placeholder="Nome commerciale, es. Allianz Bonus Malus"><small>Se non è nel catalogo lo aggiungo io alla compagnia scelta.</small></label>
+    <label<?= $a('categoria_id') ?>>Classificazione *<select name="categoria_id" data-categoria required><option value="">Scegli area e categoria…</option><?= Categorie::opzioni(!empty($form['categoria_id']) ? (int)$form['categoria_id'] : null) ?></select><small>Si compila da sola quando scegli un prodotto già classificato.</small></label>
     <label<?= $a('numero') ?>>Numero di polizza<input name="numero" maxlength="60" value="<?= e((string)($form['numero'] ?? '')) ?>"></label>
     <label<?= $a('oggetto') ?>>Oggetto assicurato<input name="oggetto" maxlength="190" value="<?= e((string)($form['oggetto'] ?? '')) ?>" placeholder="Es. Fiat Panda targa GH123KL, abitazione di via…"></label>
     <label<?= $a('premio_annuo') ?>>Premio annuo (€)<input name="premio_annuo" inputmode="decimal" value="<?= isset($form['premio_annuo']) && $form['premio_annuo'] !== null && $form['premio_annuo'] !== '' ? e(number_format((float)$form['premio_annuo'], 2, ',', '')) : '' ?>"></label>
@@ -169,7 +192,8 @@ elseif (isset($_GET['id'])):
       <dl class="dl">
         <dt>Cliente</dt><dd><a href="clienti.php?id=<?= (int)$p['cliente_id'] ?>"><?= e($p['cliente']) ?></a></dd>
         <dt>Compagnia</dt><dd><?= e($p['compagnia']) ?><?= $p['portale_url'] ? ' · <a href="' . e($p['portale_url']) . '" target="_blank" rel="noopener">portale ↗</a>' : '' ?></dd>
-        <dt>Prodotto</dt><dd><?= e($p['prodotto'] ?: '–') ?><?= $p['ramo'] ? ' <small class="muted">(' . e(Tabelle::RAMI[$p['ramo']] ?? $p['ramo']) . ')</small>' : '' ?></dd>
+        <dt>Prodotto</dt><dd><?= e($p['prodotto'] ?: '–') ?></dd>
+        <dt>Classificazione</dt><dd><?= e(Categorie::etichetta($p['categoria_id'] ? (int)$p['categoria_id'] : null)) ?></dd>
         <dt>Numero</dt><dd><?= e($p['numero'] ?: '–') ?></dd>
         <dt>Oggetto</dt><dd><?= e($p['oggetto'] ?: '–') ?></dd>
         <dt>Premio annuo</dt><dd><?= euro($p['premio_annuo']) ?></dd>
@@ -211,11 +235,13 @@ elseif (isset($_GET['id'])):
 else:
     $entro = (int)($_GET['entro'] ?? 60);
     $fc = (int)($_GET['compagnia'] ?? 0);
+    $fa = (int)($_GET['area'] ?? 0);
     $ff = (string)($_GET['fraz'] ?? '');
     $q = trim((string)($_GET['q'] ?? ''));
     $tutte = isset($_GET['tutte']);
     $par = []; $w = ["p.stato = 'attiva'"];
     if ($fc) { $w[] = 'p.compagnia_id = ?'; $par[] = $fc; }
+    if ($fa) { $w[] = 'p.categoria_id IN (SELECT x.id FROM categorie x WHERE x.id = ? OR x.parent_id = ?)'; $par[] = $fa; $par[] = $fa; }
     if (isset(Scadenze::MESI[$ff])) { $w[] = 'p.frazionamento = ?'; $par[] = $ff; }
     if ($q !== '') { $w[] = '(c.nome LIKE ? OR p.numero LIKE ? OR p.oggetto LIKE ?)'; array_push($par, "%$q%", "%$q%", "%$q%"); }
     $st = db()->prepare('SELECT p.*, c.nome AS cliente, c.telefono, c.email, co.nome AS compagnia, pr.nome AS prodotto FROM polizze p JOIN clienti c ON c.id = p.cliente_id
@@ -231,7 +257,7 @@ else:
         $righe[] = $p;
     }
     usort($righe, fn($a, $b) => $a['prossima'] <=> $b['prossima']);
-    $qs = array_filter(['entro' => $entro !== 60 ? $entro : '', 'compagnia' => $fc ?: '', 'fraz' => $ff, 'q' => $q, 'tutte' => $tutte ? 1 : '']); ?>
+    $qs = array_filter(['entro' => $entro !== 60 ? $entro : '', 'compagnia' => $fc ?: '', 'area' => $fa ?: '', 'fraz' => $ff, 'q' => $q, 'tutte' => $tutte ? 1 : '']); ?>
   <div class="head"><h1>Scadenziario polizze <span class="muted">(<?= count($righe) ?>)</span></h1>
     <div class="head__actions"><a class="btn btn--ghost" href="tabella.php?t=compagnie">Compagnie</a><a class="btn btn--ghost" href="tabella.php?t=prodotti">Prodotti</a></div></div>
   <p class="intro">Tutte le polizze attive in ordine di prossima scadenza (rata o annualità), da tutte le compagnie. Le nuove polizze si aggiungono dalla scheda del cliente.</p>
@@ -242,6 +268,7 @@ else:
   <form method="get" class="filters">
     <?php if ($tutte): ?><input type="hidden" name="tutte" value="1"><?php else: ?><input type="hidden" name="entro" value="<?= $entro ?>"><?php endif; ?>
     <input type="search" name="q" placeholder="Cliente, numero, targa…" value="<?= e($q) ?>" aria-label="Cerca">
+    <select name="area" aria-label="Classificazione"><option value="">Auto, danni e vita</option><?= Categorie::opzioni($fa ?: null) ?></select>
     <select name="compagnia" aria-label="Compagnia"><option value="">Tutte le compagnie</option><?php foreach ($compagnie as $co): ?><option value="<?= (int)$co['id'] ?>"<?= $fc === (int)$co['id'] ? ' selected' : '' ?>><?= e($co['nome']) ?></option><?php endforeach; ?></select>
     <select name="fraz" aria-label="Frazionamento"><option value="">Ogni frazionamento</option><?php foreach (Scadenze::NOMI as $k => $n): ?><option value="<?= $k ?>"<?= $ff === $k ? ' selected' : '' ?>><?= $n ?></option><?php endforeach; ?></select>
     <button class="btn btn--ghost">Filtra</button>
@@ -253,7 +280,7 @@ else:
         $gg = (int)(new DateTimeImmutable($oggi))->diff(new DateTimeImmutable($p['prossima']))->format('%r%a'); ?>
       <tr><td><b><?= date('d/m/Y', strtotime($p['prossima'])) ?></b><br><small class="<?= $gg < 0 ? 'err' : ($gg <= 15 ? 'warn' : 'muted') ?>"><?= $gg < 0 ? 'passata da ' . -$gg . ' gg · da rinnovare' : ($gg === 0 ? 'oggi' : "tra $gg giorni") ?> · <?= $p['evento'] === 'rata' ? 'rata' : 'annualità' ?></small></td>
       <td><a href="clienti.php?id=<?= (int)$p['cliente_id'] ?>"><?= e($p['cliente']) ?></a><br><small class="muted"><?= e((string)($p['telefono'] ?: $p['email'])) ?></small></td>
-      <td><a href="?id=<?= (int)$p['id'] ?>"><?= e($p['prodotto'] ?: 'Polizza') ?></a> · <?= e($p['compagnia']) ?><br><small class="muted"><?= e(trim(($p['numero'] ? 'n. ' . $p['numero'] : '') . ' ' . ($p['oggetto'] ?? ''))) ?></small></td>
+      <td><a href="?id=<?= (int)$p['id'] ?>"><?= e($p['prodotto'] ?: 'Polizza') ?></a> · <?= e($p['compagnia']) ?><br><small class="muted"><?= e(Categorie::etichetta($p['categoria_id'] ? (int)$p['categoria_id'] : null)) ?><?= $p['numero'] ? ' · n. ' . e($p['numero']) : '' ?></small></td>
       <td><?= e(Scadenze::NOMI[$p['frazionamento']]) ?></td><td class="right"><?= euro($p['premio_annuo']) ?></td><td><?= $p['avvisa_cliente'] ? 'Sì' : 'No' ?></td></tr>
     <?php endforeach; ?>
     <?php if (!$righe): ?><tr><td colspan="6" class="muted">Nessuna scadenza nel periodo.</td></tr><?php endif; ?>

@@ -27,7 +27,9 @@ if (($_POST['azione'] ?? '') === 'carica') {
     if (!empty($_POST['leggi'])) {
         $d = Documenti::trova($id);
         $comp = db()->query('SELECT id, nome FROM compagnie WHERE attivo = 1')->fetchAll(PDO::FETCH_KEY_PAIR);
-        $_SESSION['lettura'][$id] = LettoreContratti::analizza(LettoreContratti::testo(Documenti::percorso($d), $d['mime']), $comp);
+        $prod = [];
+        foreach (db()->query('SELECT id, nome, compagnia_id FROM prodotti WHERE attivo = 1') as $x) $prod[(int)$x['id']] = [$x['nome'], (int)$x['compagnia_id']];
+        $_SESSION['lettura'][$id] = LettoreContratti::analizza(LettoreContratti::testo(Documenti::percorso($d), $d['mime']), $comp, $prod);
         vai($pid ? "polizze.php?modifica=$pid&doc=$id" : "polizze.php?nuovo=1&cliente=$cid&doc=$id");
     }
     flash('ok', 'Documento caricato.');

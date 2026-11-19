@@ -18,10 +18,13 @@ final class LettoreContratti
         try {
             if ($mime === 'application/pdf' && class_exists(\Smalot\PdfParser\Parser::class)) {
                 if (filesize($percorso) > 15 * 1048576) return '';
+                $pdf = (string)file_get_contents($percorso);
+                // i PDF dei portali delle compagnie sono spesso protetti: prima si toglie la protezione
+                if (str_contains($pdf, '/Encrypt')) $pdf = PdfSprotetto::decifra($pdf) ?? $pdf;
                 $cfg = new \Smalot\PdfParser\Config();
                 $cfg->setRetainImageContent(false);
-                $t = (new \Smalot\PdfParser\Parser([], $cfg))->parseFile($percorso)->getText();
-                return self::pulisci($t);
+                $doc = (new \Smalot\PdfParser\Parser([], $cfg))->parseContent($pdf);
+                return self::pulisci(self::testoPagine($doc));
             }
             if (str_ends_with(strtolower($percorso), '.docx') && class_exists(ZipArchive::class)) {
                 $z = new ZipArchive();
@@ -35,6 +38,32 @@ final class LettoreContratti
             error_log('[lettore] ' . $e->getMessage());
         }
         return '';
+    }
+
+    /**
+     * Testo ricostruito parola per parola dalle posizioni sulla pagina: molti PDF non contengono
+     * gli spazi (li ottengono spostando il cursore) e il testo semplice uscirebbe tutto attaccato.
+     */
+    private static function testoPagine(\Smalot\PdfParser\Document $doc): string
+    {
+        $out = [];
+        foreach ($doc->getPages() as $pagina) {
+            try {
+                $righe = []; $y = null; $riga = '';
+                foreach ($pagina->getDataTm() as [$m, $txt]) {
+                    $ny = round((float)($m[5] ?? 0), 1);
+                    if ($y !== null && abs($ny - $y) > 2) { $righe[] = $riga; $riga = ''; }
+                    $riga .= ($riga === '' ? '' : ' ') . $txt;
+                    $y = $ny;
+                }
+                $righe[] = $riga;
+                $out[] = implode("\n", $righe);
+            } catch (Throwable) {
+                $out[] = $pagina->getText();
+            }
+        }
+        $t = implode("\n\n", $out);
+        return trim($t) !== '' ? $t : $doc->getText();
     }
 
     private static function pulisci(string $t): string
@@ -70,9 +99,10 @@ final class LettoreContratti
 
     /**
      * @param array $compagnie id => nome
+     * @param array $prodotti  id => [nome, compagnia_id]
      * @return array{trovati: array, note: array}
      */
-    public static function analizza(string $t, array $compagnie = []): array
+    public static function analizza(string $t, array $compagnie = [], array $prodotti = []): array
     {
         $r = []; $note = [];
         if (mb_strlen($t) < 40) return ['trovati' => [], 'note' => ['Nel documento non c\'è testo leggibile (forse è una scansione o una foto): inserisci i dati a mano.']];
@@ -142,8 +172,43 @@ final class LettoreContratti
             $r['premio_annuo'] = num($scelto);
         }
 
-        // 7) targa
-        if (preg_match('/\b([A-Z]{2})\s?(\d{3})\s?([A-Z]{2})\b/u', $t, $m) && !preg_match('/^(IT|EU)$/', $m[1])) $r['oggetto'] = 'Targa ' . $m[1] . $m[2] . $m[3];
+        // 7) veicolo: marca/modello e targa
+        $veicolo = null;
+        if (preg_match('/marca\s*(?:\/|e)\s*modello\s*:?\s*([A-Za-z0-9][^\n(]{1,50})/iu', $t, $m)) $veicolo = trim(preg_replace('/\s+/', ' ', $m[1]), " .\t");
+        elseif (preg_match('/marca\s*:?\s*([A-Z][A-Za-z\- ]{1,20}?)\s+modello\s*:?\s*([A-Za-z0-9][^\n]{1,30})/u', $t, $m)) $veicolo = trim($m[1]) . ' ' . trim($m[2]);
+        $targa = null;
+        if (preg_match('/targa[^A-Z0-9\n]{0,20}([A-Z]{2})\s?(\d{3})\s?([A-Z]{2})\b/iu', $t, $m) || preg_match('/\b([A-Z]{2})\s?(\d{3})\s?([A-Z]{2})\b/u', $t, $m)) {
+            if (!preg_match('/^(IT|EU)$/', $m[1])) $targa = strtoupper($m[1] . $m[2] . $m[3]);
+        }
+        if ($veicolo || $targa) $r['oggetto'] = trim(($veicolo ?? '') . ($targa ? ($veicolo ? ' · ' : '') . 'targa ' . $targa : ''));
+
+        // 8) prodotto del catalogo citato nel documento (il nome più lungo trovato)
+        $compatto = preg_replace('/[^a-z0-9]+/u', '', $low);
+        $bestP = null; $lenP = 0;
+        foreach ($prodotti as $id => [$nome, $cid]) {
+            if (isset($r['compagnia_id']) && (int)$cid !== (int)$r['compagnia_id']) continue;
+            $k = preg_replace('/[^a-z0-9]+/u', '', mb_strtolower((string)$nome));
+            if (strlen($k) >= 5 && str_contains($compatto, $k) && strlen($k) > $lenP) { $bestP = (int)$id; $lenP = strlen($k); }
+        }
+        if ($bestP) $r['prodotto_id'] = $bestP;
+        elseif (isset($r['compagnia_id'])) {
+            // nome commerciale: di solito è il titolo all'inizio del documento e contiene il nome della compagnia
+            $chiave = mb_strtolower(preg_replace('/\s+(assicurazioni|s\.p\.a\.?|spa)$/i', '', (string)($compagnie[$r['compagnia_id']] ?? '')));
+            foreach (array_slice(preg_split('/\n+/', $t), 0, 8) as $riga) {
+                $riga = trim(preg_replace('/\s+/', ' ', $riga));
+                if (mb_strlen($riga) >= 6 && mb_strlen($riga) <= 60 && $chiave !== '' && str_contains(mb_strtolower($riga), $chiave) && !preg_match('/s\.p\.a|sede|via |\d{4}/i', $riga)) { $r['prodotto_nuovo'] = $riga; break; }
+            }
+        }
+
+        // 9) classificazione
+        if ($targa || preg_match('/responsabilit[aà]\W{0,2}\s*civile\s*auto|\brca\b|r\.c\.a|bonus\s*\/?\s*malus|veicolo assicurato/u', $low)) $r['categoria'] = 'rc_auto';
+        elseif (preg_match('/caso morte|temporanea caso|\btcm\b/u', $low)) $r['categoria'] = 'tcm';
+        elseif (preg_match('/unit linked|index linked/u', $low)) $r['categoria'] = 'unit_index';
+        elseif (preg_match('/fondo pensione|previdenza complementare|\bpip\b/u', $low)) $r['categoria'] = 'previdenza';
+        elseif (preg_match('/gestione separata|rivalutabil/u', $low)) $r['categoria'] = 'rivalutabili';
+        elseif (preg_match('/abitazione|fabbricato|casa e famiglia|multirischi.{0,10}casa/u', $low)) $r['categoria'] = 'casa';
+        elseif (preg_match('/infortuni/u', $low) && !preg_match('/veicolo/u', $low)) $r['categoria'] = 'infortuni';
+        elseif (preg_match('/rimborso spese mediche|malattia|salute/u', $low)) $r['categoria'] = 'salute';
 
         if (!isset($r['scadenza'])) $note[] = 'Non ho trovato la scadenza: inseriscila a mano.';
         return ['trovati' => array_filter($r, fn($v) => $v !== null && $v !== ''), 'note' => $note];

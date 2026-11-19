@@ -63,4 +63,6 @@ Senza questi secrets le email partono con la funzione `mail()` dell'hosting, men
 - Calcoli in `app/lib/Scadenze.php`: le rate dividono l'annualità (semestrale, trimestrale, mensile) e terminano alla scadenza.
 - **Avvisi**: `app/lib/Avvisi.php`, chiamato ogni ora da `api/cron.php?k=<chiave>` (chiave e indirizzo in Impostazioni) e, come riserva, all'apertura del pannello. Un avviso per polizza/scadenza/destinatario, mai due volte.
 - **Documenti**: salvati in `archivio/` sul server (chiusa al web, nomi casuali), scaricabili solo dal pannello. PDF, doc, docx, jpg, png; limite in Impostazioni.
+- **Classificazione polizze**: tabella `categorie` con tre aree (Auto, Ramo danni, Ramo vita) e le categorie con i rami ministeriali; prodotti e polizze sono classificati, lo scadenziario filtra per area o categoria.
+- **PDF protetti** (tipici dei portali delle compagnie): `app/lib/PdfSprotetto.php` toglie la protezione senza password (RC4, AES-128, AES-256) prima della lettura.
 - **Lettura dei contratti**: `app/lib/LettoreContratti.php` propone date, frazionamento, numero, compagnia, premio e targa da PDF digitali e .docx (libreria smalot/pdfparser, installata dal workflow in `site/app/vendor`). Le scansioni non sono leggibili.

@@ -200,7 +200,7 @@ elseif ($id):
       <thead><tr><th>Compagnia e prodotto</th><th>Numero / oggetto</th><th>Frazionamento</th><th>Stipula</th><th>Scadenza annualità</th><th>Prossima scadenza</th><th>Avviso cliente</th><th>Stato</th></tr></thead><tbody>
       <?php foreach ($pol as $x):
           $pr = $x['stato'] === 'attiva' ? Scadenze::prossima($x['scadenza'], $x['frazionamento']) : null; ?>
-        <tr<?= $x['stato'] !== 'attiva' ? ' class="off"' : '' ?>><td><a href="polizze.php?id=<?= (int)$x['id'] ?>"><b><?= e($x['compagnia']) ?></b></a><br><small class="muted"><?= e($x['prodotto'] ?: '–') ?></small></td>
+        <tr<?= $x['stato'] !== 'attiva' ? ' class="off"' : '' ?>><td><a href="polizze.php?id=<?= (int)$x['id'] ?>"><b><?= e($x['compagnia']) ?></b></a><br><small class="muted"><?= e($x['prodotto'] ?: '–') ?></small><br><small class="tag"><?= e(Categorie::etichetta($x['categoria_id'] ? (int)$x['categoria_id'] : null)) ?></small></td>
         <td><?= e($x['numero'] ?: '–') ?><br><small class="muted"><?= e((string)$x['oggetto']) ?></small></td>
         <td><?= e(Scadenze::NOMI[$x['frazionamento']]) ?></td>
         <td><?= $x['data_stipula'] ? date('d/m/Y', strtotime($x['data_stipula'])) : '–' ?></td>
